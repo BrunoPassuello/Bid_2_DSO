@@ -28,3 +28,6 @@ print(clube.cidade.nome)
 
 licenca = Licenca("Licença A")
 tecnico = Tecnico("Tite", 59, Sao_Paulo_Ci, licenca)
+
+clube.contratar_tecnico(tecnico, 5000, 10000)
+print(clube.contrato_tecnico.tecnico.nome)
