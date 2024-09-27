@@ -1,12 +1,14 @@
 from Jogador import Jogador
 from Cidade import Cidade
 from Tecnico import Tecnico
+from Campeonato import Campeonato
 class Clube:
     def __init__(self, nome : str, cidade : Cidade):
         self.__nome = nome
         self.__jogadores = []
         self.__cidade = cidade
         self.__contrato_tecnico = None
+        self.__campeonatos = []
     
     @property
     def nome(self):
@@ -36,6 +38,11 @@ class Clube:
     def tecnico(self, tecnico):
         self.__contrato_tecnico = tecnico
         
+    @property
+    def campeonatos(self):
+        return self.__campeonatos
+    
+        
     def contratar_jogador(self, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):
         from ContratoJogador import ContratoJogador
         contrato = ContratoJogador(self, jogador, salario, multa_rescisoria, contrato_produtividade)
@@ -48,3 +55,6 @@ class Clube:
         tecnico.contrato = contrato
         self.__contrato_tecnico = contrato
         
+    def entrar_campeonato(self, campeonato : Campeonato):
+        self.__campeonatos.append(campeonato)
+        campeonato.clubes.append(self)
