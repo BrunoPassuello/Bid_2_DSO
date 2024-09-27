@@ -1,4 +1,4 @@
-from clube import Clube
+from Clube import Clube
 from Jogador import Jogador
 
 

@@ -1,8 +1,9 @@
 from Posicao import Posicao
 from Pessoa import Pessoa
+from Cidade import Cidade
 class Jogador(Pessoa):
-    def __init__(self, nome : str, idade : int, posicao : Posicao, altura : float, peso : float, estrangeiro : bool):
-        super().__init__(nome, idade)
+    def __init__(self, nome : str, idade : int, cidade : Cidade, posicao : Posicao, altura : float, peso : float, estrangeiro : bool):
+        super().__init__(nome, idade, cidade)
         self.__posicao = posicao
         self.__altura = altura
         self.__peso = peso
