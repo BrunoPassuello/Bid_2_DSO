@@ -66,3 +66,21 @@ class Clube:
     def sair_campeonato(self, campeonato : Campeonato):
         self.__campeonatos.remove(campeonato)
         campeonato.clubes.remove(self)
+    
+    def jogador_maior_salario(self):
+        maior_salario = 0
+        jogador = None
+        for contrato in self.__jogadores:
+            if contrato.salario > maior_salario:
+                maior_salario = contrato.salario
+                jogador = contrato.jogador
+        return jogador.nome
+    
+    def jogador_maior_multa(self):
+        maior_multa = 0
+        jogador = None
+        for contrato in self.__jogadores:
+            if contrato.multa_rescisoria > maior_multa:
+                maior_multa = contrato.multa_rescisoria
+                jogador = contrato.jogador
+        return jogador.nome 
