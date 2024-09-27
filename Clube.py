@@ -35,7 +35,7 @@ class Clube:
         return self.__contrato_tecnico
     
     @contrato_tecnico.setter
-    def tecnico(self, tecnico):
+    def contrato_tecnico(self, tecnico):
         self.__contrato_tecnico = tecnico
         
     @property
@@ -48,6 +48,7 @@ class Clube:
         contrato = ContratoJogador(self, jogador, salario, multa_rescisoria, contrato_produtividade)
         jogador.contrato = contrato
         self.__jogadores.append(contrato)
+        
         
     def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_Rescisoria : float):
         from ContratoTecnico import ContratoTecnico
