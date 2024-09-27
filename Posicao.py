@@ -1,6 +1,6 @@
 class Posicao:
     def __init__(self, nome : str):
-        self.nome = nome
+        self.__nome = nome
     
     @property
     def nome(self):

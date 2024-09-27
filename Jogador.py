@@ -3,11 +3,11 @@ from Pessoa import Pessoa
 class Jogador(Pessoa):
     def __init__(self, nome : str, idade : int, posicao : Posicao, altura : float, peso : float, estrangeiro : bool):
         super().__init__(nome, idade)
-        self.posicao = posicao
-        self.altura = altura
-        self.peso = peso
-        self.estrangeiro = estrangeiro
-        self.contrato = None
+        self.__posicao = posicao
+        self.__altura = altura
+        self.__peso = peso
+        self.__estrangeiro = estrangeiro
+        self.__contrato = None
     
     @property
     def posicao(self):
