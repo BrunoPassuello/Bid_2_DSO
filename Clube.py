@@ -55,7 +55,14 @@ class Clube:
         contrato = ContratoTecnico(self, tecnico, salario, multa_Rescisoria)
         tecnico.contrato = contrato
         self.__contrato_tecnico = contrato
-        
+    
+    def tecnico(self):
+        return self.__contrato_tecnico.tecnico.nome
+    
     def entrar_campeonato(self, campeonato : Campeonato):
         self.__campeonatos.append(campeonato)
         campeonato.clubes.append(self)
+    
+    def sair_campeonato(self, campeonato : Campeonato):
+        self.__campeonatos.remove(campeonato)
+        campeonato.clubes.remove(self)
