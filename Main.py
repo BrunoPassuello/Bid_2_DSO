@@ -26,5 +26,5 @@ print(clube.cidade.estado.pais.nome)
 print(clube.cidade.estado.nome)
 print(clube.cidade.nome)
 
-licenca = Licenca("Licença A", 2016)
+licenca = Licenca("Licença A")
 tecnico = Tecnico("Tite", 59, Sao_Paulo_Ci, licenca)
