@@ -63,8 +63,8 @@ class Clube:
                 print("Nome: " + contrato.jogador.nome)
                 print("Idade: " + str(contrato.jogador.idade))
                 print("Cidade de nascimento: " + contrato.jogador.cidade.nome)
-                print("Altura: " + str(contrato.jogador.altura))
-                print("Peso: " + str(contrato.jogador.peso))
+                print("Altura (M): " + str(contrato.jogador.altura))
+                print("Peso (KG): " + str(contrato.jogador.peso))
                 print("INFORMAÇÕES DO CONTRATO:")
                 print("Clube: " + contrato.clube.nome)
                 print("Salário: " + str(contrato.salario))
@@ -77,21 +77,47 @@ class Clube:
             if contrato.jogador == jogador:
                 self.__jogadores.remove(contrato)
                 jogador.contrato = None
+                print("Jogador demitido com sucesso!")
                 break
     
     def listar_jogadores(self):
         for contrato in self.__jogadores:
             print(contrato.jogador.nome)
     
-    def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_Rescisoria : float):
+    def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_rescisoria : float):
         from ContratoTecnico import ContratoTecnico
-        contrato = ContratoTecnico(self, tecnico, salario, multa_Rescisoria)
+        contrato = ContratoTecnico(self, tecnico, salario, multa_rescisoria)
         tecnico.contrato = contrato
         self.__contrato_tecnico = contrato
     
-    def tecnico(self):
-        return self.__contrato_tecnico.tecnico.nome
+    def alterar_contrato_tecnico(self, salario : float, multa_rescisoria : float):
+        from ContratoTecnico import ContratoTecnico
+        contrato = ContratoTecnico(self, self.__contrato_tecnico.tecnico, salario, multa_rescisoria)
+        self.__contrato_tecnico = contrato
+        
+    def demitir_tecnico(self):
+        self.__contrato_tecnico.tecnico.contrato = None
+        self.__contrato_tecnico = None
+        print("Técnico demitido com sucesso!")    
     
+    def listar_contrato_tecnico(self):
+        if self.__contrato_tecnico == None:
+            return print("Clube não possui técnico!")
+        print("INFORMAÇÕES PESSOAIS DE TÉCNICO:")
+        print("Nome: " + self.__contrato_tecnico.tecnico.nome)
+        print("Idade: " + str(self.__contrato_tecnico.tecnico.idade))
+        print("Cidade de nascimento: " + self.__contrato_tecnico.tecnico.cidade.nome)
+        print("Licença: " + self.__contrato_tecnico.tecnico.licenca.tipo)
+        print("INFORMAÇÕES CONTRATUAIS:")
+        print("Clube: " + self.__contrato_tecnico.clube.nome)
+        print("Salário: " + str(self.__contrato_tecnico.salario))
+        print("Multa rescisória: " + str(self.__contrato_tecnico.multa_rescisoria))
+    
+    def tecnico(self):
+            if self.__contrato_tecnico == None:
+                return print("Clube não possui técnico!")
+            return self.__contrato_tecnico.tecnico.nome
+        
     def entrar_campeonato(self, campeonato : Campeonato):
         self.__campeonatos.append(campeonato)
         campeonato.clubes.append(self)

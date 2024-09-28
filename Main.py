@@ -93,5 +93,12 @@ print(santos.tecnico())
 
 print("----------------------------------------------------------------")
 
+santos.listar_contrato_tecnico()
+
+print("----------------------------------------------------------------")
+
+santos.demitir_tecnico()
+santos.tecnico()
+
 
 
