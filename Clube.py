@@ -49,7 +49,40 @@ class Clube:
         jogador.contrato = contrato
         self.__jogadores.append(contrato)
         
+    def alterar_contrato_jgoador(self, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):
+        for contrato in self.__jogadores:
+            if contrato.jogador == jogador:
+                contrato.salario = salario
+                contrato.multa_rescisoria = multa_rescisoria
+                contrato.contrato_produtividade = contrato_produtividade
+                
+    def informacoes_jogador(self, jogador : Jogador):
+        for contrato in self.__jogadores:
+            if contrato.jogador == jogador:
+                print("INFORMAÇÕES PESSOAIS DE JOGADOR:")
+                print("Nome: " + contrato.jogador.nome)
+                print("Idade: " + str(contrato.jogador.idade))
+                print("Cidade de nascimento: " + contrato.jogador.cidade.nome)
+                print("Altura: " + str(contrato.jogador.altura))
+                print("Peso: " + str(contrato.jogador.peso))
+                print("INFORMAÇÕES DO CONTRATO:")
+                print("Clube: " + contrato.clube.nome)
+                print("Salário: " + str(contrato.salario))
+                print("Multa rescisória: " + str(contrato.multa_rescisoria))
+                print("Contrato de produtividade: " + str(contrato.contrato_produtividade))
+                break
         
+    def demitir_jogador(self, jogador : Jogador):
+        for contrato in self.__jogadores:
+            if contrato.jogador == jogador:
+                self.__jogadores.remove(contrato)
+                jogador.contrato = None
+                break
+    
+    def listar_jogadores(self):
+        for contrato in self.__jogadores:
+            print(contrato.jogador.nome)
+    
     def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_Rescisoria : float):
         from ContratoTecnico import ContratoTecnico
         contrato = ContratoTecnico(self, tecnico, salario, multa_Rescisoria)
