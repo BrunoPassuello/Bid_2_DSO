@@ -93,11 +93,15 @@ print(santos.tecnico())
 
 print("----------------------------------------------------------------")
 
+#Listar informações do técnico
 santos.listar_contrato_tecnico()
 
 print("----------------------------------------------------------------")
 
+#demitir técnico
 santos.demitir_tecnico()
+
+#teste de exceção -> tentar ver quem é o técnico sem o clube ter um técnico
 santos.tecnico()
 
 
