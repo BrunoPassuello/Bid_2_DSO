@@ -104,5 +104,17 @@ santos.demitir_tecnico()
 #teste de exceção -> tentar ver quem é o técnico sem o clube ter um técnico
 santos.tecnico()
 
+#Campeonato listar os clubes em ordem alfabetica
+brasileirao.listar_clubes()
+santos.entrar_campeonato(brasileirao)
+brasileirao.listar_clubes()
+
+#Clube listar os clubes em ordem alfabetica
+santos.listar_cameponatos()
+campeonato2 = Campeonato("Campeonato Catarinense", 1000, 10, 2, 20)
+campeonato3 = Campeonato("Arabia League", 5000000, 30, 7, 25)
+santos.entrar_campeonato(campeonato3)
+santos.entrar_campeonato(campeonato2)
+santos.listar_cameponatos()
 
 

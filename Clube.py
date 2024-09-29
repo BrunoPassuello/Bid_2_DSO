@@ -127,19 +127,34 @@ class Clube:
         campeonato.clubes.remove(self)
     
     def jogador_maior_salario(self):
-        maior_salario = 0
-        jogador = None
-        for contrato in self.__jogadores:
-            if contrato.salario > maior_salario:
-                maior_salario = contrato.salario
-                jogador = contrato.jogador
-        return jogador.nome
+        if len(self.__jogadores) > 0:
+            maior_salario = 0
+            jogador = None
+            for contrato in self.__jogadores:
+                if contrato.salario > maior_salario:
+                    maior_salario = contrato.salario
+                    jogador = contrato.jogador
+            return jogador.nome
+        else:
+            return print("Clube não possui jogadores!")
     
     def jogador_maior_multa(self):
-        maior_multa = 0
-        jogador = None
-        for contrato in self.__jogadores:
-            if contrato.multa_rescisoria > maior_multa:
-                maior_multa = contrato.multa_rescisoria
-                jogador = contrato.jogador
-        return jogador.nome 
+        if len(self.__jogadores) > 0:
+            maior_multa = 0
+            jogador = None
+            for contrato in self.__jogadores:
+                if contrato.multa_rescisoria > maior_multa:
+                    maior_multa = contrato.multa_rescisoria
+                    jogador = contrato.jogador
+            return jogador.nome 
+        else:
+            return print("Clube não possui jogadores!")
+    
+    def listar_cameponatos(self):
+        if len(self.__campeonatos) > 0:
+            print("CAMPEONATOS:")
+            self.__campeonatos.sort(key = lambda x: x.nome)
+            for campeonato in self.__campeonatos:
+                print(campeonato.nome)
+        else:
+            print("Clube não está em nenhum campeonato!")
