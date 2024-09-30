@@ -45,9 +45,13 @@ class Clube:
         
     def contratar_jogador(self, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):
         from ContratoJogador import ContratoJogador
-        contrato = ContratoJogador(self, jogador, salario, multa_rescisoria, contrato_produtividade)
-        jogador.contrato = contrato
-        self.__jogadores.append(contrato)
+        if jogador.contrato != None:
+            print("Jogador já possui contrato!")
+        else:
+            contrato = ContratoJogador(self, jogador, salario, multa_rescisoria, contrato_produtividade)
+            jogador.contrato = contrato
+            self.__jogadores.append(contrato)
+            print("Jogador contratado com sucesso!")
         
     def alterar_contrato_jgoador(self, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):
         for contrato in self.__jogadores:
@@ -86,20 +90,25 @@ class Clube:
             print(contrato.jogador.nome)
     
     def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_rescisoria : float):
-        from ContratoTecnico import ContratoTecnico
-        contrato = ContratoTecnico(self, tecnico, salario, multa_rescisoria)
-        tecnico.contrato = contrato
-        self.__contrato_tecnico = contrato
+        if tecnico.contrato != None:
+            return print("Técnico já possui contrato!")
+        else:
+            from ContratoTecnico import ContratoTecnico
+            contrato = ContratoTecnico(self, tecnico, salario, multa_rescisoria)
+            tecnico.contrato = contrato
+            self.__contrato_tecnico = contrato
+            return print("Técnico contratado com sucesso!")
     
     def alterar_contrato_tecnico(self, salario : float, multa_rescisoria : float):
         from ContratoTecnico import ContratoTecnico
         contrato = ContratoTecnico(self, self.__contrato_tecnico.tecnico, salario, multa_rescisoria)
         self.__contrato_tecnico = contrato
+        return print("Contrato de técnico alterado com sucesso!")
         
     def demitir_tecnico(self):
         self.__contrato_tecnico.tecnico.contrato = None
         self.__contrato_tecnico = None
-        print("Técnico demitido com sucesso!")    
+        return print("Técnico demitido com sucesso!")    
     
     def listar_contrato_tecnico(self):
         if self.__contrato_tecnico == None:
@@ -120,12 +129,21 @@ class Clube:
             return self.__contrato_tecnico.tecnico.nome
         
     def entrar_campeonato(self, campeonato : Campeonato):
-        self.__campeonatos.append(campeonato)
-        campeonato.clubes.append(self)
+        estrangeiros = 0
+        for jogador in self.__jogadores:
+            if jogador.jogador.estrangeiro:
+                estrangeiros += 1
+        if campeonato.regra.numero_estrangeiros < estrangeiros:
+            return print("Clube não pode entrar no campeonato, número de estrangeiros excedido!")
+        else:
+            self.__campeonatos.append(campeonato)
+            campeonato.clubes.append(self)
+            return print("Clube entrou no campeonato com sucesso!")
     
     def sair_campeonato(self, campeonato : Campeonato):
         self.__campeonatos.remove(campeonato)
         campeonato.clubes.remove(self)
+        return print("Clube saiu do campeonato com sucesso!")
     
     def jogador_maior_salario(self):
         if len(self.__jogadores) > 0:

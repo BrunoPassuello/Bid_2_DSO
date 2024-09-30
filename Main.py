@@ -121,3 +121,10 @@ santos.listar_cameponatos()
 bruno = Jogador("Bruno", 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
 santos.contratar_jogador(bruno, 10, 10, False)
 santos.relatorio()
+santos.demitir_jogador(bruno)
+
+#Regra de negócio jogadores estrengeiros em campeonato
+inter = Clube("Internacional", Sao_Paulo_Ci)
+campeonato4 = Campeonato("Campeonato Gaúcho", 1000, 10, 0, 20)
+inter.contratar_jogador(bruno, 10, 10, False)
+inter.entrar_campeonato(campeonato4)
