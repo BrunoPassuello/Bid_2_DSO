@@ -117,4 +117,7 @@ santos.entrar_campeonato(campeonato3)
 santos.entrar_campeonato(campeonato2)
 santos.listar_cameponatos()
 
-
+#Relatório do clube
+bruno = Jogador("Bruno", 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
+santos.contratar_jogador(bruno, 10, 10, False)
+santos.relatorio()

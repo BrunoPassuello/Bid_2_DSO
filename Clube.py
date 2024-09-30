@@ -81,7 +81,8 @@ class Clube:
                 break
     
     def listar_jogadores(self):
-        for contrato in self.__jogadores:
+        jogadores_ordenados = sorted(self.__jogadores, key = lambda x: x.jogador.nome)
+        for contrato in jogadores_ordenados:
             print(contrato.jogador.nome)
     
     def contratar_tecnico(self, tecnico : Tecnico, salario : float, multa_rescisoria : float):
@@ -138,6 +139,18 @@ class Clube:
         else:
             return print("Clube não possui jogadores!")
     
+    def jogador_menor_salario(self):
+        if len(self.__jogadores) > 0:
+            menor_salario = 99999999999999999999999999999999
+            jogador = None
+            for contrato in self.__jogadores:
+                if contrato.salario < menor_salario:
+                    menor_salario = contrato.salario
+                    jogador = contrato.jogador
+            return jogador.nome
+        else:
+            return print("Clube não possui jogadores!")
+    
     def jogador_maior_multa(self):
         if len(self.__jogadores) > 0:
             maior_multa = 0
@@ -149,7 +162,39 @@ class Clube:
             return jogador.nome 
         else:
             return print("Clube não possui jogadores!")
+        
+    def jogador_menor_multa(self):
+        if len(self.__jogadores) > 0:
+            menor_multa = 99999999999999999999999999999999
+            jogador = None
+            for contrato in self.__jogadores:
+                if contrato.multa_rescisoria < menor_multa:
+                    menor_multa = contrato.multa_rescisoria
+                    jogador = contrato.jogador
+            return jogador.nome
+        else:
+            return print("Clube não possui jogadores!")
     
+    def relatorio(self):
+        nome = self.__nome.upper()
+        print("RELATÓRIO DO CLUBE " + nome + ":")
+        print("Cidade: " + self.__cidade.nome)
+        print("Estado: " + self.__cidade.estado.nome)
+        print("País: " + self.__cidade.estado.pais.nome)
+        if len(self.__jogadores) > 0:
+            print("JOGADORES:")
+            self.listar_jogadores()
+        if self.__contrato_tecnico != None:
+            print("TÉCNICO: " + self.__contrato_tecnico.tecnico.nome)
+        if len(self.__campeonatos) > 0:
+            print("CAMPEONATOS:")
+            for campeonato in self.__campeonatos:
+                print(campeonato.nome)
+        print("MAIOR SALÁRIO: " + self.jogador_maior_salario())
+        print("MENOR SALÁRIO: " + self.jogador_menor_salario())
+        print("MAIOR MULTA: " + self.jogador_maior_multa())
+        print("MENOR MULTA: " + self.jogador_menor_multa())
+        
     def listar_cameponatos(self):
         if len(self.__campeonatos) > 0:
             print("CAMPEONATOS:")
