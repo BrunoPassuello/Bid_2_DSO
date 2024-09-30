@@ -27,10 +27,6 @@ O sistema permitirá o relatório de qual a maior e menor folha salarial, bem co
 1. Um jogador não pode ser registrado por 2 ou mais clubes.
 2. Nenhum clube que exceda a quantidade de jogadores estrangeiros permitida será considerado. Desclassificação imediata.
 
-### Ações (Métodos)
-
-#### Clube
-As ações (métodos) que um **Clube** pode realizar são:
-
-- **contratar_jogador(jogador: Jogador)**: Contrata um jogador para o clube, criando um contrato.
-- **demitir_j
+## Divisão das Funções da Dupla:
+- **Bruno**: Implementação das entidades e da maior parte dos métodos, design/modelagem do UML.
+- **Henrique**: Implementação das verificações e dos testes, documentação do sistema.
