@@ -3,8 +3,9 @@ from Cidade import Cidade
 class Pessoa(ABC):
     
     @abstractmethod
-    def __init__(self, nome : str, idade : int, cidade : Cidade):
+    def __init__(self, nome : str, cpf : int, idade : int, cidade : Cidade):
         self.__nome = nome
+        self.__cpf = cpf
         self.__idade = idade
         self.__cidade = cidade
     
@@ -16,6 +17,14 @@ class Pessoa(ABC):
     def nome(self, nome):
         self.__nome = nome
     
+    @property
+    def cpf(self):
+        return self.__cpf
+
+    @cpf.setter
+    def cpf(self, cpf):
+        self.__cpf = cpf
+
     @property
     def idade(self):
         return self.__idade

@@ -65,6 +65,7 @@ class Clube:
             if contrato.jogador == jogador:
                 print("INFORMAÇÕES PESSOAIS DE JOGADOR:")
                 print("Nome: " + contrato.jogador.nome)
+                print("CPF: " + str(contrato.jogador.cpf))
                 print("Idade: " + str(contrato.jogador.idade))
                 print("Cidade de nascimento: " + contrato.jogador.cidade.nome)
                 print("Altura (M): " + str(contrato.jogador.altura))
@@ -115,6 +116,7 @@ class Clube:
             return print("Clube não possui técnico!")
         print("INFORMAÇÕES PESSOAIS DE TÉCNICO:")
         print("Nome: " + self.__contrato_tecnico.tecnico.nome)
+        print("CPF: " + str(self.__contrato_tecnico.tecnico.cpf))
         print("Idade: " + str(self.__contrato_tecnico.tecnico.idade))
         print("Cidade de nascimento: " + self.__contrato_tecnico.tecnico.cidade.nome)
         print("Licença: " + self.__contrato_tecnico.tecnico.licenca.tipo)

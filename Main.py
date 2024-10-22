@@ -19,7 +19,7 @@ Sao_Paulo_Ci = Cidade("São Paulo Cidade", Sao_Paulo_Es)
 atacante = Posicao("Atacante")
 
 #instanciando jogador
-jogador = Jogador("Neymar", 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
+jogador = Jogador("Neymar", 1, 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
 
 #instanciando clube
 santos = Clube("Santos", Sao_Paulo_Ci)
@@ -31,7 +31,7 @@ santos.contratar_jogador(jogador, 1000000, 10000000, True)
 #jogador com maior salario e jogador com maior multa
 print(santos.jogador_maior_salario())
 print(santos.jogador_maior_multa())
-pele = Jogador("Pelé", 80, Sao_Paulo_Ci, atacante, 1.75, 68, True)
+pele = Jogador("Pelé",2, 80, Sao_Paulo_Ci, atacante, 1.75, 68, True)
 santos.contratar_jogador(pele, 100000000000, 1000000000000, True)
 print(santos.jogador_maior_salario())
 print(santos.jogador_maior_multa())
@@ -66,7 +66,7 @@ print("----------------------------------------------------------------")
 
 #criação do tecnico
 licenca = Licenca("Licença A")
-tecnico = Tecnico("Tite", 59, Sao_Paulo_Ci, licenca)
+tecnico = Tecnico("Tite",3, 59, Sao_Paulo_Ci, licenca)
 
 #contrato de tecnico
 santos.contratar_tecnico(tecnico, 5000, 10000)
@@ -118,7 +118,7 @@ santos.entrar_campeonato(campeonato2)
 santos.listar_cameponatos()
 
 #Relatório do clube
-bruno = Jogador("Bruno", 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
+bruno = Jogador("Bruno",4, 29, Sao_Paulo_Ci, atacante, 1.75, 68, True)
 santos.contratar_jogador(bruno, 10, 10, False)
 santos.relatorio()
 santos.demitir_jogador(bruno)
