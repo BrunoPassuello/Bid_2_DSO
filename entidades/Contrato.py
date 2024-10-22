@@ -1,4 +1,4 @@
-from Clube import Clube
+from entidades.Clube import Clube
 class Contrato:
     def __init__(self, clube : Clube, salario : float, multa_rescisoria : float):
         self.clube = clube

@@ -1,14 +1,14 @@
-from Licenca import Licenca
-from Pais import Pais
-from Estado import Estado
-from Cidade import Cidade
-from Clube import Clube
-from Jogador import Jogador
-from ContratoJogador import ContratoJogador
-from Pais import Pais
-from Posicao import Posicao
-from Tecnico import Tecnico
-from Campeonato import Campeonato
+from entidade.Licenca import Licenca
+from entidade.Pais import Pais
+from entidade.Estado import Estado
+from entidade.Cidade import Cidade
+from entidade.Clube import Clube
+from entidade.Jogador import Jogador
+from entidade.ContratoJogador import ContratoJogador
+from entidade.Pais import Pais
+from entidade.Posicao import Posicao
+from entidade.Tecnico import Tecnico
+from entidade.Campeonato import Campeonato
 
 #instanciando pais, estado e cidade
 Brasil = Pais("Brasil")

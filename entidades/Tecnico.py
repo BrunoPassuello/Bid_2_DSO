@@ -1,5 +1,5 @@
-from Licenca import Licenca
-from Pessoa import Pessoa
+from entidades.Licenca import Licenca
+from entidades.Pessoa import Pessoa
 class Tecnico(Pessoa):
     def __init__(self, nome : str, cpf : int, idade : int, cidade, licenca : Licenca):
         super().__init__(nome, cpf, idade, cidade)

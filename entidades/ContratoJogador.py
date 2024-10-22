@@ -1,6 +1,6 @@
-from Clube import Clube
-from Jogador import Jogador
-from Contrato import Contrato
+from entidades.Clube import Clube
+from entidades.Jogador import Jogador
+from entidades.Contrato import Contrato
 
 class ContratoJogador (Contrato):
     def __init__(self, clube : Clube, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):

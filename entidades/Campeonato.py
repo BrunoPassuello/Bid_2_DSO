@@ -1,4 +1,4 @@
-from Regra import Regra
+from entidades.Regra import Regra
 
 class Campeonato:
     def __init__(self, nome : str, premiacao : float, numero_times : int, numero_estrangeiros : int, numero_jogadores : int):

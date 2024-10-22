@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Cidade import Cidade
+from entidades.Cidade import Cidade
 class Pessoa(ABC):
     
     @abstractmethod
