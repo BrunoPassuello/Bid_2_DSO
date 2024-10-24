@@ -5,14 +5,14 @@ class TelaTecnico():
 
         Escolha uma Opção:
 
-            * Cadastrar Técnico - 1
-            * Alterar Técnico - 2
-            * Listar Técnicos - 3
-            * Excluir Técnicos - 4
-            * Retornar - 0
+        * Cadastrar Técnico - 1
+        * Alterar Técnico - 2
+        * Listar Técnicos - 3
+        * Excluir Técnicos - 4
+        * Retornar - 0
         '''
         print(mensagem)
-        comando = input("Escolha sua opção: ")
+        comando = int(input("Escolha sua opção: "))
         return comando
 
     def tela_cadastro_tecnico(self):
@@ -34,3 +34,26 @@ class TelaTecnico():
                 "idade": idade,
                 "cidade":cidade,
                 "licenca": licenca}
+    
+    def seleciona_tecnico(self):
+        mensagem = '''
+        ----------SELECIONAR TÉCNICO---------
+
+        Digite o CPF do técnico:
+        '''
+        print(mensagem)
+        cpf = input("CPF: ")
+        return cpf
+    
+    def mostra_tecnico(self, lista_tecnicos):
+        mensagem = '''
+        ----------TÉCNICOS CADASTRADOS---------
+
+        '''
+        print(mensagem)
+        for tecnico in lista_tecnicos:
+            print("Nome: ", tecnico.nome)
+            print("CPF: ", tecnico.cpf)
+            print("Idade: ", tecnico.idade)
+            print("Cidade: ", tecnico.cidade)
+            print("Licença: ", tecnico.licenca)
