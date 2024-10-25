@@ -1,13 +1,14 @@
 from entidades.Posicao import Posicao
 from entidades.Pessoa import Pessoa
 from entidades.Cidade import Cidade
+
 class Jogador(Pessoa):
-    def __init__(self, nome : str, cpf : int, idade : int, cidade : Cidade, posicao : Posicao, altura : float, peso : float, estrangeiro : bool):
+    def __init__(self, nome: str, cpf: int, idade: int, cidade: Cidade, posicao: Posicao, altura: float, peso: float, estrangeiro: bool):
         super().__init__(nome, cpf, idade, cidade)
         self.__posicao = posicao
         self.__altura = altura
         self.__peso = peso
-        self.__estrangeiro = estrangeiro
+        self.estrangeiro = estrangeiro  # Use setter to ensure conversion
         self.__contrato = None
     
     @property
@@ -40,7 +41,8 @@ class Jogador(Pessoa):
     
     @estrangeiro.setter
     def estrangeiro(self, estrangeiro):
-        self.__estrangeiro = estrangeiro
+        # CONVERSÃO BOOLEANO
+        self.__estrangeiro = bool(estrangeiro)
         
     @property
     def contrato(self):
