@@ -28,5 +28,5 @@ O sistema permitirá o relatório de qual a maior e menor folha salarial, bem co
 2. Nenhum clube que exceda a quantidade de jogadores estrangeiros permitida será considerado. Desclassificação imediata.
 
 ## Divisão das Funções da Dupla:
-- **Bruno**: Implementação das entidades e da maior parte dos métodos, design/modelagem do UML.
-- **Henrique**: Implementação das verificações e dos testes, documentação do sistema.
+- **Bruno**: Implementação das entidades e da maior parte dos métodos, design/modelagem do UML, das telas e de menor parte dos controladores.
+- **Henrique**: Implementação das verificações e dos testes, documentação do sistema, da maior parte dos controladores.
