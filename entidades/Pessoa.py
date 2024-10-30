@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
-from entidades.Cidade import Cidade
+from entidades.Pais import Pais
 class Pessoa(ABC):
     
     @abstractmethod
-    def __init__(self, nome : str, cpf : int, idade : int, cidade : Cidade):
+    def __init__(self, nome : str, cpf : int, idade : int, pais : Pais):
         self.__nome = nome
         self.__cpf = cpf
         self.__idade = idade
-        self.__cidade = cidade
+        self.__pais = pais
     
     @property
     def nome(self):
@@ -34,10 +34,10 @@ class Pessoa(ABC):
         self.__idade = idade
     
     @property
-    def cidade(self):
-        return self.__cidade
+    def pais(self):
+        return self.__pais
     
-    @cidade.setter
-    def cidade(self, cidade):
-        self.__cidade = cidade
+    @pais.setter
+    def pais(self, pais):
+        self.__pais = pais
     

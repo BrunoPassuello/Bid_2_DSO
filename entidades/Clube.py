@@ -1,12 +1,12 @@
 from entidades.Jogador import Jogador
-from entidades.Cidade import Cidade
+from entidades.Pais import Pais
 from entidades.Tecnico import Tecnico
 from entidades.Campeonato import Campeonato
 class Clube:
-    def __init__(self, nome : str, cidade : Cidade):
+    def __init__(self, nome : str, pais : Pais):
         self.__nome = nome
         self.__jogadores = []
-        self.__cidade = cidade
+        self.__pais = pais
         self.__contrato_tecnico = None
         self.__campeonatos = []
     
@@ -23,12 +23,12 @@ class Clube:
         return self.__jogadores
     
     @property
-    def cidade(self):
-        return self.__cidade
+    def pais(self):
+        return self.__pais
     
-    @cidade.setter
-    def cidade(self, cidade):
-        self.__cidade = cidade
+    @pais.setter
+    def pais(self, pais):
+        self.__pais = pais
         
     @property
     def contrato_tecnico(self):

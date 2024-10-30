@@ -1,5 +1,5 @@
 class TelaJogador():
-    def tela_inicial_tecnico(self):
+    def tela_inicial_jogador(self):
         mensagem = '''
         ----------JOGADOR---------
 
@@ -14,6 +14,7 @@ class TelaJogador():
         print(mensagem)
         comando = int(input("Escolha sua opção: "))
         return comando
+    
     def tela_cadastro_jogador(self):
         mensagem = '''
         ----------CADASTRO JOGADOR---------
@@ -25,7 +26,7 @@ class TelaJogador():
         nome = input("Nome: ")
         cpf = input("CPF: ")
         idade = input("Idade: ")
-        cidade = input("Cidade Natal: ")
+        pais = input("País: ")
         posicao = input("Posição: ")
         peso = input("Peso: ")
         altura = input("Altura: ")
@@ -33,7 +34,7 @@ class TelaJogador():
         return {"nome": nome,
                 "cpf": cpf,
                 "idade": idade,
-                "cidade":cidade,
+                "pais": pais,
                 "posicao": posicao,
                 "peso": peso,
                 "altura": altura,
@@ -50,14 +51,14 @@ class TelaJogador():
     def mostra_jogador(self, lista_jogadores):
         mensagem = '''
         ----------JOGADORES CADASTRADOS---------
-
         '''
         print(mensagem)
         for jogador in lista_jogadores:
+            print("")
             print("Nome: ", jogador.nome)
             print("CPF: ", jogador.cpf)
             print("Idade: ", jogador.idade)
-            print("Cidade: ", jogador.cidade)
+            print("País: ", jogador.pais)
             print("Posição: ", jogador.posicao)
             print("Peso: ", jogador.peso)
             print("Altura: ", jogador.altura)

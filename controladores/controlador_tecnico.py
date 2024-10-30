@@ -19,7 +19,7 @@ class ControladorTecnico:
         dados_tecnico["nome"], 
         dados_tecnico["cpf"],
         dados_tecnico["idade"],
-        dados_tecnico["cidade"],
+        dados_tecnico["pais"],
         dados_tecnico["licenca"])
         self.__tecnicos.append(tecnico)
 
@@ -31,7 +31,7 @@ class ControladorTecnico:
             dados_tecnico = self.__tela_tecnico.tela_cadastro_tecnico()
             tecnico.nome = dados_tecnico["nome"]
             tecnico.idade = dados_tecnico["idade"]
-            tecnico.cidade = dados_tecnico["cidade"]
+            tecnico.pais = dados_tecnico["pais"]
             tecnico.licenca = dados_tecnico["licenca"]
         else:
             print("ATENÇÃO: Técnico não encontrado!")

@@ -1,10 +1,10 @@
 from entidades.Posicao import Posicao
 from entidades.Pessoa import Pessoa
-from entidades.Cidade import Cidade
+from entidades.Pais import Pais
 
 class Jogador(Pessoa):
-    def __init__(self, nome: str, cpf: int, idade: int, cidade: Cidade, posicao: Posicao, altura: float, peso: float, estrangeiro: bool):
-        super().__init__(nome, cpf, idade, cidade)
+    def __init__(self, nome: str, cpf: int, idade: int, pais : Pais, posicao: Posicao, altura: float, peso: float, estrangeiro: bool):
+        super().__init__(nome, cpf, idade, pais)
         self.__posicao = posicao
         self.__altura = altura
         self.__peso = peso

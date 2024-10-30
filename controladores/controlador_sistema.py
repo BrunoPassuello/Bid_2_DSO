@@ -1,11 +1,12 @@
 from controladores.controlador_tecnico import ControladorTecnico
 from telas.tela_sistema import TelaSistema
+from controladores.controlador_jogador import ControladorJogador
 
 class ControladorSistema:
     def __init__(self):
         #self.__controlador_clube = ControladorClube()
         self.__controlador_tecnico = ControladorTecnico(self)
-        #self.__controlador_jogador = ControladorJogador()
+        self.__controlador_jogador = ControladorJogador(self)
         #self.__controlador_campeonato = ControladorCampeonato()
         self.__tela_sistema = TelaSistema()
     
@@ -18,7 +19,7 @@ class ControladorSistema:
 
     def cadastra_jogadores(self):
         # Chama o controlador de Amigos
-        self.__controlador_jogadores.abre_tela()
+        self.__controlador_jogador.abre_tela()
 
     def cadastra_tecnicos(self):
         # Chama o controlador de Emprestimos

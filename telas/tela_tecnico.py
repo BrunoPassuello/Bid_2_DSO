@@ -26,13 +26,13 @@ class TelaTecnico():
         nome = input("Nome: ")
         cpf = input("CPF: ")
         idade = input("Idade: ")
-        cidade = input("Cidade Natal: ")
+        pais = input("País: ")
         licenca = input("Licença: ") 
         #VERIFICAR LICENCA E STR, INT.
         return {"nome": nome,
                 "cpf": cpf,
                 "idade": idade,
-                "cidade":cidade,
+                "pais": pais,
                 "licenca": licenca}
     
     def seleciona_tecnico(self):
@@ -48,12 +48,12 @@ class TelaTecnico():
     def mostra_tecnico(self, lista_tecnicos):
         mensagem = '''
         ----------TÉCNICOS CADASTRADOS---------
-
         '''
         print(mensagem)
         for tecnico in lista_tecnicos:
+            print("")
             print("Nome: ", tecnico.nome)
             print("CPF: ", tecnico.cpf)
             print("Idade: ", tecnico.idade)
-            print("Cidade: ", tecnico.cidade)
+            print("País: ", tecnico.pais)
             print("Licença: ", tecnico.licenca)

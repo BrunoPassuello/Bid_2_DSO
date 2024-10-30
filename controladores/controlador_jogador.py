@@ -22,7 +22,7 @@ class ControladorJogador:
             dados_jogador["nome"], 
             dados_jogador["cpf"],
             dados_jogador["idade"],
-            dados_jogador["cidade"],
+            dados_jogador["pais"],
             dados_jogador["posicao"],
             dados_jogador["peso"],
             dados_jogador["altura"],
@@ -40,7 +40,7 @@ class ControladorJogador:
             
             jogador.nome = dados_jogador["nome"]
             jogador.idade = dados_jogador["idade"]
-            jogador.cidade = dados_jogador["cidade"]
+            jogador.pais = dados_jogador["pais"]
             jogador.posicao = dados_jogador["posicao"]
             jogador.peso = dados_jogador["peso"]
             jogador.altura = dados_jogador["altura"]
