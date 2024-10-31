@@ -141,9 +141,46 @@ class TelaClube():
             print("Nome: ", clube.nome)
             print("País: ", clube.pais)
 
-    def relatorio_clube(self, clube):
+    #CPA DA PRA FAZER DIFERENTE ISSO AQ
+    def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
         mensagem = '''
-        ----------RELATÓRIO DO CLUBE ''' + clube.nome + '''---------
-        Nome: 
-        '''
-    #TERMINAR RELATÓRIO DO CLUBE E O RESTO DOS MÉTODOS DE INFORMAÇÕES
+        ----------RELATÓRIO DO CLUBE ''' + clube.nome + '''---------'''
+        
+        print(mensagem)
+        print("Nome: " + clube.nome)
+        print("Páis: " + clube.pais)
+        if clube.contrato_tecnico is not None:
+            print("Técnico: " + clube.contrato_tecnico.tecnico.nome)
+        else:
+            print("O clube não possui técnico!")
+        if len(lista_contrato_jogadores) >= 1:
+            print("------JOGADORES------")
+            for contrato_jogador in lista_contrato_jogadores:
+                print("")
+                print("Nome: " + contrato_jogador.jogador.nome)
+                print("Salário: " + contrato_jogador.salario)
+                print("Multa Rescisória: " + contrato_jogador.multa_rescisoria)
+        else:
+            print("O clube não possui jogadores!")
+        if len(lista_campeonatos) >= 1:
+            print("------CAMPEONATOS------")
+            for campeonato in lista_campeonatos:
+                print("")
+                print("Nome: " + campeonato.nome)
+                print("Premiação: " + campeonato.premiacao)
+        else:
+            print("O Clube não está participando de nenhum campeonato!")
+    
+    def relatorio_maior_salario(self, jogador):
+        #metodo no controlador procura o maior salario, e manda o jogador pra esse metodo
+        print("Jogador com maior salário: " + jogador.nome)
+    
+    def relatorio_menor_salario(self, jogador):
+        print("Jogador com menor salário: " + jogador.nome)
+
+    def relatorio_maior_multa(self, jogador):
+        print("Jogador com maior multa: " + jogador.nome)
+
+    def relatorio_menor_multa(self, jogador):
+        print("Jogador com menor multa: " + jogador.nome)
+    
