@@ -1,5 +1,6 @@
 from excecoes.cpf_invalido_error import CpfInvalidoError
 from excecoes.salario_invalido_error import SalarioInvalidoError
+from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
 from entidades.contrato_jogador import ContratoJogador
 
 class ControladorContratoJogador:
@@ -17,17 +18,15 @@ class ControladorContratoJogador:
                 return
 
             contrato = ContratoJogador(
-                clube=self.__controlador_sistema.clube,
-                jogador=jogador,
-                salario=dados_contrato["salario"],
+                clube = self.__controlador_sistema.clube,
+                jogador = jogador,
+                salario = dados_contrato["salario"],
                 multa_rescisoria=dados_contrato["multa_rescisoria"],
                 contrato_produtividade=dados_contrato["contrato_produtividade"]
             )
             jogador.contrato = contrato
             self.__tela_contrato_jogador.mostra_mensagem("Contrato criado com sucesso.")
-        except CpfInvalidoError as e:
-            self.__tela_contrato_jogador.mostra_mensagem(str(e))
-        except SalarioInvalidoError as e:
+        except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_jogador.mostra_mensagem(str(e))
 
     def alterar_contrato_jogador(self):
@@ -43,9 +42,7 @@ class ControladorContratoJogador:
             jogador.contrato.multa_rescisoria = dados_contrato["multa_rescisoria"]
             jogador.contrato.contrato_produtividade = dados_contrato["contrato_produtividade"]
             self.__tela_contrato_jogador.mostra_mensagem("Contrato alterado com sucesso.")
-        except CpfInvalidoError as e:
-            self.__tela_contrato_jogador.mostra_mensagem(str(e))
-        except SalarioInvalidoError as e:
+        except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_jogador.mostra_mensagem(str(e))
 
     def demitir_jogador(self):
