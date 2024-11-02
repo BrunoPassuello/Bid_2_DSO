@@ -1,7 +1,7 @@
-from entidades.Jogador import Jogador
-from entidades.Pais import Pais
-from entidades.Tecnico import Tecnico
-from entidades.Campeonato import Campeonato
+from entidades.jogador import Jogador
+from entidades.pais import Pais
+from entidades.tecnico import Tecnico
+from entidades.campeonato import Campeonato
 class Clube:
     def __init__(self, nome : str, pais : Pais):
         self.__nome = nome
@@ -44,7 +44,7 @@ class Clube:
     
         
     def contratar_jogador(self, jogador : Jogador, salario : float, multa_rescisoria : float, contrato_produtividade : bool):
-        from entidades.ContratoJogador import ContratoJogador
+        from entidades.contrato_jogador import ContratoJogador
         if jogador.contrato != None:
             print("Jogador já possui contrato!")
         else:
@@ -94,14 +94,14 @@ class Clube:
         if tecnico.contrato != None:
             return print("Técnico já possui contrato!")
         else:
-            from entidades.ContratoTecnico import ContratoTecnico
+            from entidades.contrato_tecnico import ContratoTecnico
             contrato = ContratoTecnico(self, tecnico, salario, multa_rescisoria)
             tecnico.contrato = contrato
             self.__contrato_tecnico = contrato
             return print("Técnico contratado com sucesso!")
     
     def alterar_contrato_tecnico(self, salario : float, multa_rescisoria : float):
-        from entidades.ContratoTecnico import ContratoTecnico
+        from entidades.contrato_tecnico import ContratoTecnico
         contrato = ContratoTecnico(self, self.__contrato_tecnico.tecnico, salario, multa_rescisoria)
         self.__contrato_tecnico = contrato
         return print("Contrato de técnico alterado com sucesso!")

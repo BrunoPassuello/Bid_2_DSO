@@ -1,4 +1,4 @@
-from entidades.Estado import Estado
+from entidades.estado import Estado
 
 class Cidade:
     def __init__(self, nome : str, estado : Estado):

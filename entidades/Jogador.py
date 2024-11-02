@@ -1,6 +1,6 @@
-from entidades.Posicao import Posicao
-from entidades.Pessoa import Pessoa
-from entidades.Pais import Pais
+from entidades.posicao import Posicao
+from entidades.pessoa import Pessoa
+from entidades.pais import Pais
 
 class Jogador(Pessoa):
     def __init__(self, nome: str, cpf: int, idade: int, pais : Pais, posicao: Posicao, altura: float, peso: float, estrangeiro: bool):

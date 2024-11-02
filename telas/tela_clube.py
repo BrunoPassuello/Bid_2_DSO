@@ -130,7 +130,13 @@ class TelaClube():
         print(mensagem)
         nome = input("Nome: ")
         return nome
-    
+    def clube_nao_cadastrado(self):
+        mensagem = '''
+        ----------CLUBE NÃO CADASTRADO---------
+
+        O clube não está cadastrado no sistema!
+        '''
+        print(mensagem)
     def mostra_clube(self, lista_clubes):
         mensagem = '''
         ----------CLUBES CADASTRADOS---------
