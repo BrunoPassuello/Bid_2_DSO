@@ -1,5 +1,5 @@
 from telas.tela_jogador import TelaJogador
-from entidades.Jogador import Jogador
+from entidades.jogador import Jogador
 
 class ControladorJogador:
     def __init__(self, controlador_sistema):
