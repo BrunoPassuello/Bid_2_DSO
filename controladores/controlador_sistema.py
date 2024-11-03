@@ -1,12 +1,16 @@
 from controladores.controlador_contrato_jogador import ControladorContratoJogador
 from controladores.controlador_tecnico import ControladorTecnico
 from controladores.controlador_jogador import ControladorJogador
+from controlador_campeonato import ControladorCampeonato
+from controlador_clube import ControladorClube
 from telas.tela_sistema import TelaSistema
 
 class ControladorSistema:
     def __init__(self):
         self.__controlador_tecnico = ControladorTecnico(self)
         self.__controlador_jogador = ControladorJogador(self)
+        self.__controlador_clube = ControladorClube(self)
+        self.__controlador_campeonato = ControladorCampeonato(self)
         self.__controlador_contrato_jogador = ControladorContratoJogador(self)
         self.__tela_sistema = TelaSistema()
 
@@ -14,8 +18,23 @@ class ControladorSistema:
         """Método para iniciar o sistema e abrir a tela principal."""
         self.abre_tela()  
 
+    def cadastra_jogadores(self):
+        self.__controlador_jogador.abre_tela()
+
+    def cadastra_tecnicos(self):
+        self.__controlador_tecnico.abre_tela()
+
+    def cadastra_clubes(self):
+        self.__controlador_clube.abre_tela() 
+
+    def cadastra_campeonato(self):
+        self.__controlador_campeonato.abre_tela()
+
     def cadastra_contratos(self):
         self.__controlador_contrato_jogador.abre_tela()
+
+    def encerra_sistema(self):
+        exit(0)
 
     def abre_tela(self):
         lista_opcoes = {
