@@ -4,6 +4,8 @@ from entidades.jogador import Jogador
 from entidades.contrato_jogador import ContratoJogador
 from entidades.contrato_tecnico import ContratoTecnico
 from telas.tela_clube import TelaClube
+from telas.tela_contrato_jogador import TelaContratoJogador
+from telas.tela_contrato_tecnico import TelaContratoTecnico
 
 class ControladorClube:
     def __init__(self, controlador_sistema):
@@ -78,6 +80,10 @@ class ControladorClube:
         opcao = self.__tela_clube.tela_clube_jogador()
         if opcao == 1:
             self.__tela_clube.mostra_clube(self.__clube_selecionado.jogadores)
+        elif opcao == 2:
+            self.__controlador_sistema.tela_contrato_jogador(self.__clube_selecionado)
+        elif opcao == 0:
+            self.__tela_clube.tela_clube_selecionado()
 
     def gerenciar_tecnico(self):
         opcao = self.__tela_clube.tela_clube_tecnico()

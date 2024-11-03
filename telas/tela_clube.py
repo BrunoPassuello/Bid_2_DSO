@@ -79,6 +79,7 @@ class TelaClube():
         Escolha uma Opção:
 
         * Relatório do Técnico - 1
+        * Contratar Técnico - 2
         * Retornar - 0
         '''
         print(mensagem)
@@ -92,7 +93,8 @@ class TelaClube():
         * OPERAÇÃO DE JOGADORES *
 
         Escolha uma Opção:
-        * Listar Jogadores - 1  
+        * Listar Jogadores - 1
+        * Contratar Jogador - 2
         * Retornar - 0
         '''
         print(mensagem)
