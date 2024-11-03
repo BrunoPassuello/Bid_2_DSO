@@ -78,10 +78,7 @@ class TelaClube():
 
         Escolha uma Opção:
 
-        * Contratar Técnico - 1
-        * Alterar Contrato de Técnico - 2
-        * Relatório do Técnico - 3
-        * Demitir Técnico - 4
+        * Relatório do Técnico - 1
         * Retornar - 0
         '''
         print(mensagem)
@@ -95,11 +92,7 @@ class TelaClube():
         * OPERAÇÃO DE JOGADORES *
 
         Escolha uma Opção:
-
-        * Contratar Jogador - 1
-        * Alterar Contrato de Jogador - 2
-        * Listar Jogadores - 3
-        * Demitir Jogador - 4
+        * Listar Jogadores - 1  
         * Retornar - 0
         '''
         print(mensagem)
@@ -115,10 +108,10 @@ class TelaClube():
         '''
         print(mensagem)
         nome = input("Nome: ")
-        pais = input("País")
+        pais = input("Cidade")
         return {
             "nome": nome,
-            "pais": pais
+            "cidade": cidade
         }
 
     def seleciona_clube(self):
@@ -145,7 +138,7 @@ class TelaClube():
         for clube in lista_clubes:
             print("")
             print("Nome: ", clube.nome)
-            print("País: ", clube.pais)
+            print("Cidade: ", clube.cidade)
 
     #CPA DA PRA FAZER DIFERENTE ISSO AQ
     def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
@@ -154,7 +147,7 @@ class TelaClube():
         
         print(mensagem)
         print("Nome: " + clube.nome)
-        print("Páis: " + clube.pais)
+        print("Cidade: " + clube.cidade)
         if clube.contrato_tecnico is not None:
             print("Técnico: " + clube.contrato_tecnico.tecnico.nome)
         else:

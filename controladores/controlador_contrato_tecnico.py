@@ -1,11 +1,11 @@
 from entidades.contrato_tecnico import ContratoTecnico
 from excecoes.cpf_invalido_error import CpfInvalidoError
 from excecoes.salario_invalido_error import SalarioInvalidoError
-from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
+from excecoes.multa_rescisoria_invalida import MultaRescisoriaInvalidaError
 
 class ControladorContratoTecnico:
     def __init__(self, controlador_sistema):
-        self.__controlador_sistema = controlador_sistema
+        self.__controlador_sistema = controlador_sistema 
         self.__tela_contrato_tecnico = TelaContratoTecnico()
 
     def contratar_tecnico(self):
