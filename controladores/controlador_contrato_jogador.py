@@ -30,6 +30,7 @@ class ControladorContratoJogador:
 
     def retornar(self):
         # Lógica para retornar ao menu anterior
+        self.__controlador_sistema.abre_tela()
         print("Retornando ao menu anterior.")
 
     def contratar_jogador(self):

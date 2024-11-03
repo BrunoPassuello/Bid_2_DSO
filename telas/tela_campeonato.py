@@ -18,9 +18,9 @@ class TelaCampeonato():
     
     def tela_cadastro_campeonato(self):
         mensagem = '''
-        ----------CADASTRO TÉCNICO---------
+        ----------CADASTRO CAMPEONATO---------
 
-        Digite as informações do técnico:
+        Digite as informações do campeonato:
 
         '''
         print(mensagem)
@@ -62,3 +62,6 @@ class TelaCampeonato():
             print("Número de times: ", campeonato.numeros_times)
             print("Número de estrangeiros por time: ", campeonato.numeros_estrangeiros)
             print("Número de jogadores por time: ", campeonato.numero_jogadores)
+    
+    def mostra_mensagem(self, mensagem):
+        print(mensagem)
