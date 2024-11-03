@@ -4,11 +4,33 @@ from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaErro
 from entidades.contrato_jogador import ContratoJogador
 from telas.tela_contrato_jogador import TelaContratoJogador
 
-
 class ControladorContratoJogador:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_contrato_jogador = TelaContratoJogador()
+
+    def abre_tela(self):
+        lista_opcoes = {
+            1: self.contratar_jogador,
+            2: self.alterar_contrato_jogador,
+            3: self.demitir_jogador,
+            0: self.retornar
+        }
+
+        continua = True
+        while continua:
+            try:
+                opcao = self.__tela_contrato_jogador.tela_opcoes()
+                if opcao in lista_opcoes:
+                    lista_opcoes[opcao]()  # Chama a função correspondente
+                else:
+                    self.__tela_contrato_jogador.mostra_mensagem("Opção inválida! Tente novamente.")
+            except Exception as e:
+                self.__tela_contrato_jogador.mostra_mensagem(f"Ocorreu um erro: {str(e)}")
+
+    def retornar(self):
+        # Lógica para retornar ao menu anterior
+        print("Retornando ao menu anterior.")
 
     def contratar_jogador(self):
         try:
@@ -20,9 +42,9 @@ class ControladorContratoJogador:
                 return
 
             contrato = ContratoJogador(
-                clube = self.__controlador_sistema.clube,
-                jogador = jogador,
-                salario = dados_contrato["salario"],
+                clube=self.__controlador_sistema.clube,
+                jogador=jogador,
+                salario=dados_contrato["salario"],
                 multa_rescisoria=dados_contrato["multa_rescisoria"],
                 contrato_produtividade=dados_contrato["contrato_produtividade"]
             )

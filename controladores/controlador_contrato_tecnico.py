@@ -67,7 +67,7 @@ class ControladorContratoTecnico:
             1: self.contratar_tecnico,
             2: self.alterar_contrato_tecnico,
             3: self.demitir_tecnico,
-            0: self.__controlador_sistema.abre_tela
+            0: self.__controlador_sistema.abre_tela  # Opção para retornar ao controlador do sistema
         }
 
         while True:
