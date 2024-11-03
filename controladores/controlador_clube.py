@@ -14,7 +14,7 @@ class ControladorClube:
 
     def cadastrar_clube(self):
         dados_clube = self.__tela_clube.tela_cadastra_clube()
-        clube = Clube(dados_clube["nome"], dados_clube["cidade"])
+        clube = Clube(dados_clube["nome"], dados_clube["País"])
         self.__clubes.append(clube)
         self.__tela_clube.mostra_mensagem("Clube cadastrado com sucesso!")
 
@@ -39,7 +39,7 @@ class ControladorClube:
         
         dados = self.__tela_clube.tela_cadastra_clube()
         self.__clube_selecionado.nome = dados["nome"]
-        self.__clube_selecionado.pais = dados["cidade"]
+        self.__clube_selecionado.pais = dados["País"]
         self.__tela_clube.mostra_mensagem("Informações do clube alteradas com sucesso.")
 
     def excluir_clube(self):
@@ -52,7 +52,7 @@ class ControladorClube:
         else:
             self.__tela_clube.clube_nao_cadastrado()
 
-    # Métodos para operar com o clube selecionado
+    # Submenu para operar com o clube selecionado
     def tela_clube_selecionado(self):
         if not self.__clube_selecionado:
             self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
@@ -75,23 +75,66 @@ class ControladorClube:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
     def gerenciar_jogadores(self):
-        # Lógica para gerenciar jogadores (contratação, demissão, listagem)
-        pass
+        opcao = self.__tela_clube.tela_clube_jogador()
+        if opcao == 1:
+            self.__tela_clube.mostra_clube(self.__clube_selecionado.jogadores)
 
     def gerenciar_tecnico(self):
-        # Lógica para gerenciar o técnico (contratação, demissão, relatórios)
-        pass
+        opcao = self.__tela_clube.tela_clube_tecnico()
+        if opcao == 1:
+            if self.__clube_selecionado.contrato_tecnico:
+                self.__tela_clube.mostra_mensagem("Técnico: " + self.__clube_selecionado.contrato_tecnico.tecnico.nome)
+            else:
+                self.__tela_clube.mostra_mensagem("O clube não possui técnico.")
 
     def gerenciar_campeonatos(self):
-        # Lógica para gerenciar campeonatos (entrada, saída, listagem)
-        pass
+        opcoes = {
+            1: self.participar_campeonato,
+            2: self.sair_campeonato,
+            3: self.listar_campeonatos,
+            4: self.campeonato_maior_premiacao,
+            0: self.retornar_menu_clube_selecionado
+        }
 
-    # Método de exibição das informações detalhadas do clube
-    def mostrar_informacoes_clube(self):
-        if not self.__clube_selecionado:
-            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
+        while True:
+            opcao = self.__tela_clube.tela_clube_campeonato()
+            acao = opcoes.get(opcao)
+            if acao:
+                acao()
+            else:
+                self.__tela_clube.mostra_mensagem("Opção inválida.")
+
+    # Operações de campeonatos
+    def participar_campeonato(self):
+        nome_campeonato = self.__tela_clube.seleciona_campeonato()
+        campeonato = self.__controlador_sistema.controlador_campeonato.pega_campeonato_por_nome(nome_campeonato)
+        if campeonato:
+            self.__clube_selecionado.campeonatos.append(campeonato)
+            self.__tela_clube.mostra_mensagem("Clube adicionado ao campeonato.")
+        else:
+            self.__tela_clube.mostra_mensagem("Campeonato não encontrado.")
+
+    def sair_campeonato(self):
+        nome_campeonato = self.__tela_clube.seleciona_campeonato()
+        campeonato = next((c for c in self.__clube_selecionado.campeonatos if c.nome == nome_campeonato), None)
+        if campeonato:
+            self.__clube_selecionado.campeonatos.remove(campeonato)
+            self.__tela_clube.mostra_mensagem("Clube saiu do campeonato.")
+        else:
+            self.__tela_clube.mostra_mensagem("Campeonato não encontrado.")
+
+    def listar_campeonatos(self):
+        self.__tela_clube.mostra_campeonatos(self.__clube_selecionado.campeonatos)
+
+    def campeonato_maior_premiacao(self):
+        if not self.__clube_selecionado.campeonatos:
+            self.__tela_clube.mostra_mensagem("O clube não está em nenhum campeonato.")
             return
-        
+        campeonato = max(self.__clube_selecionado.campeonatos, key=lambda c: c.premiacao)
+        self.__tela_clube.mostra_mensagem(f"Campeonato com maior premiação: {campeonato.nome} - R${campeonato.premiacao}")
+
+    # Submenu de informações detalhadas do clube
+    def mostrar_informacoes_clube(self):
         opcoes = {
             1: self.relatorio_clube,
             2: self.jogador_maior_salario,
@@ -100,7 +143,7 @@ class ControladorClube:
             5: self.jogador_menor_multa,
             0: self.retornar_menu_clube_selecionado
         }
-        
+
         while True:
             opcao = self.__tela_clube.tela_clube_informacoes()
             acao = opcoes.get(opcao)
@@ -109,11 +152,8 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
+    # Funções de relatórios
     def relatorio_clube(self):
-        if not self.__clube_selecionado:
-            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
-            return
-        
         self.__tela_clube.relatorio_clube(
             self.__clube_selecionado,
             self.__clube_selecionado.jogadores,
@@ -121,39 +161,34 @@ class ControladorClube:
         )
 
     def jogador_maior_salario(self):
-        if not self.__clube_selecionado.jogadores:
-            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
-            return
-        
-        maior_salario_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.salario)
-        self.__tela_clube.relatorio_maior_salario(maior_salario_jogador.jogador)
+        maior_salario_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.salario, default=None)
+        if maior_salario_jogador:
+            self.__tela_clube.relatorio_maior_salario(maior_salario_jogador.jogador)
+        else:
+            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
 
     def jogador_menor_salario(self):
-        if not self.__clube_selecionado.jogadores:
-            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
-            return
-        
-        menor_salario_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.salario)
-        self.__tela_clube.relatorio_menor_salario(menor_salario_jogador.jogador)
+        menor_salario_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.salario, default=None)
+        if menor_salario_jogador:
+            self.__tela_clube.relatorio_menor_salario(menor_salario_jogador.jogador)
+        else:
+            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
 
     def jogador_maior_multa(self):
-        if not self.__clube_selecionado.jogadores:
-            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
-            return
-        
-        maior_multa_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria)
-        self.__tela_clube.relatorio_maior_multa(maior_multa_jogador.jogador)
+        maior_multa_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
+        if maior_multa_jogador:
+            self.__tela_clube.relatorio_maior_multa(maior_multa_jogador.jogador)
+        else:
+            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
 
     def jogador_menor_multa(self):
-        if not self.__clube_selecionado.jogadores:
-            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
-            return
-        
-        menor_multa_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria)
-        self.__tela_clube.relatorio_menor_multa(menor_multa_jogador.jogador)
+        menor_multa_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
+        if menor_multa_jogador:
+            self.__tela_clube.relatorio_menor_multa(menor_multa_jogador.jogador)
+        else:
+            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
 
     def retornar_menu_clube_selecionado(self):
-        # Retorna ao menu do clube selecionado
         self.tela_clube_selecionado()
 
     def retornar_menu_principal(self):
