@@ -108,7 +108,7 @@ class TelaClube():
         '''
         print(mensagem)
         nome = input("Nome: ")
-        pais = input("País")
+        pais = input("País: ")
         return {
             "nome": nome,
             "País": pais
@@ -183,3 +183,14 @@ class TelaClube():
     def relatorio_menor_multa(self, jogador):
         print("Jogador com menor multa: " + jogador.nome)
     
+    def mostra_mensagem(self, mensagem):
+        print(mensagem)
+
+    def seleciona_campeonato(self):
+        mensagem = '''
+        ----------SELECIONAR CAMPEONATO---------
+
+        Digite o Nome do campeonato:
+        '''
+        opcao = input("Nome: ")
+        return opcao

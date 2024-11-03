@@ -1,8 +1,8 @@
 from controladores.controlador_contrato_jogador import ControladorContratoJogador
 from controladores.controlador_tecnico import ControladorTecnico
 from controladores.controlador_jogador import ControladorJogador
-from controlador_campeonato import ControladorCampeonato
-from controlador_clube import ControladorClube
+from controladores.controlador_campeonato import ControladorCampeonato
+from controladores.controlador_clube import ControladorClube
 from telas.tela_sistema import TelaSistema
 
 class ControladorSistema:
@@ -27,7 +27,7 @@ class ControladorSistema:
     def cadastra_clubes(self):
         self.__controlador_clube.abre_tela() 
 
-    def cadastra_campeonato(self):
+    def cadastra_campeonatos(self):
         self.__controlador_campeonato.abre_tela()
 
     def cadastra_contratos(self):

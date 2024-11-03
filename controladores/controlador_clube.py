@@ -211,3 +211,4 @@ class ControladorClube:
                 acao()
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
+    
