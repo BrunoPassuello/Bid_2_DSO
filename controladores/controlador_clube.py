@@ -52,10 +52,7 @@ class ControladorClube:
         self.__tela_clube.mostra_clube(self.__clubes)
 
     def alterar_clube(self):
-        if not self.__clube_selecionado:
-            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
-            return
-        
+        self.__clube_selecionado = self.__tela_clube.seleciona_clube()
         dados = self.__tela_clube.tela_cadastra_clube()
         self.__clube_selecionado.nome = dados["nome"]
         self.__clube_selecionado.pais = dados["País"]
