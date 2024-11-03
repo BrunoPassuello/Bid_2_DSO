@@ -1,5 +1,5 @@
 from telas.tela_tecnico import TelaTecnico
-from entidades.Tecnico import Tecnico
+from entidades.tecnico import Tecnico
 
 class ControladorTecnico:
     def __init__(self, controlador_sistema):

@@ -2,6 +2,8 @@ from excecoes.cpf_invalido_error import CpfInvalidoError
 from excecoes.salario_invalido_error import SalarioInvalidoError
 from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
 from entidades.contrato_jogador import ContratoJogador
+from telas.tela_contrato_jogador import TelaContratoJogador
+
 
 class ControladorContratoJogador:
     def __init__(self, controlador_sistema):
