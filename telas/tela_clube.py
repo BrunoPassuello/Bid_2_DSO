@@ -108,10 +108,10 @@ class TelaClube():
         '''
         print(mensagem)
         nome = input("Nome: ")
-        pais = input("Cidade")
+        pais = input("País")
         return {
             "nome": nome,
-            "cidade": cidade
+            "País": pais
         }
 
     def seleciona_clube(self):
@@ -138,7 +138,7 @@ class TelaClube():
         for clube in lista_clubes:
             print("")
             print("Nome: ", clube.nome)
-            print("Cidade: ", clube.cidade)
+            print("País: ", clube.pais)
 
     #CPA DA PRA FAZER DIFERENTE ISSO AQ
     def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
