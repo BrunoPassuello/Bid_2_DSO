@@ -15,7 +15,6 @@ class ControladorJogador:
 
     def incluir_jogador(self):
         dados_jogador = self.__tela_jogador.tela_cadastro_jogador()
-        # to convertendo para booleano ao incluir dados do jogador
         dados_jogador["estrangeiro"] = True if dados_jogador["estrangeiro"].upper() == "S" else False
         
         jogador = Jogador(
@@ -26,8 +25,18 @@ class ControladorJogador:
             dados_jogador["posicao"],
             dados_jogador["peso"],
             dados_jogador["altura"],
-            dados_jogador["estrangeiro"])
+            dados_jogador["estrangeiro"]
+        )
         self.__jogadores.append(jogador)
+        self.__tela_jogador.mostra_mensagem("Jogador cadastrado com sucesso!")
+
+        # Verificação imediata para confirmar se o jogador foi adicionado
+        jogador_cadastrado = self.pega_jogador_por_cpf(jogador.cpf)
+        if jogador_cadastrado:
+            print(f"Jogador {jogador_cadastrado.nome} encontrado após cadastro.")
+        else:
+            print("Erro: Jogador não encontrado após o cadastro.")
+        return jogador
 
     def alterar_jogador(self):
         self.listar_jogador()

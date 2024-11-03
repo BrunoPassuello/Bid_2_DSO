@@ -14,10 +14,19 @@ class ControladorSistema:
         self.__controlador_contrato_jogador = ControladorContratoJogador(self)
         self.__tela_sistema = TelaSistema()
 
+    @property
+    def controlador_contrato_jogador(self):
+        return self.__controlador_contrato_jogador
+    
+    @property
+    def controlador_jogador(self):
+        return self.__controlador_jogador
+
     def inicializa_sistema(self):
         """Método para iniciar o sistema e abrir a tela principal."""
         self.abre_tela()  
 
+    # Funções para abrir as telas de controladores específicos
     def cadastra_jogadores(self):
         self.__controlador_jogador.abre_tela()
 

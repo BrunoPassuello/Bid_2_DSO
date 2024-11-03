@@ -63,3 +63,5 @@ class TelaJogador():
             print("Peso: ", jogador.peso)
             print("Altura: ", jogador.altura)
             print("Estrangeiro: ", jogador.estrangeiro)
+    def mostra_mensagem(self, mensagem):
+        print(mensagem)

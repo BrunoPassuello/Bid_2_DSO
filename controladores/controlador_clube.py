@@ -14,6 +14,23 @@ class ControladorClube:
         self.__tela_clube = TelaClube()
         self.__controlador_sistema = controlador_sistema
 
+from entidades.clube import Clube
+from entidades.tecnico import Tecnico
+from entidades.jogador import Jogador
+from entidades.contrato_jogador import ContratoJogador
+from entidades.contrato_tecnico import ContratoTecnico
+from telas.tela_clube import TelaClube
+from telas.tela_contrato_jogador import TelaContratoJogador
+from telas.tela_contrato_tecnico import TelaContratoTecnico
+
+class ControladorClube:
+    def __init__(self, controlador_sistema):
+        self.__clubes = [] 
+        self.__clube_selecionado = None  
+        self.__tela_clube = TelaClube()
+        self.__controlador_sistema = controlador_sistema
+
+    # Métodos de cadastro, seleção, alteração e exclusão de clubes
     def cadastrar_clube(self):
         dados_clube = self.__tela_clube.tela_cadastra_clube()
         clube = Clube(dados_clube["nome"], dados_clube["País"])
@@ -76,14 +93,16 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
+    # Atualizado: Gerenciamento de jogadores usando o controlador de contratos
     def gerenciar_jogadores(self):
         opcao = self.__tela_clube.tela_clube_jogador()
         if opcao == 1:
             self.__tela_clube.mostra_clube(self.__clube_selecionado.jogadores)
         elif opcao == 2:
-            self.__controlador_sistema.tela_contrato_jogador(self.__clube_selecionado)
+            # Abre a tela do controlador de contratos para a contratação de um jogador
+            self.__controlador_sistema.controlador_contrato_jogador.abre_tela()
         elif opcao == 0:
-            self.retornar_menu_clube_selecionado
+            self.retornar_menu_clube_selecionado()
 
     def gerenciar_tecnico(self):
         opcao = self.__tela_clube.tela_clube_tecnico()
@@ -93,9 +112,10 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("O clube não possui técnico.")
         elif opcao == 2:
-            self.__controlador_sistema.tela_contrato_jogador(self.__clube_selecionado)
+            self.__controlador_sistema.controlador_contrato_tecnico.abre_tela()
         elif opcao == 0:
-            self.retornar_menu_clube_selecionado
+            self.retornar_menu_clube_selecionado()
+
         
 
     def gerenciar_campeonatos(self):
