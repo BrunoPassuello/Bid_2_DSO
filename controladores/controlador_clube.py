@@ -224,7 +224,7 @@ class ControladorClube:
             self.__tela_clube.mostra_mensagem("Erro ao buscar o jogador com maior salário.")
 
     def retornar_menu_clube_selecionado(self):
-        self.tela_clube_selecionado()
+        self.__tela_clube.tela_clube_selecionado()
 
     def retornar_menu_principal(self):
         self.__controlador_sistema.abre_tela()

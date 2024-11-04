@@ -30,12 +30,11 @@ class ControladorJogador:
         self.__jogadores.append(jogador)
         self.__tela_jogador.mostra_mensagem("Jogador cadastrado com sucesso!")
 
-        # Verificação imediata para confirmar se o jogador foi adicionado
         jogador_cadastrado = self.pega_jogador_por_cpf(jogador.cpf)
         if jogador_cadastrado:
-            print(f"Jogador {jogador_cadastrado.nome} encontrado após cadastro.")
+            self.__tela_jogador.mostra_mensagem("Jogador encontrado após o cadastro.")
         else:
-            print("Erro: Jogador não encontrado após o cadastro.")
+            self.__tela_jogador.mostra_mensagem("Jogador não encontrado após o cadastro.")
         return jogador
 
     def alterar_jogador(self):
@@ -55,8 +54,7 @@ class ControladorJogador:
             jogador.altura = dados_jogador["altura"]
             jogador.estrangeiro = dados_jogador["estrangeiro"]
         else:
-            print("ATENÇÃO: Jogador não encontrado!")
-
+            self.__tela_jogador.mostra_mensagem("ATENÇÃO: Jogador não encontrado!")
     def excluir_jogador(self):
         self.listar_jogador()
         cpf = self.__tela_jogador.seleciona_jogador()
@@ -64,8 +62,7 @@ class ControladorJogador:
         if jogador is not None:
             self.__jogadores.remove(jogador)
         else:
-            print("ATENÇÃO: Jogador não encontrado!")
-
+            self.__tela_jogador.mostra_mensagem("ATENÇÃO: Jogador não encontrado!")
     def listar_jogador(self):
         self.__tela_jogador.mostra_jogador(self.__jogadores)
 

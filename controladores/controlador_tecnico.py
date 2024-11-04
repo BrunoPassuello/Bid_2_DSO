@@ -34,8 +34,7 @@ class ControladorTecnico:
             tecnico.pais = dados_tecnico["pais"]
             tecnico.licenca = dados_tecnico["licenca"]
         else:
-            print("ATENÇÃO: Técnico não encontrado!")
-
+            self.__tela_tecnico.mostra_mensagem("ATENÇÃO: Técnico não encontrado!")
     def excluir_tecnico(self):
         self.listar_tecnico()
         cpf = self.__tela_tecnico.seleciona_tecnico()
@@ -43,8 +42,7 @@ class ControladorTecnico:
         if tecnico is not None:
             self.__tecnicos.remove(tecnico)
         else:
-            print("ATENÇÃO: Técnico não encontrado!")
-    
+            self.__tela_tecnico.mostra_mensagem("ATENÇÃO: Técnico não encontrado!")
     def listar_tecnico(self):
         self.__tela_tecnico.mostra_tecnico(self.__tecnicos)
     

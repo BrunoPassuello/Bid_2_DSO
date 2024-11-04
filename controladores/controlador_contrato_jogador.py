@@ -32,9 +32,7 @@ class ControladorContratoJogador:
                 self.__tela_contrato_jogador.mostra_mensagem(f"Ocorreu um erro: {str(e)}")
 
     def retornar(self):
-        # Lógica para retornar ao menu anterior
-        self.__controlador_sistema.abre_tela()
-        print("Retornando ao menu anterior.")
+        self.__controlador_sistema.controlador_clube.retornar_menu_clube_selecionado()
 
     def contratar_jogador(self):
         try:
