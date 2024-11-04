@@ -1,5 +1,7 @@
 from entidades.clube import Clube
-class Contrato:
+from abc import ABC, abstractmethod
+class Contrato(ABC):
+    @abstractmethod
     def __init__(self, clube : Clube, salario : float, multa_rescisoria : float):
         self.clube = clube
         self.salario = salario

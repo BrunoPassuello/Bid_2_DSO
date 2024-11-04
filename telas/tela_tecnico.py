@@ -12,8 +12,16 @@ class TelaTecnico():
         * Retornar - 0
         '''
         print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
+        try:
+            comando = int(input("Escolha sua opção: "))
+            if comando in range(5):
+                return comando
+            else:
+                self.mostra_mensagem("Opção inválida! Por favor, escolha um número entre 0 e 4.")
+                return self.tela_inicial_tecnico()
+        except ValueError:
+            self.mostra_mensagem("Entrada inválida! Por favor, insira um número.")
+            return self.tela_inicial_tecnico()
 
     def tela_cadastro_tecnico(self):
         mensagem = '''
@@ -57,3 +65,6 @@ class TelaTecnico():
             print("Idade: ", tecnico.idade)
             print("País: ", tecnico.pais)
             print("Licença: ", tecnico.licenca.tipo)
+
+    def mostra_mensagem(self, mensagem):
+        print(mensagem)
