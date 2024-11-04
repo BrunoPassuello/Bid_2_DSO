@@ -32,7 +32,7 @@ class ControladorCampeonato:
 
     def alterar_campeonato(self):
         nome_campeonato = self.__tela_campeonato.seleciona_campeonato()
-        campeonato = next((c for c in self.__campeonatos if c.nome == nome_campeonato), None)
+        campeonato = self.pega_campeonato_por_nome(nome_campeonato)
 
         if campeonato:
             dados_campeonato = self.__tela_campeonato.tela_cadastro_campeonato()
@@ -50,7 +50,7 @@ class ControladorCampeonato:
 
     def excluir_campeonato(self):
         nome_campeonato = self.__tela_campeonato.seleciona_campeonato()
-        campeonato = next((c for c in self.__campeonatos if c.nome == nome_campeonato), None)
+        campeonato = self.pega_campeonato_por_nome(nome_campeonato)
 
         if campeonato:
             self.__campeonatos.remove(campeonato)
@@ -63,6 +63,10 @@ class ControladorCampeonato:
             self.__tela_campeonato.mostra_mensagem("Não há campeonatos cadastrados.")
         else:
             self.__tela_campeonato.mostra_campeonato(self.__campeonatos)
+
+    def pega_campeonato_por_nome(self, nome_campeonato):
+        """Retorna o campeonato que possui o nome especificado ou None se não for encontrado."""
+        return next((c for c in self.__campeonatos if c.nome == nome_campeonato), None)
 
     def abre_tela(self):
         opcoes = {

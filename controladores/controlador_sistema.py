@@ -1,3 +1,4 @@
+# ControladorSistema.py
 from controladores.controlador_contrato_jogador import ControladorContratoJogador
 from controladores.controlador_tecnico import ControladorTecnico
 from controladores.controlador_jogador import ControladorJogador
@@ -19,18 +20,23 @@ class ControladorSistema:
     @property
     def controlador_contrato_jogador(self):
         return self.__controlador_contrato_jogador
-    
+
     @property
     def controlador_jogador(self):
         return self.__controlador_jogador
-    
+
     @property
     def controlador_tecnico(self):
         return self.__controlador_tecnico
-    
+
     @property
     def controlador_contrato_tecnico(self):
         return self.__controlador_contrato_tecnico
+    
+    @property
+    def controlador_campeonato(self):
+        return self.__controlador_campeonato
+    
     def pega_clube_selecionado(self):
         return self.__controlador_clube.clube_selecionado
 

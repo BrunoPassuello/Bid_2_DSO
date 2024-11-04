@@ -196,3 +196,12 @@ class TelaClube():
         '''
         opcao = input("Nome: ")
         return opcao
+    def mostra_campeonatos(self, lista_campeonatos):
+        mensagem = '''
+        ----------CAMPEONATOS CADASTRADOS---------
+        '''
+        print(mensagem)
+        for campeonato in lista_campeonatos:
+            print("")
+            print("Nome: ", campeonato.nome)
+            print("Premiação: ", campeonato.premiacao)
