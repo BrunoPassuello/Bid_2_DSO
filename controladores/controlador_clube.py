@@ -14,23 +14,6 @@ class ControladorClube:
         self.__tela_clube = TelaClube()
         self.__controlador_sistema = controlador_sistema
 
-from entidades.clube import Clube
-from entidades.tecnico import Tecnico
-from entidades.jogador import Jogador
-from entidades.contrato_jogador import ContratoJogador
-from entidades.contrato_tecnico import ContratoTecnico
-from telas.tela_clube import TelaClube
-from telas.tela_contrato_jogador import TelaContratoJogador
-from telas.tela_contrato_tecnico import TelaContratoTecnico
-
-class ControladorClube:
-    def __init__(self, controlador_sistema):
-        self.__clubes = [] 
-        self.__clube_selecionado = None  
-        self.__tela_clube = TelaClube()
-        self.__controlador_sistema = controlador_sistema
-
-    # Métodos de cadastro, seleção, alteração e exclusão de clubes
     def cadastrar_clube(self):
         dados_clube = self.__tela_clube.tela_cadastra_clube()
         clube = Clube(dados_clube["nome"], dados_clube["País"])
@@ -52,11 +35,16 @@ class ControladorClube:
         self.__tela_clube.mostra_clube(self.__clubes)
 
     def alterar_clube(self):
-        self.__clube_selecionado = self.__tela_clube.seleciona_clube()
-        dados = self.__tela_clube.tela_cadastra_clube()
-        self.__clube_selecionado.nome = dados["nome"]
-        self.__clube_selecionado.pais = dados["País"]
-        self.__tela_clube.mostra_mensagem("Informações do clube alteradas com sucesso.")
+        nome_clube = self.__tela_clube.seleciona_clube()
+        clube = next((c for c in self.__clubes if c.nome == nome_clube), None)
+        
+        if clube:
+            dados = self.__tela_clube.tela_cadastra_clube()
+            clube.nome = dados["nome"]
+            clube.pais = dados["País"]
+            self.__tela_clube.mostra_mensagem("Informações do clube alteradas com sucesso.")
+        else:
+            self.__tela_clube.clube_nao_cadastrado()
 
     def excluir_clube(self):
         nome_clube = self.__tela_clube.seleciona_clube()
@@ -68,7 +56,6 @@ class ControladorClube:
         else:
             self.__tela_clube.clube_nao_cadastrado()
 
-    # Submenu para operar com o clube selecionado
     def tela_clube_selecionado(self):
         if not self.__clube_selecionado:
             self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
@@ -90,13 +77,11 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
-    # Atualizado: Gerenciamento de jogadores usando o controlador de contratos
     def gerenciar_jogadores(self):
         opcao = self.__tela_clube.tela_clube_jogador()
         if opcao == 1:
             self.__tela_clube.mostra_clube(self.__clube_selecionado.jogadores)
         elif opcao == 2:
-            # Abre a tela do controlador de contratos para a contratação de um jogador
             self.__controlador_sistema.controlador_contrato_jogador.abre_tela()
         elif opcao == 0:
             self.retornar_menu_clube_selecionado()
@@ -112,8 +97,6 @@ class ControladorClube:
             self.__controlador_sistema.controlador_contrato_tecnico.abre_tela()
         elif opcao == 0:
             self.retornar_menu_clube_selecionado()
-
-        
 
     def gerenciar_campeonatos(self):
         opcoes = {
@@ -132,7 +115,6 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
-    # Operações de campeonatos
     def participar_campeonato(self):
         nome_campeonato = self.__tela_clube.seleciona_campeonato()
         campeonato = self.__controlador_sistema.controlador_campeonato.pega_campeonato_por_nome(nome_campeonato)
@@ -161,7 +143,6 @@ class ControladorClube:
         campeonato = max(self.__clube_selecionado.campeonatos, key=lambda c: c.premiacao)
         self.__tela_clube.mostra_mensagem(f"Campeonato com maior premiação: {campeonato.nome} - R${campeonato.premiacao}")
 
-    # Submenu de informações detalhadas do clube
     def mostrar_informacoes_clube(self):
         opcoes = {
             1: self.relatorio_clube,
@@ -180,7 +161,6 @@ class ControladorClube:
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
 
-    # Funções de relatórios
     def relatorio_clube(self):
         self.__tela_clube.relatorio_clube(
             self.__clube_selecionado,
@@ -239,4 +219,3 @@ class ControladorClube:
                 acao()
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
-    
