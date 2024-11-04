@@ -159,8 +159,8 @@ class TelaClube():
             for contrato_jogador in lista_contrato_jogadores:
                 print("")
                 print("Nome: " + contrato_jogador.jogador.nome)
-                print("Salário: " + contrato_jogador.salario)
-                print("Multa Rescisória: " + contrato_jogador.multa_rescisoria)
+                print("Salário: " + str(contrato_jogador.salario))
+                print("Multa Rescisória: " + str(contrato_jogador.multa_rescisoria))
         else:
             print("O clube não possui jogadores!")
         if len(lista_campeonatos) >= 1:

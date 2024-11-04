@@ -180,32 +180,45 @@ class ControladorClube:
         )
 
     def jogador_maior_salario(self):
-        maior_salario_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.salario, default=None)
-        if maior_salario_jogador:
-            self.__tela_clube.relatorio_maior_salario(maior_salario_jogador.jogador)
-        else:
-            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        try:
+            # Verifica o contrato com o maior salário entre os jogadores do clube
+            maior_salario_contrato = max(self.__clube_selecionado.jogadores, key=lambda contrato: contrato.salario, default=None)
+            if maior_salario_contrato:
+                self.__tela_clube.relatorio_maior_salario(maior_salario_contrato.jogador)
+            else:
+                self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        except AttributeError:
+            self.__tela_clube.mostra_mensagem("Erro ao buscar o jogador com maior salário.")
 
     def jogador_menor_salario(self):
-        menor_salario_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.salario, default=None)
-        if menor_salario_jogador:
-            self.__tela_clube.relatorio_menor_salario(menor_salario_jogador.jogador)
-        else:
-            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        try:
+            menor_salario_jogador = min(self.__clube_selecionado.jogadores, key=lambda contrato: contrato.salario, default=None)
+            if menor_salario_jogador:
+                self.__tela_clube.relatorio_menor_salario(menor_salario_jogador.jogador)
+            else:
+                self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        except AttributeError:
+            self.__tela_clube.mostra_mensagem("Erro ao buscar o jogador com menor salário.")
 
     def jogador_maior_multa(self):
-        maior_multa_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
-        if maior_multa_jogador:
-            self.__tela_clube.relatorio_maior_multa(maior_multa_jogador.jogador)
-        else:
-            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        try:
+            maior_multa_jogador = max(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
+            if maior_multa_jogador:
+                self.__tela_clube.relatorio_maior_multa(maior_multa_jogador.jogador)
+            else:
+                self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        except AttributeError:
+            self.__tela_clube.mostra_mensagem("Erro ao buscar o jogador com maior salário.")
 
     def jogador_menor_multa(self):
-        menor_multa_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
-        if menor_multa_jogador:
-            self.__tela_clube.relatorio_menor_multa(menor_multa_jogador.jogador)
-        else:
-            self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        try:
+            menor_multa_jogador = min(self.__clube_selecionado.jogadores, key=lambda c: c.multa_rescisoria, default=None)
+            if menor_multa_jogador:
+                self.__tela_clube.relatorio_menor_multa(menor_multa_jogador.jogador)
+            else:
+                self.__tela_clube.mostra_mensagem("Nenhum jogador encontrado.")
+        except AttributeError:
+            self.__tela_clube.mostra_mensagem("Erro ao buscar o jogador com maior salário.")
 
     def retornar_menu_clube_selecionado(self):
         self.tela_clube_selecionado()
@@ -230,3 +243,7 @@ class ControladorClube:
                 acao()
             else:
                 self.__tela_clube.mostra_mensagem("Opção inválida.")
+
+    @property
+    def clube_selecionado(self):
+        return self.__clube_selecionado

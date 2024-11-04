@@ -44,16 +44,19 @@ class ControladorContratoJogador:
             if jogador is None:
                 self.__tela_contrato_jogador.mostra_mensagem("Erro: Jogador não encontrado para o CPF informado!")
                 return
+            
+            clube = self.__controlador_sistema.pega_clube_selecionado()
 
             contrato = ContratoJogador(
-                clube = self.__controlador_sistema.pega_clube_selecionado,
+                clube = clube,
                 jogador=jogador,
                 salario=dados_contrato["salario"],
                 multa_rescisoria=dados_contrato["multa_rescisoria"],
                 contrato_produtividade=dados_contrato["contrato_produtividade"]
             )
             jogador.contrato = contrato
-            self.__contratos.append(jogador.contrato)
+            clube.jogadores.append(contrato)
+            self.__contratos.append(contrato)
             self.__tela_contrato_jogador.mostra_mensagem("Contrato criado com sucesso.")
         except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_jogador.mostra_mensagem(str(e))
