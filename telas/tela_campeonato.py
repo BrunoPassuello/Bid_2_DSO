@@ -59,9 +59,9 @@ class TelaCampeonato():
             print("")
             print("Nome: ", campeonato.nome)
             print("Premiação: ", campeonato.premiacao)
-            print("Número de times: ", campeonato.numeros_times)
-            print("Número de estrangeiros por time: ", campeonato.numeros_estrangeiros)
-            print("Número de jogadores por time: ", campeonato.numero_jogadores)
+            print("Número de times: ", campeonato.regra.numero_times)
+            print("Número de estrangeiros por time: ", campeonato.regra.numero_estrangeiros)
+            print("Número de jogadores por time: ", campeonato.regra.numero_jogadores)
     
     def mostra_mensagem(self, mensagem):
         print(mensagem)
