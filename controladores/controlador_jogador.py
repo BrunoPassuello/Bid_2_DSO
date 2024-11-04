@@ -1,3 +1,4 @@
+from entidades.posicao import Posicao
 from telas.tela_jogador import TelaJogador
 from entidades.jogador import Jogador
 
@@ -49,7 +50,7 @@ class ControladorJogador:
             jogador.nome = dados_jogador["nome"]
             jogador.idade = dados_jogador["idade"]
             jogador.pais = dados_jogador["pais"]
-            jogador.posicao = dados_jogador["posicao"]
+            jogador.posicao = Posicao(dados_jogador["posicao"])
             jogador.peso = dados_jogador["peso"]
             jogador.altura = dados_jogador["altura"]
             jogador.estrangeiro = dados_jogador["estrangeiro"]
