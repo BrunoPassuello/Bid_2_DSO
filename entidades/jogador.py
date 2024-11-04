@@ -5,7 +5,7 @@ from entidades.pais import Pais
 class Jogador(Pessoa):
     def __init__(self, nome: str, cpf: int, idade: int, pais : Pais, posicao: Posicao, altura: float, peso: float, estrangeiro: bool):
         super().__init__(nome, cpf, idade, pais)
-        self.__posicao = posicao
+        self.__posicao = Posicao(posicao)
         self.__altura = altura
         self.__peso = peso
         self.estrangeiro = estrangeiro  # Use setter to ensure conversion

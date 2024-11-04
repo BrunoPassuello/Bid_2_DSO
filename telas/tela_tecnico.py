@@ -56,4 +56,4 @@ class TelaTecnico():
             print("CPF: ", tecnico.cpf)
             print("Idade: ", tecnico.idade)
             print("País: ", tecnico.pais)
-            print("Licença: ", tecnico.licenca)
+            print("Licença: ", tecnico.licenca.tipo)

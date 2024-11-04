@@ -59,7 +59,7 @@ class TelaJogador():
             print("CPF: ", jogador.cpf)
             print("Idade: ", jogador.idade)
             print("País: ", jogador.pais)
-            print("Posição: ", jogador.posicao)
+            print("Posição: ", jogador.posicao.nome)
             print("Peso: ", jogador.peso)
             print("Altura: ", jogador.altura)
             print("Estrangeiro: ", jogador.estrangeiro)

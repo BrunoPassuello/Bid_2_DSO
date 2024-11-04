@@ -149,7 +149,7 @@ class TelaClube():
         
         print(mensagem)
         print("Nome: " + clube.nome)
-        print("Cidade: " + clube.cidade)
+        print("País: " + clube.pais)
         if clube.contrato_tecnico is not None:
             print("Técnico: " + clube.contrato_tecnico.tecnico.nome)
         else:
