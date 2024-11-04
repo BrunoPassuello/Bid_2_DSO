@@ -31,14 +31,21 @@ class TelaTecnico():
 
         '''
         print(mensagem)
+         
+        
         nome = input("Nome: ")
-        cpf = input("CPF: ")
-        idade = input("Idade: ")
+        try:
+            cpf = int(input("CPF (Somente números): "))
+            idade = int(input("Idade (Somente números): "))
+        except ValueError:
+            print("Entrada inválida! Insira um número.")
+            self.tela_cadastro_tecnico()
+
         pais = input("País: ")
-        licenca = input("Licença: ") 
+        licenca = input("Licença: ")
         #VERIFICAR LICENCA E STR, INT.
         return {"nome": nome,
-                "cpf": cpf,
+                "cpf": str(cpf),
                 "idade": idade,
                 "pais": pais,
                 "licenca": licenca}

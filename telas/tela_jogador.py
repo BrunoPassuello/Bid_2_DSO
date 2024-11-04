@@ -32,15 +32,20 @@ class TelaJogador():
         '''
         print(mensagem)
         nome = input("Nome: ")
-        cpf = input("CPF: ")
-        idade = input("Idade: ")
+        try: 
+            cpf = int(input("CPF: "))
+            idade = int(input("Idade: "))
+            peso = int(input("Peso: "))
+            altura = float(input("Altura: "))
+        except ValueError:
+            print("Entrada inválida! Insira um número.")
+            return self.tela_cadastro_jogador()
+
         pais = input("País: ")
         posicao = input("Posição: ")
-        peso = input("Peso: ")
-        altura = input("Altura: ")
         estrangeiro = input("Estrangeiro (S/N): ")
         return {"nome": nome,
-                "cpf": cpf,
+                "cpf": str(cpf),
                 "idade": idade,
                 "pais": pais,
                 "posicao": posicao,

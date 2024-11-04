@@ -34,10 +34,14 @@ class TelaCampeonato():
         '''
         print(mensagem)
         nome = input("Nome: ")
-        premiacao = input("Premiação: ")
-        numero_times = input("Número de times: ")
-        numero_estrangeiros = input("Número de estrangeiros por time: ")
-        numero_jogadores = input("Número de jogadores por time: ")
+        try:
+            premiacao = int(input("Premiação: "))
+            numero_times = int(input("Número de times: "))
+            numero_estrangeiros = int(input("Número de estrangeiros por time: "))
+            numero_jogadores = int(input("Número de jogadores por time: "))
+        except ValueError:
+            print("Entrada inválida! Insira um número.")
+            self.tela_cadastro_campeonato()
 
         #VERIFICAÇÕES
 
