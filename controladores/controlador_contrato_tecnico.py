@@ -19,7 +19,7 @@ class ControladorContratoTecnico:
                 self.__tela_contrato_tecnico.mostra_mensagem("Técnico não encontrado!")
                 return
 
-            clube = self.__controlador_sistema.pega_clube_selecionado
+            clube = self.__controlador_sistema.pega_clube_selecionado()
 
             contrato = ContratoTecnico(
                 clube = clube,
@@ -29,7 +29,7 @@ class ControladorContratoTecnico:
             )
             tecnico.contrato = contrato
             clube.contrato_tecnico = contrato
-            self.__contratos.append(tecnico.contrato)
+            self.__contratos.append(contrato)
             self.__tela_contrato_tecnico.mostra_mensagem("Contrato criado com sucesso.")
         except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_tecnico.mostra_mensagem(str(e))

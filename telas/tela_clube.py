@@ -163,12 +163,12 @@ class TelaClube():
                 print("Multa Rescisória: " + str(contrato_jogador.multa_rescisoria))
         else:
             print("O clube não possui jogadores!")
-        if len(lista_campeonatos) >= 1:
+        if len(clube.campeonatos) >= 1:
             print("------CAMPEONATOS------")
-            for campeonato in lista_campeonatos:
+            for campeonato in clube.campeonatos:
                 print("")
                 print("Nome: " + campeonato.nome)
-                print("Premiação: " + campeonato.premiacao)
+                print("Premiação: " + str(campeonato.premiacao))
         else:
             print("O Clube não está participando de nenhum campeonato!")
     
@@ -196,12 +196,12 @@ class TelaClube():
         '''
         opcao = input("Nome: ")
         return opcao
-    def mostra_campeonatos(self, lista_campeonatos):
+    def mostra_campeonatos(self, clube_selecionado):
         mensagem = '''
         ----------CAMPEONATOS CADASTRADOS---------
         '''
         print(mensagem)
-        for campeonato in lista_campeonatos:
+        for campeonato in clube_selecionado.campeonatos:
             print("")
             print("Nome: ", campeonato.nome)
             print("Premiação: ", campeonato.premiacao)

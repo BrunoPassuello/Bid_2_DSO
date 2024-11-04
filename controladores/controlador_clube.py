@@ -13,7 +13,7 @@ class ControladorClube:
         self.__clube_selecionado = None  
         self.__tela_clube = TelaClube()
         self.__controlador_sistema = controlador_sistema
-        self.__clube_selecionado_campeonatos = []
+        #self.__clube_selecionado_campeonatos = []
 
     def cadastrar_clube(self):
         dados_clube = self.__tela_clube.tela_cadastra_clube()
@@ -124,8 +124,10 @@ class ControladorClube:
     def participar_campeonato(self):
         nome_campeonato = self.__tela_clube.seleciona_campeonato()
         campeonato = self.__controlador_sistema.controlador_campeonato.pega_campeonato_por_nome(nome_campeonato)
+
         if campeonato:
-            self.__clube_selecionado_campeonatos.append(campeonato)
+            #self.__clube_selecionado_campeonatos.append(campeonato)
+            self.__clube_selecionado.campeonatos.append(campeonato)
             self.__tela_clube.mostra_mensagem("Clube adicionado ao campeonato.")
         else:
             self.__tela_clube.mostra_mensagem("Campeonato não encontrado.")
@@ -134,7 +136,7 @@ class ControladorClube:
         nome_campeonato = self.__tela_clube.seleciona_campeonato()
         campeonato = next((c for c in self.__clube_selecionado.campeonatos if c.nome == nome_campeonato), None)
         if campeonato:
-            self.__clube_selecionado_campeonatos.remove(campeonato)
+            self.__clube_selecionado.campeonatos.remove(campeonato)
             self.__tela_clube.mostra_mensagem("Clube saiu do campeonato.")
         else:
             self.__tela_clube.mostra_mensagem("Campeonato não encontrado.")
@@ -142,7 +144,7 @@ class ControladorClube:
     def listar_campeonatos(self):
         """Exibe os campeonatos do clube atualmente selecionado."""
         if self.__clube_selecionado:
-            self.__tela_clube.mostra_campeonatos(self.__clube_selecionado_campeonatos)
+            self.__tela_clube.mostra_campeonatos(self.__clube_selecionado)
         else:
             self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
 
