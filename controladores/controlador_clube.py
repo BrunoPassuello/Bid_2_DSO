@@ -86,7 +86,7 @@ class ControladorClube:
     def gerenciar_jogadores(self):
         opcao = self.__tela_clube.tela_clube_jogador()
         if opcao == 1:
-            self.__tela_clube.mostra_clube(self.__clube_selecionado.jogadores)
+            self.__tela_clube.mostra_jogadores(self.__clube_selecionado.jogadores)
         elif opcao == 2:
             self.__controlador_sistema.controlador_contrato_jogador.abre_tela()
         elif opcao == 0:
@@ -97,6 +97,7 @@ class ControladorClube:
         if opcao == 1:
             if self.__clube_selecionado.contrato_tecnico:
                 self.__tela_clube.mostra_mensagem("Técnico: " + self.__clube_selecionado.contrato_tecnico.tecnico.nome)
+                self.__tela_clube.mostra_mensagem("Salário: R$" + str(self.__clube_selecionado.contrato_tecnico.salario))
             else:
                 self.__tela_clube.mostra_mensagem("O clube não possui técnico.")
         elif opcao == 2:

@@ -142,6 +142,15 @@ class TelaClube():
             print("Nome: ", clube.nome)
             print("País: ", clube.pais)
 
+    def mostra_jogadores(self, lista_contratos):
+        print("------JOGADORES------")
+        for lista_contrato in lista_contratos:
+            print("")
+            print("Nome: ", lista_contrato.jogador.nome)
+            print("Salário: ", lista_contrato.salario)
+            print("Multa Rescisória: ", lista_contrato.multa_rescisoria)
+            print("Contrato de Produtividade: ", lista_contrato.contrato_produtividade)
+
     #CPA DA PRA FAZER DIFERENTE ISSO AQ
     def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
         mensagem = '''
