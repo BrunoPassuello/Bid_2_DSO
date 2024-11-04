@@ -50,5 +50,5 @@ class TelaContratoTecnico:
         "Nome: ", contrato.tecnico.nome,
         "CPF: ", contrato.tecnico.cpf,
         "Salário: ", contrato.salario,
-        "Licença: ", contrato.tecnico.licenca,
+        "Licença: ", contrato.tecnico.licenca.tipo,
         )
