@@ -36,7 +36,7 @@ class ControladorContratoJogador:
     def contratar_jogador(self):
         try:
             dados_contrato = self.__tela_contrato_jogador.pega_dados_contrato()
-            jogador = self.__controlador_sistema.obter_jogador_por_cpf(dados_contrato["cpf"])
+            jogador = self.__controlador_sistema.controlador_jogador.pega_jogador_por_cpf(dados_contrato["cpf"])
 
             if jogador is None:
                 self.__tela_contrato_jogador.mostra_mensagem("Erro: Jogador não encontrado para o CPF informado!")

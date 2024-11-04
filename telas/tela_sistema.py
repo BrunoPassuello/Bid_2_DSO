@@ -10,7 +10,6 @@ class TelaSistema:
             * Jogador - 2
             * Técnico - 3
             * Campeonato - 4
-            * Contrato - 5
             * Finalizar Programa - 0
             '''
             print(mensagem)

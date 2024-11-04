@@ -18,7 +18,7 @@ class TelaClube():
     
     def tela_clube_selecionado(self): #Verificar se isso ta saindo certo
         mensagem = '''
-        ----------CLUBE---------
+        ----------CLUBE SELECIONADO---------
 
         Escolha uma Área para Operar:
 

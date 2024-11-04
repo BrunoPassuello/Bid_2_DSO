@@ -39,9 +39,6 @@ class ControladorSistema:
     def cadastra_campeonatos(self):
         self.__controlador_campeonato.abre_tela()
 
-    def cadastra_contratos(self):
-        self.__controlador_contrato_jogador.abre_tela()
-
     def encerra_sistema(self):
         exit(0)
 
@@ -51,7 +48,6 @@ class ControladorSistema:
             2: self.cadastra_jogadores,
             3: self.cadastra_tecnicos,
             4: self.cadastra_campeonatos,
-            5: self.cadastra_contratos,
             0: self.encerra_sistema
         }
 
