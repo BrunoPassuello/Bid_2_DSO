@@ -76,8 +76,8 @@ class ControladorContratoJogador:
 
     def demitir_jogador(self):
         try:
-            cpf = int(input("CPF do jogador a ser demitido: "))
-            if not (isinstance(cpf, int) and len(str(cpf)) == 11):
+            cpf = (input("CPF do jogador a ser demitido: "))
+            if not len(cpf) == 11:
                 raise CpfInvalidoError()
             jogador = self.__controlador_sistema.controlador_jogador.pega_jogador_por_cpf(cpf)
 
@@ -85,6 +85,7 @@ class ControladorContratoJogador:
                 self.__tela_contrato_jogador.mostra_mensagem("Jogador ou contrato não encontrado!")
                 return
 
+            self.__contratos.remove(jogador.contrato)
             jogador.contrato = None
             self.__tela_contrato_jogador.mostra_mensagem("Contrato encerrado e jogador demitido.")
         except CpfInvalidoError as e:

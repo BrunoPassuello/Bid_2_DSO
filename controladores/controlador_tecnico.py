@@ -8,7 +8,6 @@ class ControladorTecnico:
         self.__controlador_sistema = controlador_sistema
     
     def pega_tecnico_por_cpf(self, cpf):
-        cpf = int(cpf)
         for tecnico in self.__tecnicos:
             if tecnico.cpf == cpf:
                 return tecnico

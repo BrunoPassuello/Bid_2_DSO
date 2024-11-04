@@ -17,6 +17,11 @@ class ControladorClube:
     def cadastrar_clube(self):
         dados_clube = self.__tela_clube.tela_cadastra_clube()
         clube = Clube(dados_clube["nome"], dados_clube["País"])
+        if len(self.__clubes) > 0:
+            for c in self.__clubes:
+                if c.nome == clube.nome:
+                    self.__tela_clube.mostra_mensagem("Clube já cadastrado!")
+                    return
         self.__clubes.append(clube)
         self.__tela_clube.mostra_mensagem("Clube cadastrado com sucesso!")
 

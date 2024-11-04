@@ -8,6 +8,7 @@ class TelaContratoTecnico:
         print("1: Contratar Técnico")
         print("2: Alterar Contrato do Técnico")
         print("3: Demitir Técnico")
+        print("4: Listar Contratos do Técnico")
         print("0: Retornar")
         try:
             opcao = int(input("Escolha a opção: "))
@@ -44,3 +45,10 @@ class TelaContratoTecnico:
 
     def mostra_mensagem(self, mensagem):
         print(mensagem)
+    def mostra_contrato(self, contrato):
+        print(
+        "Nome: ", contrato.tecnico.nome,
+        "CPF: ", contrato.tecnico.cpf,
+        "Salário: ", contrato.salario,
+        "Licença: ", contrato.tecnico.licenca,
+        )
