@@ -20,7 +20,7 @@ class ControladorContratoTecnico:
                 return
 
             contrato = ContratoTecnico(
-                clube=self.__controlador_sistema.clube,
+                clube = self.__controlador_sistema.pega_clube_selecionado,
                 tecnico=tecnico,
                 salario=dados_contrato["salario"],
                 multa_rescisoria=dados_contrato["multa_rescisoria"]
@@ -48,8 +48,8 @@ class ControladorContratoTecnico:
 
     def demitir_tecnico(self):
         try:
-            cpf = int(input("CPF do técnico a ser demitido: "))
-            if not (isinstance(cpf, int) and len(str(cpf)) == 11):
+            cpf = (input("CPF do técnico a ser demitido: "))
+            if not (len(cpf) == 11):
                 raise CpfInvalidoError()
             tecnico = self.__controlador_sistema.controlador_tecnico.pega_tecnico_por_cpf(cpf)
 
@@ -57,6 +57,7 @@ class ControladorContratoTecnico:
                 self.__tela_contrato_tecnico.mostra_mensagem("Técnico ou contrato não encontrado!")
                 return
 
+            self.__contratos.remove(tecnico.contrato)
             tecnico.contrato = None
             self.__tela_contrato_tecnico.mostra_mensagem("Contrato encerrado e técnico demitido.")
         except CpfInvalidoError as e:
@@ -69,6 +70,7 @@ class ControladorContratoTecnico:
             1: self.contratar_tecnico,
             2: self.alterar_contrato_tecnico,
             3: self.demitir_tecnico,
+            4: self.listar_contratos,
             0: self.__controlador_sistema.abre_tela  # Opção para retornar ao controlador do sistema
         }
 
@@ -79,3 +81,10 @@ class ControladorContratoTecnico:
                 funcao_escolhida()
             else:
                 self.__tela_contrato_tecnico.mostra_mensagem("Opção inválida.")
+    def listar_contratos(self):
+        if len(self.__contratos) == 0:
+            self.__tela_contrato_tecnico.mostra_mensagem("Nenhum contrato de técnico registrado.")
+            return
+
+        for contrato in self.__contratos:
+            self.__tela_contrato_tecnico.mostra_contrato(contrato)
