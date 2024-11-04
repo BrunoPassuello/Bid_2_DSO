@@ -2,6 +2,7 @@ from controladores.controlador_contrato_jogador import ControladorContratoJogado
 from controladores.controlador_tecnico import ControladorTecnico
 from controladores.controlador_jogador import ControladorJogador
 from controladores.controlador_campeonato import ControladorCampeonato
+from controladores.controlador_contrato_tecnico import ControladorContratoTecnico
 from controladores.controlador_clube import ControladorClube
 from telas.tela_sistema import TelaSistema
 
@@ -12,6 +13,7 @@ class ControladorSistema:
         self.__controlador_clube = ControladorClube(self)
         self.__controlador_campeonato = ControladorCampeonato(self)
         self.__controlador_contrato_jogador = ControladorContratoJogador(self)
+        self.__controlador_contrato_tecnico = ControladorContratoTecnico(self)
         self.__tela_sistema = TelaSistema()
 
     @property
@@ -21,6 +23,16 @@ class ControladorSistema:
     @property
     def controlador_jogador(self):
         return self.__controlador_jogador
+    
+    @property
+    def controlador_tecnico(self):
+        return self.__controlador_tecnico
+    
+    @property
+    def controlador_contrato_tecnico(self):
+        return self.__controlador_contrato_tecnico
+    def pega_clube_selecionado(self):
+        return self.__controlador_clube.clube_selecionado
 
     def inicializa_sistema(self):
         """Método para iniciar o sistema e abrir a tela principal."""

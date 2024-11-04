@@ -8,6 +8,7 @@ class TelaContratoJogador:
         print("1: Contratar Jogador")
         print("2: Alterar Contrato de Jogador")
         print("3: Demitir Jogador")
+        print("4: Listar Contratos de Jogador")
         print("0: Retornar")
         try:
             opcao = int(input("Escolha a opção: "))
@@ -42,7 +43,7 @@ class TelaContratoJogador:
         contrato_produtividade = input("Contrato de produtividade (S/N): ").upper() == "S"
         
         return {
-            "cpf": int(cpf),
+            "cpf": cpf,
             "salario": salario,
             "multa_rescisoria": multa_rescisoria,
             "contrato_produtividade": contrato_produtividade
@@ -50,3 +51,11 @@ class TelaContratoJogador:
 
     def mostra_mensagem(self, mensagem):
         print(mensagem)
+    def mostra_contrato(self, contrato):
+        print(
+            "Nome: ", contrato.jogador.nome,
+            "CPF: ", contrato.jogador.cpf,
+            "Salário: ", contrato.salario,
+            "Multa Rescisória: ", contrato.multa_rescisoria,
+            "Contrato de Produtividade: ", contrato.contrato_produtividade
+        )

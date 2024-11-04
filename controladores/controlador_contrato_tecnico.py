@@ -8,6 +8,7 @@ class ControladorContratoTecnico:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema 
         self.__tela_contrato_tecnico = TelaContratoTecnico()
+        self.__contratos = []
 
     def contratar_tecnico(self):
         try:
@@ -25,6 +26,7 @@ class ControladorContratoTecnico:
                 multa_rescisoria=dados_contrato["multa_rescisoria"]
             )
             tecnico.contrato = contrato
+            self.__contratos.append(tecnico.contrato)
             self.__tela_contrato_tecnico.mostra_mensagem("Contrato criado com sucesso.")
         except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_tecnico.mostra_mensagem(str(e))

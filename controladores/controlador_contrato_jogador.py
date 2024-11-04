@@ -4,16 +4,19 @@ from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaErro
 from entidades.contrato_jogador import ContratoJogador
 from telas.tela_contrato_jogador import TelaContratoJogador
 
+
 class ControladorContratoJogador:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_contrato_jogador = TelaContratoJogador()
+        self.__contratos = []
 
     def abre_tela(self):
         lista_opcoes = {
             1: self.contratar_jogador,
             2: self.alterar_contrato_jogador,
             3: self.demitir_jogador,
+            4: self.listar_contratos,
             0: self.retornar
         }
 
@@ -43,13 +46,14 @@ class ControladorContratoJogador:
                 return
 
             contrato = ContratoJogador(
-                clube=self.__controlador_sistema.clube,
+                clube = self.__controlador_sistema.pega_clube_selecionado,
                 jogador=jogador,
                 salario=dados_contrato["salario"],
                 multa_rescisoria=dados_contrato["multa_rescisoria"],
                 contrato_produtividade=dados_contrato["contrato_produtividade"]
             )
             jogador.contrato = contrato
+            self.__contratos.append(jogador.contrato)
             self.__tela_contrato_jogador.mostra_mensagem("Contrato criado com sucesso.")
         except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
             self.__tela_contrato_jogador.mostra_mensagem(str(e))
@@ -87,3 +91,10 @@ class ControladorContratoJogador:
             self.__tela_contrato_jogador.mostra_mensagem(str(e))
         except ValueError:
             self.__tela_contrato_jogador.mostra_mensagem("Erro: CPF inválido.")
+    def listar_contratos(self):
+        if len(self.__contratos) == 0:
+            self.__tela_contrato_jogador.mostra_mensagem("Nenhum contrato cadastrado.")
+            return
+        else:
+            for contrato in self.__contratos:
+                self.__tela_contrato_jogador.mostra_contrato(contrato)

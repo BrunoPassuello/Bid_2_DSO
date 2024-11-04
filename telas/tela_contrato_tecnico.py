@@ -37,7 +37,7 @@ class TelaContratoTecnico:
             raise MultaRescisoriaInvalidaError("Multa rescisória inválida. Insira um número.")
 
         return {
-            "cpf": int(cpf),
+            "cpf": cpf,
             "salario": salario,
             "multa_rescisoria": multa_rescisoria
         }
