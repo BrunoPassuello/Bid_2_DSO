@@ -90,7 +90,7 @@ class ControladorClube:
         elif opcao == 2:
             self.__controlador_sistema.controlador_contrato_jogador.abre_tela()
         elif opcao == 0:
-            self.retornar_menu_clube_selecionado()
+            self.retornar_menu_clube_selecionado
 
     def gerenciar_tecnico(self):
         opcao = self.__tela_clube.tela_clube_tecnico()
@@ -102,7 +102,7 @@ class ControladorClube:
         elif opcao == 2:
             self.__controlador_sistema.controlador_contrato_tecnico.abre_tela()
         elif opcao == 0:
-            self.retornar_menu_clube_selecionado()
+            self.retornar_menu_clube_selecionado
 
     def gerenciar_campeonatos(self):
         opcoes = {
