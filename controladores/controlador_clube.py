@@ -111,7 +111,7 @@ class ControladorClube:
             2: self.sair_campeonato,
             3: self.listar_campeonatos,
             4: self.campeonato_maior_premiacao,
-            0: self.retornar_menu_clube_selecionado
+            0: self.__controlador_sistema.abre_tela()
         }
 
         while True:
