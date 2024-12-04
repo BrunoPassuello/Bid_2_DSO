@@ -1,80 +1,90 @@
-class TelaJogador():
+import streamlit as st
+from entidades.posicao import Posicao
+
+
+class TelaJogador:
     def tela_inicial_jogador(self):
-        mensagem = '''
-        ----------JOGADOR---------
+        st.title("Gerenciamento de Jogadores")
 
-        Escolha uma Opção:
+        with st.sidebar:
+            st.title("Menu")
+            if st.button("Cadastrar Jogador", key="jog_btn_cadastrar"):
+                return 1
+            if st.button("Alterar Jogador", key="jog_btn_alterar"):
+                return 2
+            if st.button("Listar Jogadores", key="jog_btn_listar"):
+                return 3
+            if st.button("Excluir Jogador", key="jog_btn_excluir"):
+                return 4
+            if st.button("Retornar", key="jog_btn_retornar"):
+                return 0
+        return None
 
-        * Cadastrar Jogador - 1
-        * Alterar Jogador - 2
-        * Listar Jogadores - 3
-        * Excluir Jogadores - 4
-        * Retornar - 0
-        '''
-        print(mensagem)
-        try:
-            comando = int(input("Escolha sua opção: "))
-            if comando in range(5):
-                return comando
-            else:
-                self.mostra_mensagem("Opção inválida! Por favor, escolha um número entre 0 e 4.")
-                return self.tela_inicial_jogador()
-        except ValueError:
-            self.mostra_mensagem("Entrada inválida! Por favor, insira um número.")
-            return self.tela_inicial_jogador()
-    
     def tela_cadastro_jogador(self):
-        mensagem = '''
-        ----------CADASTRO JOGADOR---------
+        st.header("Cadastro de Jogador")
 
-        Digite as informações do jogador:
+        nome = st.text_input("Nome", key="jog_nome")
+        cpf = st.text_input("CPF (somente números)",
+                            key="jog_cpf", max_chars=11)
+        idade = st.number_input("Idade", min_value=16,
+                                max_value=50, step=1, key="jog_idade")
+        peso = st.number_input("Peso (kg)", min_value=50,
+                               max_value=150, step=1, key="jog_peso")
+        altura = st.number_input(
+            "Altura (m)", min_value=1.50, max_value=2.20, step=0.01, key="jog_altura")
+        pais = st.text_input("País", key="jog_pais")
+        posicao = st.selectbox("Posição",
+                               ["Goleiro", "Zagueiro", "Lateral",
+                                   "Volante", "Meio-Campo", "Atacante"],
+                               key="jog_posicao")
+        estrangeiro = st.checkbox("É estrangeiro?", key="jog_estrangeiro")
 
-        '''
-        print(mensagem)
-        nome = input("Nome: ")
-        try: 
-            cpf = int(input("CPF: "))
-            idade = int(input("Idade: "))
-            peso = int(input("Peso: "))
-            altura = float(input("Altura: "))
-        except ValueError:
-            print("Entrada inválida! Insira um número.")
-            return self.tela_cadastro_jogador()
+        if st.button("Confirmar Cadastro", key="jog_btn_confirmar"):
+            if not all([nome, cpf, pais, posicao]):
+                st.error("Todos os campos são obrigatórios!")
+                return None
 
-        pais = input("País: ")
-        posicao = input("Posição: ")
-        estrangeiro = input("Estrangeiro (S/N): ")
-        return {"nome": nome,
-                "cpf": str(cpf),
+            if not cpf.isdigit() or len(cpf) != 11:
+                st.error("CPF deve conter 11 dígitos numéricos!")
+                return None
+
+            return {
+                "nome": nome,
+                "cpf": cpf,
                 "idade": idade,
                 "pais": pais,
                 "posicao": posicao,
                 "peso": peso,
                 "altura": altura,
-                "estrangeiro": estrangeiro}
-    def seleciona_jogador(self):
-        mensagem = '''
-        ----------SELECIONAR JOGADOR---------
+                "estrangeiro": "S" if estrangeiro else "N"
+            }
+        return None
 
-        Digite o CPF do jogador:
-        '''
-        print(mensagem)
-        cpf = input("CPF: ")
-        return cpf
+    def seleciona_jogador(self):
+        st.subheader("Selecionar Jogador")
+        cpf = st.text_input("CPF do Jogador:",
+                            key="jog_select_cpf", max_chars=11)
+        if st.button("Buscar", key="jog_btn_buscar"):
+            if not cpf.isdigit() or len(cpf) != 11:
+                st.error("CPF deve conter 11 dígitos numéricos!")
+                return None
+            return cpf
+        return None
+
     def mostra_jogador(self, lista_jogadores):
-        mensagem = '''
-        ----------JOGADORES CADASTRADOS---------
-        '''
-        print(mensagem)
+        st.header("Jogadores Cadastrados")
+
         for jogador in lista_jogadores:
-            print("")
-            print("Nome: ", jogador.nome)
-            print("CPF: ", jogador.cpf)
-            print("Idade: ", jogador.idade)
-            print("País: ", jogador.pais)
-            print("Posição: ", jogador.posicao.nome)
-            print("Peso: ", jogador.peso)
-            print("Altura: ", jogador.altura)
-            print("Estrangeiro: ", jogador.estrangeiro)
+            with st.expander(f"Jogador: {jogador.nome}"):
+                st.write(f"**CPF:** {jogador.cpf}")
+                st.write(f"**Idade:** {jogador.idade} anos")
+                st.write(f"**País:** {jogador.pais}")
+                st.write(f"**Posição:** {jogador.posicao.nome}")
+                st.write(f"**Peso:** {jogador.peso} kg")
+                st.write(f"**Altura:** {jogador.altura:.2f} m")
+                st.write(
+                    f"**Estrangeiro:** {'Sim' if jogador.estrangeiro else 'Não'}")
+                st.divider()
+
     def mostra_mensagem(self, mensagem):
-        print(mensagem)
+        st.warning(mensagem)

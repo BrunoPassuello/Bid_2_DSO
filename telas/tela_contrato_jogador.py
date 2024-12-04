@@ -1,61 +1,147 @@
-from excecoes.cpf_invalido_error import CpfInvalidoError
-from excecoes.salario_invalido_error import SalarioInvalidoError
-from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
+import streamlit as st
+from entidades.contrato_jogador import ContratoJogador
+
 
 class TelaContratoJogador:
-    def tela_opcoes(self):
-        print("------ Menu Contrato do Jogador ------")
-        print("1: Contratar Jogador")
-        print("2: Alterar Contrato de Jogador")
-        print("3: Demitir Jogador")
-        print("4: Listar Contratos de Jogador")
-        print("0: Retornar")
-        try:
-            opcao = int(input("Escolha a opção: "))
-            return opcao
-        except ValueError:
-            print("Opção inválida! Digite um número.")
-            return self.tela_opcoes()
+    def tela_inicial_contrato_jogador(self):
+        if st.session_state.tela_atual != 'contrato_jogador':
+            return None
+
+        # Limpa a tela principal
+        st.empty()
+
+        # Título centralizado
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.title("Gerenciamento de Contratos de Jogadores")
+
+        # Menu lateral organizado
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
+
+            menu_items = {
+                "Contratar Jogador": "contratar",
+                "Alterar Contrato": "alterar",
+                "Demitir Jogador": "demitir",
+                "Listar Contratos": "listar",
+                "Retornar": "retornar"
+            }
+
+            for label, value in menu_items.items():
+                if st.button(label, key=f"contrato_j_btn_{value}", use_container_width=True):
+                    if value == "retornar":
+                        st.session_state.tela_atual = 'clube'
+                        st.session_state.sub_tela = None
+                        st.rerun()
+                        return 0
+                    st.session_state.sub_tela = value
+                    return menu_items[label]
+        return None
 
     def pega_dados_contrato(self):
-        print("---- Dados do Contrato ----")
-        
-#como o sistema é hipotético vou fazer uma validação simples de cpf, pensei em usar aquela lib mas não sei se pode
-        cpf = input("CPF do jogador (somente números): ")
-        if not cpf.isdigit() or len(cpf) != 11:
-            raise CpfInvalidoError()
-        
-# validando o salário
-        try:
-            salario = float(input("Salário do jogador: "))
-            if salario <= 0:
-                raise SalarioInvalidoError()
-        except ValueError:
-            raise SalarioInvalidoError("Salário inválido. Insira um número.")
-# Aqui to só fazendo a verificação da multa rescisória, mas o contrato de produtividade não precisa de verificação
-        try:
-            multa_rescisoria = float(input("Multa rescisória: "))
-            if multa_rescisoria < 0:
-                raise MultaRescisoriaInvalidaError()
-        except ValueError:
-            raise MultaRescisoriaInvalidaError("Multa rescisória inválida. Insira um número.")
+        if st.session_state.sub_tela != 'contratar':
+            return None
 
-        contrato_produtividade = input("Contrato de produtividade (S/N): ").upper() == "S"
-        
-        return {
-            "cpf": cpf,
-            "salario": salario,
-            "multa_rescisoria": multa_rescisoria,
-            "contrato_produtividade": contrato_produtividade
-        }
+        st.header("Dados do Contrato")
+
+        with st.form(key="contrato_jogador"):
+            col1, col2 = st.columns(2)
+            with col1:
+                cpf = st.text_input(
+                    "CPF do jogador (somente números)", key="contrato_j_cpf", max_chars=11)
+                salario = st.number_input("Salário do jogador (R$)",
+                                          min_value=0.0,
+                                          step=1000.0,
+                                          format="%.2f",
+                                          key="contrato_j_salario")
+            with col2:
+                multa_rescisoria = st.number_input("Multa Rescisória (R$)",
+                                                   min_value=0.0,
+                                                   step=10000.0,
+                                                   format="%.2f",
+                                                   key="contrato_j_multa")
+                contrato_produtividade = st.checkbox("Contrato com Produtividade",
+                                                     key="contrato_j_produtividade")
+
+            submitted = st.form_submit_button(
+                "Confirmar Contrato", use_container_width=True)
+
+            if submitted:
+                if not cpf or not cpf.isdigit() or len(cpf) != 11:
+                    st.error("CPF deve conter 11 dígitos numéricos!")
+                    return None
+                if salario <= 0:
+                    st.error("Salário deve ser maior que zero!")
+                    return None
+                if multa_rescisoria < 0:
+                    st.error("Multa rescisória não pode ser negativa!")
+                    return None
+
+                return {
+                    "cpf": cpf,
+                    "salario": salario,
+                    "multa_rescisoria": multa_rescisoria,
+                    "contrato_produtividade": contrato_produtividade
+                }
+        return None
+
+    def mostra_contrato(self, contrato):
+        if st.session_state.sub_tela != 'listar':
+            return None
+
+        with st.expander(f"Contrato de {contrato.jogador.nome}", expanded=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("**CPF:**", contrato.jogador.cpf)
+                st.write("**Salário:** R$", f"{contrato.salario:,.2f}")
+            with col2:
+                st.write("**Multa Rescisória:** R$",
+                         f"{contrato.multa_rescisoria:,.2f}")
+                st.write("**Contrato com Produtividade:**",
+                         'Sim' if contrato.contrato_produtividade else 'Não')
+            st.divider()
+
+    def seleciona_contrato(self):
+        if st.session_state.sub_tela not in ['alterar', 'demitir']:
+            return None
+
+        st.subheader("Selecionar Contrato")
+
+        with st.form(key="seleciona_contrato_jogador"):
+            cpf = st.text_input("CPF do Jogador:",
+                                key="contrato_j_select_cpf", max_chars=11)
+            submitted = st.form_submit_button(
+                "Buscar", use_container_width=True)
+
+            if submitted:
+                if not cpf.isdigit() or len(cpf) != 11:
+                    st.error("CPF deve conter 11 dígitos numéricos!")
+                    return None
+                return cpf
+        return None
+
+    def confirma_demissao(self, contrato):
+        if st.session_state.sub_tela != 'demitir':
+            return None
+
+        st.subheader("Confirmar Demissão")
+
+        st.write(f"Deseja realmente demitir o jogador {
+                 contrato.jogador.nome}?")
+        st.write("**Dados do contrato:**")
+        st.write(f"- Salário: R$ {contrato.salario:,.2f}")
+        st.write(f"- Multa Rescisória: R$ {contrato.multa_rescisoria:,.2f}")
+
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Confirmar Demissão", key="contrato_j_btn_confirmar_demissao"):
+                return True
+        with col2:
+            if st.button("Cancelar", key="contrato_j_btn_cancelar_demissao"):
+                st.session_state.sub_tela = None
+                st.rerun()
+        return False
 
     def mostra_mensagem(self, mensagem):
-        print(mensagem)
-    def mostra_contrato(self, contrato):
-        print(
-            "Nome: ", contrato.jogador.nome,
-            "CPF: ", contrato.jogador.cpf,
-            "Salário: ", contrato.salario,
-            "Multa Rescisória: ", contrato.multa_rescisoria,
-            "Contrato de Produtividade: ", contrato.contrato_produtividade
-        )
+        st.warning(mensagem)

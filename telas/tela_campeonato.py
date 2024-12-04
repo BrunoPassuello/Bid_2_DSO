@@ -1,80 +1,120 @@
+import streamlit as st
 
-class TelaCampeonato():
+
+class TelaCampeonato:
     def tela_inicial_campeonato(self):
-        mensagem = '''
-        ----------CAMPEONATO---------
+        if st.session_state.tela_atual != 'campeonato':
+            return None
 
-        Escolha uma Opção:
+        st.empty()
 
-        * Cadastrar Campeonato - 1
-        * Alterar Campeonato - 2
-        * Listar Campeonatos - 3
-        * Excluir Campeonato - 4
-        * Retornar - 0
-        '''
-        print(mensagem)
-        try:
-            comando = int(input("Escolha sua opção: "))
-            if comando in range(5):
-                return comando
-            else:
-                self.mostra_mensagem("Opção inválida! Por favor, escolha um número entre 0 e 4.")
-                return self.tela_inicial_campeonato()
-        except ValueError:
-            self.mostra_mensagem("Entrada inválida! Por favor, insira um número.")
-            return self.tela_inicial_campeonato()
-        
-    
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.title("Gerenciamento de Campeonatos")
+
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
+
+            menu_items = {
+                "Cadastrar Campeonato": "cadastrar",
+                "Alterar Campeonato": "alterar",
+                "Listar Campeonatos": "listar",
+                "Excluir Campeonato": "excluir",
+                "Retornar": "retornar"
+            }
+
+            for label, value in menu_items.items():
+                if st.button(label, key=f"camp_btn_{value}", use_container_width=True):
+                    if value == "retornar":
+                        st.session_state.tela_atual = 'sistema'
+                        st.session_state.sub_tela = None
+                        st.rerun()
+                        return 0
+                    st.session_state.sub_tela = value
+                    return menu_items[label]
+        return None
+
     def tela_cadastro_campeonato(self):
-        mensagem = '''
-        ----------CADASTRO CAMPEONATO---------
+        if st.session_state.sub_tela != 'cadastrar':
+            return None
 
-        Digite as informações do campeonato:
+        st.header("Cadastro de Campeonato")
 
-        '''
-        print(mensagem)
-        nome = input("Nome: ")
-        try:
-            premiacao = int(input("Premiação: "))
-            numero_times = int(input("Número de times: "))
-            numero_estrangeiros = int(input("Número de estrangeiros por time: "))
-            numero_jogadores = int(input("Número de jogadores por time: "))
-        except ValueError:
-            print("Entrada inválida! Insira um número.")
-            self.tela_cadastro_campeonato()
+        with st.form(key="cadastro_campeonato"):
+            nome = st.text_input("Nome do Campeonato", key="camp_nome")
+            premiacao = st.number_input(
+                "Premiação (R$)", min_value=0.0, step=1000.0, key="camp_premiacao")
 
-        #VERIFICAÇÕES
+            col1, col2 = st.columns(2)
+            with col1:
+                numero_times = st.number_input(
+                    "Número de Times", min_value=2, max_value=50, step=1, key="camp_num_times")
+                numero_estrangeiros = st.number_input(
+                    "Estrangeiros por Time", min_value=0, max_value=11, step=1, key="camp_num_estrangeiros")
+            with col2:
+                numero_jogadores = st.number_input(
+                    "Jogadores por Time", min_value=16, max_value=32, step=1, key="camp_num_jogadores")
 
-        return {
-            "nome": nome,
-            "premiacao": premiacao,
-            "numero_times": numero_times,
-            "numero_estrangeiros": numero_estrangeiros,
-            "numero_jogadores": numero_jogadores
-        }
-    
+            submitted = st.form_submit_button(
+                "Cadastrar", use_container_width=True)
+
+            if submitted:
+                if not nome:
+                    st.error("Nome do campeonato é obrigatório!")
+                    return None
+
+                return {
+                    "nome": nome,
+                    "premiacao": premiacao,
+                    "numero_times": numero_times,
+                    "numero_estrangeiros": numero_estrangeiros,
+                    "numero_jogadores": numero_jogadores
+                }
+        return None
+
     def seleciona_campeonato(self):
-        mensagem = '''
-        ----------SELECIONAR CAMPEONATO---------
+        if st.session_state.sub_tela not in ['alterar', 'excluir']:
+            return None
 
-        Digite o nome do campeoanto:
-        '''
-        print(mensagem)
-        nome = input("Nome: ")
-        return nome
-    
+        st.subheader("Selecionar Campeonato")
+
+        with st.form(key="seleciona_campeonato"):
+            nome = st.text_input("Nome do Campeonato:", key="camp_select_nome")
+            submitted = st.form_submit_button(
+                "Buscar", use_container_width=True)
+
+            if submitted:
+                if not nome:
+                    st.error("Nome do campeonato é obrigatório!")
+                    return None
+                return nome
+        return None
+
     def mostra_campeonato(self, lista_campeonatos):
-        mensagem = '''
-        ----------CAMPEONATOS CADASTRADOS---------
-        '''
-        print(mensagem)
+        if st.session_state.sub_tela != 'listar':
+            return None
+
+        st.header("Campeonatos Cadastrados")
+
+        if not lista_campeonatos:
+            st.warning("Não há campeonatos cadastrados.")
+            return
+
         for campeonato in lista_campeonatos:
-            print("")
-            print("Nome: ", campeonato.nome)
-            print("Premiação: ", campeonato.premiacao)
-            print("Número de times: ", campeonato.regra.numero_times)
-            print("Número de estrangeiros por time: ", campeonato.regra.numero_estrangeiros)
-            print("Número de jogadores por time: ", campeonato.regra.numero_jogadores)
-    
+            with st.expander(f"Campeonato: {campeonato.nome}", expanded=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write("**Premiação:**",
+                             f"R$ {campeonato.premiacao:,.2f}")
+                    st.write("**Número de Times:**",
+                             campeonato.regra.numero_times)
+                with col2:
+                    st.write("**Estrangeiros por Time:**",
+                             campeonato.regra.numero_estrangeiros)
+                    st.write("**Jogadores por Time:**",
+                             campeonato.regra.numero_jogadores)
+                st.divider()
+
     def mostra_mensagem(self, mensagem):
-        print(mensagem)
+        st.warning(mensagem)

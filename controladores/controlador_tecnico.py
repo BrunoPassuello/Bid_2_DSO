@@ -1,63 +1,79 @@
+import streamlit as st
 from telas.tela_tecnico import TelaTecnico
 from entidades.tecnico import Tecnico
+from entidades.licenca import Licenca
+
 
 class ControladorTecnico:
     def __init__(self, controlador_sistema):
-        self.__tecnicos = []
-        self.__tela_tecnico = TelaTecnico()
         self.__controlador_sistema = controlador_sistema
-    
-    def pega_tecnico_por_cpf(self, cpf):
+        self.__tela_tecnico = TelaTecnico()
+        self.__tecnicos = []
+
+    def abre_tela(self):
+        opcao = self.__tela_tecnico.tela_inicial_tecnico()
+
+        if st.session_state.sub_tela == 'cadastrar':
+            dados_tecnico = self.__tela_tecnico.tela_cadastro_tecnico()
+            if dados_tecnico is not None:
+                if self.pega_tecnico_por_cpf(dados_tecnico["cpf"]):
+                    self.__tela_tecnico.mostra_mensagem(
+                        "Técnico já cadastrado!")
+                else:
+                    licenca = Licenca[dados_tecnico["licenca"].replace(
+                        " ", "_").upper()]
+                    novo_tecnico = Tecnico(
+                        dados_tecnico["nome"],
+                        dados_tecnico["cpf"],
+                        dados_tecnico["idade"],
+                        dados_tecnico["pais"],
+                        licenca
+                    )
+                    self.__tecnicos.append(novo_tecnico)
+                    self.__tela_tecnico.mostra_mensagem(
+                        "Técnico cadastrado com sucesso!")
+
+        elif st.session_state.sub_tela == 'alterar':
+            cpf = self.__tela_tecnico.seleciona_tecnico()
+            if cpf is not None:
+                tecnico = self.pega_tecnico_por_cpf(cpf)
+                if tecnico:
+                    dados_atualizados = self.__tela_tecnico.pega_dados_atualizacao(
+                        tecnico)
+                    if dados_atualizados is not None:
+                        tecnico.nome = dados_atualizados["nome"]
+                        tecnico.idade = dados_atualizados["idade"]
+                        tecnico.pais = dados_atualizados["pais"]
+                        tecnico.licenca = Licenca[dados_atualizados["licenca"].replace(
+                            " ", "_").upper()]
+                        self.__tela_tecnico.mostra_mensagem(
+                            "Técnico alterado com sucesso!")
+                else:
+                    self.__tela_tecnico.mostra_mensagem(
+                        "Técnico não encontrado!")
+
+        elif st.session_state.sub_tela == 'listar':
+            self.__tela_tecnico.mostra_tecnico(self.__tecnicos)
+
+        elif st.session_state.sub_tela == 'excluir':
+            cpf = self.__tela_tecnico.seleciona_tecnico()
+            if cpf is not None:
+                tecnico = self.pega_tecnico_por_cpf(cpf)
+                if tecnico:
+                    if self.__tela_tecnico.confirma_exclusao(tecnico):
+                        self.__tecnicos.remove(tecnico)
+                        self.__tela_tecnico.mostra_mensagem(
+                            "Técnico excluído com sucesso!")
+                else:
+                    self.__tela_tecnico.mostra_mensagem(
+                        "Técnico não encontrado!")
+
+    def pega_tecnico_por_cpf(self, cpf: str):
         for tecnico in self.__tecnicos:
             if tecnico.cpf == cpf:
                 return tecnico
         return None
 
-    def incluir_tecnico(self): #VERIFICAÇÕES!!!!
-        dados_tecnico = self.__tela_tecnico.tela_cadastro_tecnico()
-        tecnico = Tecnico(
-        dados_tecnico["nome"], 
-        dados_tecnico["cpf"],
-        dados_tecnico["idade"],
-        dados_tecnico["pais"],
-        dados_tecnico["licenca"])
-        self.__tecnicos.append(tecnico)
-
-    def alterar_tecnico(self):
-        self.listar_tecnico()
-        cpf = self.__tela_tecnico.seleciona_tecnico()
-        tecnico = self.pega_tecnico_por_cpf(cpf)
-        if tecnico is not None:
-            dados_tecnico = self.__tela_tecnico.tela_cadastro_tecnico()
-            tecnico.nome = dados_tecnico["nome"]
-            tecnico.idade = dados_tecnico["idade"]
-            tecnico.pais = dados_tecnico["pais"]
-            tecnico.licenca = dados_tecnico["licenca"]
-        else:
-            self.__tela_tecnico.mostra_mensagem("ATENÇÃO: Técnico não encontrado!")
-    def excluir_tecnico(self):
-        self.listar_tecnico()
-        cpf = self.__tela_tecnico.seleciona_tecnico()
-        tecnico = self.pega_tecnico_por_cpf(cpf)
-        if tecnico is not None:
-            self.__tecnicos.remove(tecnico)
-        else:
-            self.__tela_tecnico.mostra_mensagem("ATENÇÃO: Técnico não encontrado!")
-    def listar_tecnico(self):
-        self.__tela_tecnico.mostra_tecnico(self.__tecnicos)
-    
-    def retornar(self):
-        self.__controlador_sistema.abre_tela()
-    
-    def abre_tela(self):
-        lista_opcoes = {
-            1: self.incluir_tecnico,
-            2: self.alterar_tecnico,
-            3: self.listar_tecnico,
-            4: self.excluir_tecnico,
-            0: self.retornar}
-
-        continua = True
-        while continua:
-            lista_opcoes[self.__tela_tecnico.tela_inicial_tecnico()]()
-
+    @property
+    def tecnicos(self):
+        return self.__tecnicos

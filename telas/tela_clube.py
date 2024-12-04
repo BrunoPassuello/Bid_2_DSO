@@ -1,216 +1,176 @@
-class TelaClube():
+import streamlit as st
+
+
+class TelaClube:
     def tela_inicial_clube(self):
-        mensagem = '''
-        ----------CLUBE---------
+        if st.session_state.tela_atual != 'clube':
+            return None
 
-        Escolha uma Opção:
+        # Limpa a tela principal
+        st.empty()
 
-        * Selecionar Clube - 1
-        * Cadastrar Clube - 2
-        * Alterar Clube - 3
-        * Listar Clubes - 4
-        * Excluir Clube - 5
-        * Retornar - 0
-        '''
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
-    
-    def tela_clube_selecionado(self): #Verificar se isso ta saindo certo
-        mensagem = '''
-        ----------CLUBE SELECIONADO---------
+        # Título centralizado
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            st.title("Gerenciamento de Clubes")
 
-        Escolha uma Área para Operar:
+        # Menu lateral organizado
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
 
-        * Jogador - 1
-        * Técnico - 2
-        * Campeonato - 3
-        * Informações do Clube - 4
-        * Retornar - 0
-        '''
+            menu_items = {
+                "Selecionar Clube": "selecionar",
+                "Cadastrar Clube": "cadastrar",
+                "Alterar Clube": "alterar",
+                "Listar Clubes": "listar",
+                "Excluir Clube": "excluir",
+                "Retornar": "retornar"
+            }
 
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
+            for label, value in menu_items.items():
+                if st.button(label, key=f"clube_btn_{value}", use_container_width=True):
+                    if value == "retornar":
+                        st.session_state.tela_atual = 'sistema'
+                        st.session_state.sub_tela = None
+                        st.rerun()
+                        return 0
+                    st.session_state.sub_tela = value
+                    return menu_items[label]
+        return None
 
-    def tela_clube_informacoes(self):
-        mensagem = '''
-        ----------CLUBE SELECIONADO---------
+    def tela_clube_selecionado(self):
+        if st.session_state.sub_tela != 'clube_selecionado':
+            return None
 
-        * INFORMAÇÕES DO CLUBE *
+        # Título centralizado
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            st.title("Operações do Clube")
 
-        Escolha uma Opção:
+        # Menu lateral
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
 
-        * Relatório do clube - 1
-        * Jogador com maior Salário - 2
-        * Jogador com menor Salário - 3
-        * Jogador com maior Multa - 4
-        * Jogador com menor Multa - 5
-        * Retornar - 0
-        '''
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
+            menu_items = {
+                "Jogadores": "jogadores",
+                "Técnico": "tecnico",
+                "Campeonatos": "campeonatos",
+                "Informações": "informacoes",
+                "Retornar": "retornar"
+            }
 
-    def tela_clube_campeonato(self):
-        mensagem = '''
-        ----------CLUBE SELECIONADO---------
-
-        * OPERAÇÃO DE CAMPEONATOS *
-
-        Escolha uma Opção:
-
-        * Participar de Campeonato - 1
-        * Sair de Campeonato - 2
-        * Listar Campeonatos - 3
-        * Campeonato com maior premiação - 4
-        * Retornar - 0
-        '''
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
-
-    def tela_clube_tecnico(self):
-        mensagem = '''
-        ----------CLUBE SELECIONADO---------
-
-        * OPERAÇÃO DE TÉCNICOS *
-
-        Escolha uma Opção:
-
-        * Relatório do Técnico - 1
-        * Contrato Técnico - 2
-        * Retornar - 0
-        '''
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
-    
-    def tela_clube_jogador(self):
-        mensagem = '''
-        ----------CLUBE SELECIONADO---------
-
-        * OPERAÇÃO DE JOGADORES *
-
-        Escolha uma Opção:
-        * Listar Jogadores - 1
-        * Contrato Jogador - 2
-        * Retornar - 0
-        '''
-        print(mensagem)
-        comando = int(input("Escolha sua opção: "))
-        return comando
+            for label, value in menu_items.items():
+                if st.button(label, key=f"clube_sel_btn_{value}", use_container_width=True):
+                    if value == "retornar":
+                        st.session_state.sub_tela = None
+                        st.rerun()
+                        return 0
+                    st.session_state.sub_tela = value
+                    return menu_items[label]
+        return None
 
     def tela_cadastra_clube(self):
-        mensagem = '''
-        ----------CADASTRO CLUBE---------
+        if st.session_state.sub_tela != 'cadastrar':
+            return None
 
-        Digite as informações do clube:
+        st.header("Cadastro de Clube")
 
-        '''
-        print(mensagem)
-        nome = input("Nome: ")
-        pais = input("País: ")
-        return {
-            "nome": nome,
-            "País": pais
-        }
+        with st.form(key="cadastro_clube"):
+            col1, col2 = st.columns(2)
+            with col1:
+                nome = st.text_input("Nome do Clube", key="clube_nome")
+            with col2:
+                pais = st.text_input("País", key="clube_pais")
+
+            submitted = st.form_submit_button("Cadastrar Clube", use_container_width=True)
+
+            if submitted:
+                if not nome or not pais:
+                    st.error("Todos os campos são obrigatórios!")
+                    return None
+                return {"nome": nome, "pais": pais}
+        return None
 
     def seleciona_clube(self):
-        mensagem = '''
-        ----------SELECIONAR CLUBE---------
+        if st.session_state.sub_tela != 'selecionar':
+            return None
 
-        Digite o Nome do clube:
-        '''
-        print(mensagem)
-        nome = input("Nome: ")
-        return nome
-    def clube_nao_cadastrado(self):
-        mensagem = '''
-        ----------CLUBE NÃO CADASTRADO---------
+        st.subheader("Selecionar Clube")
 
-        O clube não está cadastrado no sistema!
-        '''
-        print(mensagem)
+        with st.form(key="seleciona_clube"):
+            nome = st.text_input("Nome do Clube:", key="clube_select_nome")
+            submitted = st.form_submit_button("Buscar", use_container_width=True)
+
+            if submitted:
+                if not nome:
+                    st.error("Nome do clube é obrigatório!")
+                    return None
+                return nome
+        return None
+
     def mostra_clube(self, lista_clubes):
-        mensagem = '''
-        ----------CLUBES CADASTRADOS---------
-        '''
-        print(mensagem)
+        if st.session_state.sub_tela != 'listar':
+            return None
+
+        st.header("Clubes Cadastrados")
+
+        if not lista_clubes:
+            st.warning("Não há clubes cadastrados.")
+            return
+
         for clube in lista_clubes:
-            print("")
-            print("Nome: ", clube.nome)
-            print("País: ", clube.pais)
+            with st.expander(f"Clube: {clube.nome}", expanded=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write("**País:**", clube.pais)
+                with col2:
+                    if clube.contrato_tecnico:
+                        st.write("**Técnico:**", clube.contrato_tecnico.tecnico.nome)
+                    else:
+                        st.write("**Técnico:** Não contratado")
+                st.divider()
 
-    def mostra_jogadores(self, lista_contratos):
-        print("------JOGADORES------")
-        for lista_contrato in lista_contratos:
-            print("")
-            print("Nome: ", lista_contrato.jogador.nome)
-            print("Salário: ", lista_contrato.salario)
-            print("Multa Rescisória: ", lista_contrato.multa_rescisoria)
-            print("Contrato de Produtividade: ", lista_contrato.contrato_produtividade)
-
-    #CPA DA PRA FAZER DIFERENTE ISSO AQ
     def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
-        mensagem = '''
-        ----------RELATÓRIO DO CLUBE ''' + clube.nome + '''---------'''
-        
-        print(mensagem)
-        print("Nome: " + clube.nome)
-        print("País: " + clube.pais)
-        if clube.contrato_tecnico is not None:
-            print("Técnico: " + clube.contrato_tecnico.tecnico.nome)
-        else:
-            print("O clube não possui técnico!")
-        if len(lista_contrato_jogadores) >= 1:
-            print("------JOGADORES------")
-            for contrato_jogador in lista_contrato_jogadores:
-                print("")
-                print("Nome: " + contrato_jogador.jogador.nome)
-                print("Salário: " + str(contrato_jogador.salario))
-                print("Multa Rescisória: " + str(contrato_jogador.multa_rescisoria))
-        else:
-            print("O clube não possui jogadores!")
-        if len(clube.campeonatos) >= 1:
-            print("------CAMPEONATOS------")
-            for campeonato in clube.campeonatos:
-                print("")
-                print("Nome: " + campeonato.nome)
-                print("Premiação: " + str(campeonato.premiacao))
-        else:
-            print("O Clube não está participando de nenhum campeonato!")
-    
-    def relatorio_maior_salario(self, jogador):
-        #metodo no controlador procura o maior salario, e manda o jogador pra esse metodo
-        print("Jogador com maior salário: " + jogador.nome)
-    
-    def relatorio_menor_salario(self, jogador):
-        print("Jogador com menor salário: " + jogador.nome)
+        st.header(f"Relatório do Clube {clube.nome}")
 
-    def relatorio_maior_multa(self, jogador):
-        print("Jogador com maior multa: " + jogador.nome)
+        # Informações Gerais
+        with st.expander("Informações Gerais", expanded=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("**Nome:**", clube.nome)
+            with col2:
+                st.write("**País:**", clube.pais)
 
-    def relatorio_menor_multa(self, jogador):
-        print("Jogador com menor multa: " + jogador.nome)
-    
+        # Técnico
+        with st.expander("Técnico", expanded=True):
+            if clube.contrato_tecnico:
+                st.write("**Nome:**", clube.contrato_tecnico.tecnico.nome)
+                st.write("**Licença:**", clube.contrato_tecnico.tecnico.licenca.tipo)
+            else:
+                st.warning("O clube não possui técnico!")
+
+        # Jogadores
+        with st.expander("Jogadores", expanded=True):
+            if lista_contrato_jogadores:
+                for contrato in lista_contrato_jogadores:
+                    st.write(f"**{contrato.jogador.nome}**")
+                    st.write(f"- Salário: R$ {contrato.salario:,.2f}")
+                    st.write(f"- Multa: R$ {contrato.multa_rescisoria:,.2f}")
+                    st.divider()
+            else:
+                st.warning("O clube não possui jogadores!")
+
+        # Campeonatos
+        with st.expander("Campeonatos", expanded=True):
+            if lista_campeonatos:
+                for campeonato in lista_campeonatos:
+                    st.write(f"**{campeonato.nome}**")
+                    st.write(f"- Premiação: R$ {campeonato.premiacao:,.2f}")
+                    st.divider()
+            else:
+                st.warning("O clube não está participando de nenhum campeonato!")
+
     def mostra_mensagem(self, mensagem):
-        print(mensagem)
-
-    def seleciona_campeonato(self):
-        mensagem = '''
-        ----------SELECIONAR CAMPEONATO---------
-
-        Digite o Nome do campeonato:
-        '''
-        opcao = input("Nome: ")
-        return opcao
-    def mostra_campeonatos(self, clube_selecionado):
-        mensagem = '''
-        ----------CAMPEONATOS CADASTRADOS---------
-        '''
-        print(mensagem)
-        for campeonato in clube_selecionado.campeonatos:
-            print("")
-            print("Nome: ", campeonato.nome)
-            print("Premiação: ", campeonato.premiacao)
+        st.warning(mensagem)

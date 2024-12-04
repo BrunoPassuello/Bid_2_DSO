@@ -1,77 +1,178 @@
-class TelaTecnico():
+import streamlit as st
+from entidades.licenca import Licenca
+
+
+class TelaTecnico:
     def tela_inicial_tecnico(self):
-        mensagem = '''
-        ----------TÉCNICO---------
-
-        Escolha uma Opção:
-
-        * Cadastrar Técnico - 1
-        * Alterar Técnico - 2
-        * Listar Técnicos - 3
-        * Excluir Técnicos - 4
-        * Retornar - 0
-        '''
-        print(mensagem)
-        try:
-            comando = int(input("Escolha sua opção: "))
-            if comando in range(5):
-                return comando
-            else:
-                self.mostra_mensagem("Opção inválida! Por favor, escolha um número entre 0 e 4.")
-                return self.tela_inicial_tecnico()
-        except ValueError:
-            self.mostra_mensagem("Entrada inválida! Por favor, insira um número.")
-            return self.tela_inicial_tecnico()
+        if st.session_state.tela_atual != 'tecnico':
+            return None
+            
+        # Limpa a tela principal
+        st.empty()
+        
+        # Título centralizado
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            st.title("Gerenciamento de Técnicos")
+        
+        # Menu lateral organizado
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
+            
+            menu_items = {
+                "Cadastrar Técnico": "cadastrar",
+                "Alterar Técnico": "alterar",
+                "Listar Técnicos": "listar",
+                "Excluir Técnico": "excluir",
+                "Retornar": "retornar"
+            }
+            
+            for label, value in menu_items.items():
+                if st.button(label, key=f"tec_btn_{value}", use_container_width=True):
+                    if value == "retornar":
+                        st.session_state.tela_atual = 'sistema'
+                        st.session_state.sub_tela = None
+                        st.rerun()
+                        return 0
+                    st.session_state.sub_tela = value
+                    return menu_items[label]
+        return None
 
     def tela_cadastro_tecnico(self):
-        mensagem = '''
-        ----------CADASTRO TÉCNICO---------
-
-        Digite as informações do técnico:
-
-        '''
-        print(mensagem)
-         
+        if st.session_state.sub_tela != 'cadastrar':
+            return None
+            
+        st.header("Cadastro de Técnico")
         
-        nome = input("Nome: ")
-        try:
-            cpf = int(input("CPF (Somente números): "))
-            idade = int(input("Idade (Somente números): "))
-        except ValueError:
-            print("Entrada inválida! Insira um número.")
-            self.tela_cadastro_tecnico()
+        with st.form(key="cadastro_tecnico"):
+            col1, col2 = st.columns(2)
+            with col1:
+                nome = st.text_input("Nome", key="tec_nome")
+                cpf = st.text_input("CPF (somente números)", key="tec_cpf", max_chars=11)
+                idade = st.number_input("Idade", min_value=25, max_value=80, step=1, key="tec_idade")
+            with col2:
+                pais = st.text_input("País", key="tec_pais")
+                licenca = st.selectbox("Licença", 
+                                     ["Licença A", "Licença B", "Licença C", "Licença PRO"],
+                                     key="tec_licenca")
+            
+            submitted = st.form_submit_button("Cadastrar Técnico", use_container_width=True)
+            
+            if submitted:
+                if not all([nome, cpf, pais, licenca]):
+                    st.error("Todos os campos são obrigatórios!")
+                    return None
+                
+                if not cpf.isdigit() or len(cpf) != 11:
+                    st.error("CPF deve conter 11 dígitos numéricos!")
+                    return None
 
-        pais = input("País: ")
-        licenca = input("Licença: ")
-        #VERIFICAR LICENCA E STR, INT.
-        return {"nome": nome,
-                "cpf": str(cpf),
-                "idade": idade,
-                "pais": pais,
-                "licenca": licenca}
-    
+                return {
+                    "nome": nome,
+                    "cpf": cpf,
+                    "idade": idade,
+                    "pais": pais,
+                    "licenca": licenca
+                }
+        return None
+
     def seleciona_tecnico(self):
-        mensagem = '''
-        ----------SELECIONAR TÉCNICO---------
+        if st.session_state.sub_tela not in ['alterar', 'excluir']:
+            return None
+            
+        st.subheader("Selecionar Técnico")
+        
+        with st.form(key="seleciona_tecnico"):
+            cpf = st.text_input("CPF do Técnico:", key="tec_select_cpf", max_chars=11)
+            submitted = st.form_submit_button("Buscar", use_container_width=True)
+            
+            if submitted:
+                if not cpf.isdigit() or len(cpf) != 11:
+                    st.error("CPF deve conter 11 dígitos numéricos!")
+                    return None
+                return cpf
+        return None
 
-        Digite o CPF do técnico:
-        '''
-        print(mensagem)
-        cpf = input("CPF: ")
-        return cpf
-    
     def mostra_tecnico(self, lista_tecnicos):
-        mensagem = '''
-        ----------TÉCNICOS CADASTRADOS---------
-        '''
-        print(mensagem)
+        if st.session_state.sub_tela != 'listar':
+            return None
+            
+        st.header("Técnicos Cadastrados")
+        
+        if not lista_tecnicos:
+            st.warning("Não há técnicos cadastrados.")
+            return
+            
         for tecnico in lista_tecnicos:
-            print("")
-            print("Nome: ", tecnico.nome)
-            print("CPF: ", tecnico.cpf)
-            print("Idade: ", tecnico.idade)
-            print("País: ", tecnico.pais)
-            print("Licença: ", tecnico.licenca.tipo)
+            with st.expander(f"Técnico: {tecnico.nome}", expanded=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write("**CPF:**", tecnico.cpf)
+                    st.write("**Idade:**", f"{tecnico.idade} anos")
+                with col2:
+                    st.write("**País:**", tecnico.pais)
+                    st.write("**Licença:**", tecnico.licenca.tipo)
+                st.divider()
+
+    def pega_dados_atualizacao(self, tecnico):
+        if st.session_state.sub_tela != 'alterar':
+            return None
+            
+        st.header("Atualizar Dados do Técnico")
+        
+        with st.form(key="atualiza_tecnico"):
+            st.write("**CPF atual:**", tecnico.cpf)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                nome = st.text_input("Nome", value=tecnico.nome, key="tec_update_nome")
+                idade = st.number_input("Idade", value=tecnico.idade, min_value=25, max_value=80, step=1, key="tec_update_idade")
+            with col2:
+                pais = st.text_input("País", value=tecnico.pais, key="tec_update_pais")
+                licenca = st.selectbox("Licença", 
+                                     ["Licença A", "Licença B", "Licença C", "Licença PRO"],
+                                     index=["Licença A", "Licença B", "Licença C", "Licença PRO"].index(tecnico.licenca.tipo),
+                                     key="tec_update_licenca")
+            
+            submitted = st.form_submit_button("Confirmar Alterações", use_container_width=True)
+            
+            if submitted:
+                if not all([nome, pais, licenca]):
+                    st.error("Todos os campos são obrigatórios!")
+                    return None
+
+                return {
+                    "nome": nome,
+                    "cpf": tecnico.cpf,  # mantém o CPF original
+                    "idade": idade,
+                    "pais": pais,
+                    "licenca": licenca
+                }
+        return None
+
+    def confirma_exclusao(self, tecnico):
+        if st.session_state.sub_tela != 'excluir':
+            return None
+            
+        st.subheader("Confirmar Exclusão")
+        
+        st.write(f"Deseja realmente excluir o técnico {tecnico.nome}?")
+        st.write("**Dados do técnico:**")
+        st.write(f"- CPF: {tecnico.cpf}")
+        st.write(f"- Idade: {tecnico.idade} anos")
+        st.write(f"- País: {tecnico.pais}")
+        st.write(f"- Licença: {tecnico.licenca.tipo}")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Confirmar Exclusão", key="tec_btn_confirmar_exclusao"):
+                return True
+        with col2:
+            if st.button("Cancelar", key="tec_btn_cancelar_exclusao"):
+                st.session_state.sub_tela = None
+                st.rerun()
+        return False
 
     def mostra_mensagem(self, mensagem):
-        print(mensagem)
+        st.warning(mensagem)
