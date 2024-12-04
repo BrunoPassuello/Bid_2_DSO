@@ -71,20 +71,19 @@ class TelaJogador:
             return cpf
         return None
 
-    def mostra_jogador(self, lista_jogadores):
+    def mostra_jogador(self, jogador):
         st.header("Jogadores Cadastrados")
 
-        for jogador in lista_jogadores:
-            with st.expander(f"Jogador: {jogador.nome}"):
-                st.write(f"**CPF:** {jogador.cpf}")
-                st.write(f"**Idade:** {jogador.idade} anos")
-                st.write(f"**País:** {jogador.pais}")
-                st.write(f"**Posição:** {jogador.posicao.nome}")
-                st.write(f"**Peso:** {jogador.peso} kg")
-                st.write(f"**Altura:** {jogador.altura:.2f} m")
-                st.write(
-                    f"**Estrangeiro:** {'Sim' if jogador.estrangeiro else 'Não'}")
-                st.divider()
+        with st.expander(f"Jogador: {jogador.nome}"):
+            st.write(f"**CPF:** {jogador.cpf}")
+            st.write(f"**Idade:** {jogador.idade} anos")
+            st.write(f"**País:** {jogador.pais}")
+            st.write(f"**Posição:** {jogador.posicao.nome}")
+            st.write(f"**Peso:** {jogador.peso} kg")
+            st.write(f"**Altura:** {jogador.altura:.2f} m")
+            st.write(
+                f"**Estrangeiro:** {'Sim' if jogador.estrangeiro else 'Não'}")
+            st.divider()
 
     def mostra_mensagem(self, mensagem):
         st.warning(mensagem)

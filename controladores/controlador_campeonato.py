@@ -2,13 +2,13 @@ import streamlit as st
 from telas.tela_campeonato import TelaCampeonato
 from entidades.campeonato import Campeonato
 from entidades.regra import Regra
-
+from daos.dao_campeonato import CampeonatoDAO
 
 class ControladorCampeonato:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_campeonato = TelaCampeonato()
-        self.__campeonatos = []
+        self.__campeonato_Dao = CampeonatoDAO()
 
     def abre_tela(self):
         opcao = self.__tela_campeonato.tela_inicial_campeonato()

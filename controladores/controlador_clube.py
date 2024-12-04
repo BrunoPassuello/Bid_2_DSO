@@ -3,13 +3,13 @@ from telas.tela_clube import TelaClube
 from entidades.clube import Clube
 from controladores.controlador_contrato_jogador import ControladorContratoJogador
 from controladores.controlador_contrato_tecnico import ControladorContratoTecnico
-
+from daos.dao_clube import ClubeDAO
 
 class ControladorClube:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_clube = TelaClube()
-        self.__clubes = []
+        self.__clube_dao = ClubeDAO()
         self.__controlador_contrato_jogador = ControladorContratoJogador(self)
         self.__controlador_contrato_tecnico = ControladorContratoTecnico(self)
 

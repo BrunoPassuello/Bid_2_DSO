@@ -2,13 +2,13 @@ import streamlit as st
 from telas.tela_jogador import TelaJogador
 from entidades.jogador import Jogador
 from entidades.posicao import Posicao
-
+from daos.dao_jogador import JogadorDAO
 
 class ControladorJogador:
     def __init__(self, controlador_sistema):
         self.__controlador_sistema = controlador_sistema
         self.__tela_jogador = TelaJogador()
-        self.__jogadores = []
+        self.__jogador_DAO = JogadorDAO()
 
     def abre_tela(self):
         opcao = self.__tela_jogador.tela_inicial_jogador()
@@ -31,7 +31,7 @@ class ControladorJogador:
                         dados_jogador["altura"],
                         dados_jogador["estrangeiro"] == "S"
                     )
-                    self.__jogadores.append(novo_jogador)
+                    self.__jogador_DAO.add(novo_jogador)
                     self.__tela_jogador.mostra_mensagem(
                         "Jogador cadastrado com sucesso!")
 
@@ -51,6 +51,7 @@ class ControladorJogador:
                         jogador.peso = dados_atualizados["peso"]
                         jogador.altura = dados_atualizados["altura"]
                         jogador.estrangeiro = dados_atualizados["estrangeiro"] == "S"
+                        self.__jogador_DAO.update(jogador)
                         self.__tela_jogador.mostra_mensagem(
                             "Jogador alterado com sucesso!")
                 else:
@@ -58,6 +59,9 @@ class ControladorJogador:
                         "Jogador não encontrado!")
 
         elif st.session_state.sub_tela == 'listar':
+            self.__tela_jogador.mostra_mensagem("Jogadores Cadastrados:")
+            for jogador in self.__jogador_DAO.get_all():
+                self.__tela_jogador.mostra_jogador(jogador)
             self.__tela_jogador.mostra_jogador(self.__jogadores)
 
         elif st.session_state.sub_tela == 'excluir':
@@ -74,7 +78,7 @@ class ControladorJogador:
                         "Jogador não encontrado!")
 
     def pega_jogador_por_cpf(self, cpf):
-        for jogador in self.__jogadores:
+        for jogador in self.__jogador_DAO.get_all():
             if jogador.cpf == cpf:
                 return jogador
         return None
@@ -138,6 +142,9 @@ class ControladorJogador:
                 "ATENÇÃO: Jogador não encontrado!")
 
     def listar_jogador(self):
+        self.__tela_jogador.mostra_mensagem("Jogadores Cadastrados:")
+        for jogador in self.__jogador_DAO.get_all():
+            self.__tela_jogador.mostra_jogador(jogador)
         self.__tela_jogador.mostra_jogador(self.__jogadores)
 
     def retornar(self):
