@@ -3,6 +3,15 @@ import streamlit as st
 from telas.tela_tecnico import TelaTecnico
 from entidades.tecnico import Tecnico
 from entidades.licenca import Licenca
+from excecoes.cpf_invalido_error import CpfInvalidoError
+from excecoes.salario_invalido_error import SalarioInvalidoError
+from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
+from entidades.contrato_jogador import ContratoJogador
+from telas.tela_contrato_jogador import TelaContratoJogador
+from entidades.jogador import Jogador
+from entidades.contrato_tecnico import ContratoTecnico
+from telas.tela_contrato_tecnico import TelaContratoTecnico
+from entidades.clube import Clube
 
 
 class ControladorTecnico:
@@ -28,11 +37,15 @@ class ControladorTecnico:
                         dados_tecnico["cpf"],
                         dados_tecnico["idade"],
                         dados_tecnico["pais"],
-                        licenca
+                        licenca,
+                        dados_tecnico["salario"]
                     )
-                    self.__tecnico_DAO.add(novo_tecnico)
-                    self.__tela_tecnico.mostra_mensagem(
-                        "Técnico cadastrado com sucesso!")
+                    try:
+                        self.__tecnico_DAO.add(novo_tecnico)
+                        self.__tela_tecnico.mostra_mensagem(
+                            "Técnico cadastrado com sucesso!")
+                    except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
+                        self.__tela_tecnico.mostra_mensagem(str(e))
 
         elif st.session_state.sub_tela == 'alterar':
             cpf = self.__tela_tecnico.seleciona_tecnico()
