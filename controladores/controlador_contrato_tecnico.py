@@ -1,12 +1,15 @@
+import streamlit as st
 from entidades.contrato_tecnico import ContratoTecnico
 from excecoes.cpf_invalido_error import CpfInvalidoError
 from excecoes.salario_invalido_error import SalarioInvalidoError
 from excecoes.multa_rescisoria_invalida_error import MultaRescisoriaInvalidaError
 from telas.tela_contrato_tecnico import TelaContratoTecnico
-import streamlit as st
 from entidades.tecnico import Tecnico
-from entidades.contrato_tecnico import ContratoTecnico
 from entidades.clube import Clube
+from telas.tela_sistema import TelaSistema
+from controladores.controlador_jogador import ControladorJogador
+from controladores.controlador_tecnico import ControladorTecnico
+from controladores.controlador_campeonato import ControladorCampeonato
 
 
 class ControladorContratoTecnico:
@@ -28,6 +31,9 @@ class ControladorContratoTecnico:
         if st.session_state.sub_tela == 'contratar':
             dados_contrato = self.__tela_contrato.pega_dados_contrato()
             if dados_contrato is not None:
+                if not hasattr(self.__controlador_clube.controlador_sistema, 'controlador_tecnico'):
+                    from controladores.controlador_tecnico import ControladorTecnico
+                    self.__controlador_clube.controlador_sistema.controlador_tecnico = ControladorTecnico(self.__controlador_clube.controlador_sistema)
                 tecnico = self.__controlador_clube.controlador_sistema.controlador_tecnico.pega_tecnico_por_cpf(
                     dados_contrato["cpf"])
                 if not tecnico:
@@ -41,8 +47,8 @@ class ControladorContratoTecnico:
                     return
 
                 novo_contrato = ContratoTecnico(
-                    tecnico,
                     st.session_state.clube_selecionado,
+                    tecnico,
                     dados_contrato["salario"],
                     dados_contrato["multa_rescisoria"]
                 )
@@ -102,3 +108,39 @@ class ControladorContratoTecnico:
     @property
     def contratos(self):
         return self.__contratos
+
+
+class ControladorSistema:
+    def __init__(self):
+        self.__tela_sistema = TelaSistema()
+        self.__controlador_clube = ControladorClube(self)
+        self.__controlador_jogador = ControladorJogador(self)
+        self.__controlador_tecnico = ControladorTecnico(self)
+        self.__controlador_campeonato = ControladorCampeonato(self)
+
+    def inicializa_sistema(self):
+        if 'tela_atual' not in st.session_state:
+            st.session_state.tela_atual = 'sistema'
+        if 'sub_tela' not in st.session_state:
+            st.session_state.sub_tela = None
+
+    def abre_tela(self):
+        self.inicializa_sistema()
+
+        if st.session_state.tela_atual == 'sistema':
+            opcao = self.__tela_sistema.tela_opcoes()
+
+        elif st.session_state.tela_atual == 'clube':
+            self.__controlador_clube.abre_tela()
+
+        elif st.session_state.tela_atual == 'jogador':
+            self.__controlador_jogador.abre_tela()
+
+        elif st.session_state.tela_atual == 'tecnico':
+            self.__controlador_tecnico.abre_tela()
+
+        elif st.session_state.tela_atual == 'campeonato':
+            self.__controlador_campeonato.abre_tela()
+
+    def encerra_sistema(self):
+        exit(0)

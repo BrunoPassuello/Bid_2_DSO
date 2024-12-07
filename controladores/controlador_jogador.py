@@ -1,8 +1,8 @@
-import streamlit as st
 from telas.tela_jogador import TelaJogador
 from entidades.jogador import Jogador
 from entidades.posicao import Posicao
 from daos.dao_jogador import JogadorDAO
+import streamlit as st
 
 class ControladorJogador:
     def __init__(self, controlador_sistema):

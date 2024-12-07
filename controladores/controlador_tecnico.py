@@ -85,11 +85,11 @@ class ControladorTecnico:
                         "Técnico não encontrado!")
 
     def pega_tecnico_por_cpf(self, cpf: str):
-        for tecnico in self.__tecnico.DAO.get_all():
+        for tecnico in self.__tecnico_DAO.get_all():
             if tecnico.cpf == cpf:
                 return tecnico
         return None
 
     @property
     def tecnicos(self):
-        return self.__tecnicos
+        return self.__tecnico_DAO.get_all()

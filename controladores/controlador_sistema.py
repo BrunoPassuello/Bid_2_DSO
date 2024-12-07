@@ -1,6 +1,5 @@
 import streamlit as st
 from telas.tela_sistema import TelaSistema
-from controladores.controlador_clube import ControladorClube
 from controladores.controlador_jogador import ControladorJogador
 from controladores.controlador_tecnico import ControladorTecnico
 from controladores.controlador_campeonato import ControladorCampeonato
@@ -9,7 +8,7 @@ from controladores.controlador_campeonato import ControladorCampeonato
 class ControladorSistema:
     def __init__(self):
         self.__tela_sistema = TelaSistema()
-        self.__controlador_clube = ControladorClube(self)
+        self.__controlador_clube = None
         self.__controlador_jogador = ControladorJogador(self)
         self.__controlador_tecnico = ControladorTecnico(self)
         self.__controlador_campeonato = ControladorCampeonato(self)
@@ -27,6 +26,9 @@ class ControladorSistema:
             opcao = self.__tela_sistema.tela_opcoes()
 
         elif st.session_state.tela_atual == 'clube':
+            if self.__controlador_clube is None:
+                from controladores.controlador_clube import ControladorClube
+                self.__controlador_clube = ControladorClube(self)
             self.__controlador_clube.abre_tela()
 
         elif st.session_state.tela_atual == 'jogador':

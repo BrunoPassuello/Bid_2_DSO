@@ -3,7 +3,10 @@ from entidades.pais import Pais
 from entidades.tecnico import Tecnico
 from entidades.campeonato import Campeonato
 class Clube:
+    contador_id = 1  # Atributo de classe para gerar IDs únicos
     def __init__(self, nome: str, pais):
+        self.id = Clube.contador_id
+        Clube.contador_id += 1
         self.__nome = nome
         self.__pais = pais
         self.__jogadores = []          
