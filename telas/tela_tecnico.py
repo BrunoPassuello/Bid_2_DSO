@@ -94,26 +94,26 @@ class TelaTecnico:
                 return cpf
         return None
 
-    def mostra_tecnico(self, tecnico):
+    def mostra_tecnicos(self, tecnicos):
         if st.session_state.sub_tela != 'listar':
             return None
             
         st.header("Técnicos Cadastrados")
         
-        if not tecnico:
+        if not tecnicos:
             st.warning("Não há técnicos cadastrados.")
             return
-            
 
-        with st.expander(f"Técnico: {tecnico.nome}", expanded=True):
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("**CPF:**", tecnico.cpf)
-                st.write("**Idade:**", f"{tecnico.idade} anos")
-            with col2:
-                st.write("**País:**", tecnico.pais)
-                st.write("**Licença:**", tecnico.licenca.tipo)
-            st.divider()
+        for tecnico in tecnicos:
+            with st.expander(f"Técnico: {tecnico.nome}", expanded=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write("**CPF:**", tecnico.cpf)
+                    st.write("**Idade:**", f"{tecnico.idade} anos")
+                with col2:
+                    st.write("**País:**", tecnico.pais)
+                    st.write("**Licença:**", tecnico.licenca.tipo)
+                st.divider()
 
     def pega_dados_atualizacao(self, tecnico):
         if st.session_state.sub_tela != 'alterar':

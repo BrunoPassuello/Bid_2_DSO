@@ -72,7 +72,7 @@ class TelaClube:
         return None
 
     def tela_cadastra_clube(self):
-        if st.session_state.sub_tela != 'cadastrar':
+        if st.session_state.sub_tela not in ['cadastrar', 'alterar']:
             return None
 
         st.header("Cadastro de Clube")
@@ -94,7 +94,7 @@ class TelaClube:
         return None
 
     def seleciona_clube(self):
-        if st.session_state.sub_tela != 'selecionar':
+        if st.session_state.sub_tela not in ['selecionar', 'alterar', 'excluir']:
             return None
 
         st.subheader("Selecionar Clube")

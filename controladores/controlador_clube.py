@@ -31,7 +31,7 @@ class ControladorClube:
                     st.session_state.sub_tela = 'clube_selecionado'
                     st.rerun()
                 else:
-                    self.__tela_clube.clube_nao_cadastrado()
+                    self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
         elif st.session_state.sub_tela == 'clube_selecionado':
             opcao = self.__tela_clube.tela_clube_selecionado()
@@ -75,7 +75,7 @@ class ControladorClube:
                         self.__clube_dao.update(clube)
                         self.__tela_clube.mostra_mensagem("Clube alterado com sucesso!")
                 else:
-                    self.__tela_clube.clube_nao_cadastrado()
+                    self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
         elif st.session_state.sub_tela == 'listar':
             self.__tela_clube.mostra_clube(list(self.__clubes.values()))
@@ -89,7 +89,7 @@ class ControladorClube:
                     self.__clube_dao.remove(clube.id)
                     self.__tela_clube.mostra_mensagem("Clube excluído com sucesso!")
                 else:
-                    self.__tela_clube.clube_nao_cadastrado()
+                    self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
     def pega_clube_por_nome(self, nome: str):
         for clube in self.__clubes.values():

@@ -30,15 +30,13 @@ class ControladorTecnico:
                     self.__tela_tecnico.mostra_mensagem(
                         "Técnico já cadastrado!")
                 else:
-                    licenca = Licenca[dados_tecnico["licenca"].replace(
-                        " ", "_").upper()]
+                    licenca = Licenca(dados_tecnico["licenca"])
                     novo_tecnico = Tecnico(
                         dados_tecnico["nome"],
-                        dados_tecnico["cpf"],
+                        int(dados_tecnico["cpf"]),
                         dados_tecnico["idade"],
                         dados_tecnico["pais"],
-                        licenca,
-                        dados_tecnico["salario"]
+                        licenca
                     )
                     try:
                         self.__tecnico_DAO.add(novo_tecnico)
@@ -50,7 +48,7 @@ class ControladorTecnico:
         elif st.session_state.sub_tela == 'alterar':
             cpf = self.__tela_tecnico.seleciona_tecnico()
             if cpf is not None:
-                tecnico = self.pega_tecnico_por_cpf(cpf)
+                tecnico = self.pega_tecnico_por_cpf(int(cpf))
                 if tecnico:
                     dados_atualizados = self.__tela_tecnico.pega_dados_atualizacao(
                         tecnico)
@@ -58,8 +56,7 @@ class ControladorTecnico:
                         tecnico.nome = dados_atualizados["nome"]
                         tecnico.idade = dados_atualizados["idade"]
                         tecnico.pais = dados_atualizados["pais"]
-                        tecnico.licenca = Licenca[dados_atualizados["licenca"].replace(
-                            " ", "_").upper()]
+                        tecnico.licenca = Licenca(dados_atualizados["licenca"])
                         self.__tecnico_DAO.update(tecnico)
                         self.__tela_tecnico.mostra_mensagem(
                             "Técnico alterado com sucesso!")
@@ -68,27 +65,28 @@ class ControladorTecnico:
                         "Técnico não encontrado!")
 
         elif st.session_state.sub_tela == 'listar':
-            for tecnico in self.__tecnico_DAO.get_all():
-                self.__tela_tecnico.mostra_tecnico(tecnico)
+            tecnicos = self.__tecnico_DAO.get_all()
+            self.__tela_tecnico.mostra_tecnicos(tecnicos)
 
         elif st.session_state.sub_tela == 'excluir':
             cpf = self.__tela_tecnico.seleciona_tecnico()
             if cpf is not None:
-                tecnico = self.pega_tecnico_por_cpf(cpf)
+                tecnico = self.pega_tecnico_por_cpf(int(cpf))
                 if tecnico:
                     if self.__tela_tecnico.confirma_exclusao(tecnico):
                         self.__tecnico_DAO.remove(tecnico.cpf)
                         self.__tela_tecnico.mostra_mensagem(
                             "Técnico excluído com sucesso!")
+                        st.session_state.sub_tela = 'listar'
                 else:
                     self.__tela_tecnico.mostra_mensagem(
                         "Técnico não encontrado!")
 
-    def pega_tecnico_por_cpf(self, cpf: str):
-        for tecnico in self.__tecnico_DAO.get_all():
-            if tecnico.cpf == cpf:
-                return tecnico
-        return None
+    def pega_tecnico_por_cpf(self, cpf: int):
+        try:
+            return self.__tecnico_DAO.get(cpf)
+        except ChaveInvalidaError:
+            return None
 
     @property
     def tecnicos(self):

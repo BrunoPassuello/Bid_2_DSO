@@ -26,9 +26,11 @@ class DAO(ABC):
     #cuidado: esse update só funciona se o objeto com essa chave já existe
     def update(self, key, obj):
         try:
-            if(self.__cache[key] != None):
+            if key in self.__cache:
                 self.__cache[key] = obj #atualiza a entrada
                 self.__dump()  #atualiza o arquivo
+            else:
+                raise ChaveInvalidaError()
         except KeyError:
             raise ChaveInvalidaError()
 
@@ -47,4 +49,4 @@ class DAO(ABC):
             raise ChaveInvalidaError()
 
     def get_all(self):
-        return self.__cache.values()
+        return list(self.__cache.values())

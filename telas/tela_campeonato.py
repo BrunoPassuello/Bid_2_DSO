@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 class TelaCampeonato:
     def tela_inicial_campeonato(self):
         if st.session_state.tela_atual != 'campeonato':
@@ -35,29 +34,29 @@ class TelaCampeonato:
                     return menu_items[label]
         return None
 
-    def tela_cadastro_campeonato(self):
-        if st.session_state.sub_tela != 'cadastrar':
+    def tela_cadastro_campeonato(self, dados_iniciais=None):
+        if st.session_state.sub_tela not in ['cadastrar', 'alterar']:
             return None
 
         st.header("Cadastro de Campeonato")
 
         with st.form(key="cadastro_campeonato"):
-            nome = st.text_input("Nome do Campeonato", key="camp_nome")
+            nome = st.text_input("Nome do Campeonato", value=dados_iniciais["nome"] if dados_iniciais else "", key="camp_nome")
             premiacao = st.number_input(
-                "Premiação (R$)", min_value=0.0, step=1000.0, key="camp_premiacao")
+                "Premiação (R$)", min_value=0.0, step=1000.0, value=dados_iniciais["premiacao"] if dados_iniciais else 0.0, key="camp_premiacao")
 
             col1, col2 = st.columns(2)
             with col1:
                 numero_times = st.number_input(
-                    "Número de Times", min_value=2, max_value=50, step=1, key="camp_num_times")
+                    "Número de Times", min_value=2, max_value=50, step=1, value=dados_iniciais["numero_times"] if dados_iniciais else 2, key="camp_num_times")
                 numero_estrangeiros = st.number_input(
-                    "Estrangeiros por Time", min_value=0, max_value=11, step=1, key="camp_num_estrangeiros")
+                    "Estrangeiros por Time", min_value=0, max_value=11, step=1, value=dados_iniciais["numero_estrangeiros"] if dados_iniciais else 0, key="camp_num_estrangeiros")
             with col2:
                 numero_jogadores = st.number_input(
-                    "Jogadores por Time", min_value=16, max_value=32, step=1, key="camp_num_jogadores")
+                    "Jogadores por Time", min_value=16, max_value=32, step=1, value=dados_iniciais["numero_jogadores"] if dados_iniciais else 16, key="camp_num_jogadores")
 
             submitted = st.form_submit_button(
-                "Cadastrar", use_container_width=True)
+                "Cadastrar" if st.session_state.sub_tela == 'cadastrar' else "Alterar", use_container_width=True)
 
             if submitted:
                 if not nome:

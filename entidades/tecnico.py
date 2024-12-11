@@ -1,10 +1,11 @@
 from entidades.licenca import Licenca
 from entidades.pessoa import Pessoa
 from entidades.pais import Pais
+
 class Tecnico(Pessoa):
-    def __init__(self, nome : str, cpf : int, idade : int, pais : Pais, licenca : Licenca):
+    def __init__(self, nome: str, cpf: int, idade: int, pais: Pais, licenca: Licenca):
         super().__init__(nome, cpf, idade, pais)
-        self.__licenca = Licenca(licenca)
+        self.__licenca = licenca  # Corrigido para aceitar diretamente o objeto Licenca
         self.__contrato = None
         
     @property

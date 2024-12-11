@@ -35,14 +35,26 @@ class ControladorCampeonato:
             if nome is not None:
                 campeonato = self.__campeonatos.get(nome)
                 if campeonato:
-                    dados_campeonato = self.__tela_campeonato.tela_cadastro_campeonato()
+                    dados_iniciais = {
+                        "nome": campeonato.nome,
+                        "premiacao": campeonato.premiacao,
+                        "numero_times": campeonato.regra.numero_times,
+                        "numero_estrangeiros": campeonato.regra.numero_estrangeiros,
+                        "numero_jogadores": campeonato.regra.numero_jogadores
+                    }
+                    dados_campeonato = self.__tela_campeonato.tela_cadastro_campeonato(dados_iniciais)
                     if dados_campeonato is not None:
+                        # Atualizar os valores do campeonato
                         campeonato.nome = dados_campeonato["nome"]
                         campeonato.premiacao = dados_campeonato["premiacao"]
                         campeonato.regra.numero_times = dados_campeonato["numero_times"]
                         campeonato.regra.numero_estrangeiros = dados_campeonato["numero_estrangeiros"]
                         campeonato.regra.numero_jogadores = dados_campeonato["numero_jogadores"]
+                        
+                        # Atualizar o dicionário e o DAO
+                        self.__campeonatos[dados_campeonato["nome"]] = campeonato
                         self.__campeonato_dao.update(campeonato)
+                        
                         self.__tela_campeonato.mostra_mensagem("Campeonato alterado com sucesso!")
                 else:
                     self.__tela_campeonato.mostra_mensagem("Campeonato não encontrado!")
