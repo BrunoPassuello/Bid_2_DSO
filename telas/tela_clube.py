@@ -254,3 +254,48 @@ class TelaClube:
             if hasattr(st.session_state, 'relatorio_tipo'):
                 del st.session_state.relatorio_tipo
             st.rerun()
+
+    def tela_gerenciar_campeonatos(self):
+        if st.session_state.sub_tela != 'gerenciar_campeonatos':
+            return None
+        
+        st.title("Gerenciamento de Campeonatos")
+        
+        # Menu na barra lateral
+        with st.sidebar:
+            st.title("Menu")
+            st.divider()
+            
+            menu_items = {
+                "Participar de Campeonato": "participar",
+                "Sair de Campeonato": "sair",
+                "Listar Campeonatos": "listar",
+                "Campeonato Maior Premiação": "maior_premiacao",
+                "Retornar": "retornar"
+            }
+            
+            for label, value in menu_items.items():
+                if st.button(label, key=f"camp_ger_btn_{value}", use_container_width=True):
+                    st.session_state.opcao_campeonato = value
+                    return value
+        
+        # Área principal para o conteúdo
+        if hasattr(st.session_state, 'opcao_campeonato'):
+            if st.session_state.opcao_campeonato in ["participar", "sair"]:
+                return st.session_state.opcao_campeonato
+            
+        return None
+
+    def seleciona_campeonato(self):
+        st.subheader("Selecionar Campeonato")
+        
+        with st.form(key="seleciona_campeonato"):
+            nome = st.text_input("Nome do Campeonato:", key="clube_camp_select_nome")
+            submitted = st.form_submit_button("Buscar", use_container_width=True)
+            
+            if submitted:
+                if not nome:
+                    st.error("Nome do campeonato é obrigatório!")
+                    return None
+                return nome
+        return None

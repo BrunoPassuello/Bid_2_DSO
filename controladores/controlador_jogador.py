@@ -57,7 +57,8 @@ class ControladorJogador:
                     dados_jogador["estrangeiro"] == "S"
                 )
                 self.__jogador_DAO.add(novo_jogador)
-                self.__tela_jogador.mostra_mensagem("Jogador cadastrado com sucesso!")
+                self.__tela_jogador.mostra_mensagem(
+                    "Jogador cadastrado com sucesso!")
 
     def excluir_jogador(self):
         cpf = self.__tela_jogador.seleciona_jogador()
@@ -65,7 +66,8 @@ class ControladorJogador:
             jogador = self.pega_jogador_por_cpf(cpf)
             if jogador:
                 self.__jogador_DAO.remove(int(cpf))
-                self.__tela_jogador.mostra_mensagem("Jogador excluído com sucesso!")
+                self.__tela_jogador.mostra_mensagem(
+                    "Jogador excluído com sucesso!")
             else:
                 self.__tela_jogador.mostra_mensagem("Jogador não encontrado!")
 
@@ -76,3 +78,7 @@ class ControladorJogador:
 
     def retornar(self):
         self.__controlador_sistema.abre_tela()
+
+    @property
+    def jogador_dao(self):
+        return self.__jogador_DAO

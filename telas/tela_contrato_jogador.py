@@ -129,8 +129,7 @@ class TelaContratoJogador:
 
         st.subheader("Confirmar Demissão")
 
-        st.write(f"Deseja realmente demitir o jogador {
-                 contrato.jogador.nome}?")
+        st.write(f"Deseja realmente demitir o jogador {contrato.jogador.nome}?")
         st.write("**Dados do contrato:**")
         st.write(f"- Salário: R$ {contrato.salario:,.2f}")
         st.write(f"- Multa Rescisória: R$ {contrato.multa_rescisoria:,.2f}")
@@ -143,7 +142,7 @@ class TelaContratoJogador:
             if st.button("Cancelar", key="contrato_j_btn_cancelar_demissao"):
                 st.session_state.sub_tela = None
                 st.rerun()
-        return False
+        return None
 
     def mostra_mensagem(self, mensagem):
         st.warning(mensagem)

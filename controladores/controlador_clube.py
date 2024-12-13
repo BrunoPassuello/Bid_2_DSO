@@ -52,8 +52,7 @@ class ControladorClube:
                 st.rerun()
                 return
             elif opcao == 3:  # Campeonatos
-                st.session_state.tela_atual = 'campeonato'
-                st.session_state.sub_tela = None
+                st.session_state.sub_tela = 'gerenciar_campeonatos'
                 st.rerun()
                 return
             elif opcao == 4:  # Informações
@@ -104,6 +103,53 @@ class ControladorClube:
                     self.jogador_menor_multa()
                 # Clear the report type after showing the result
                 del st.session_state.relatorio_tipo
+
+        elif st.session_state.sub_tela == 'gerenciar_campeonatos':
+            opcao = self.__tela_clube.tela_gerenciar_campeonatos()
+            if opcao == "participar":
+                nome_campeonato = self.__tela_clube.seleciona_campeonato()
+                if nome_campeonato:
+                    campeonato = self.__controlador_sistema.controlador_campeonato.pega_campeonato_por_nome(nome_campeonato)
+                    if campeonato:
+                        if campeonato not in self.__clube_selecionado.campeonatos:
+                            self.__clube_selecionado.campeonatos.append(campeonato)
+                            self.__clube_dao.update(self.__clube_selecionado)
+                            self.__tela_clube.mostra_mensagem("Clube inscrito no campeonato com sucesso!")
+                        else:
+                            self.__tela_clube.mostra_mensagem("Clube já está inscrito neste campeonato!")
+                    else:
+                        self.__tela_clube.mostra_mensagem("Campeonato não encontrado!")
+            
+            elif opcao == "sair":
+                nome_campeonato = self.__tela_clube.seleciona_campeonato()
+                if nome_campeonato:
+                    campeonato = next((c for c in self.__clube_selecionado.campeonatos if c.nome == nome_campeonato), None)
+                    if campeonato:
+                        self.__clube_selecionado.campeonatos.remove(campeonato)
+                        self.__clube_dao.update(self.__clube_selecionado)
+                        self.__tela_clube.mostra_mensagem("Clube removido do campeonato com sucesso!")
+                    else:
+                        self.__tela_clube.mostra_mensagem("Clube não está inscrito neste campeonato!")
+            
+            elif opcao == "listar":
+                if self.__clube_selecionado.campeonatos:
+                    st.subheader("Campeonatos do Clube")
+                    for campeonato in self.__clube_selecionado.campeonatos:
+                        st.write(f"- {campeonato.nome} (Premiação: R$ {campeonato.premiacao:,.2f})")
+                else:
+                    self.__tela_clube.mostra_mensagem("O clube não está participando de nenhum campeonato!")
+            
+            elif opcao == "maior_premiacao":
+                if self.__clube_selecionado.campeonatos:
+                    campeonato = max(self.__clube_selecionado.campeonatos, key=lambda c: c.premiacao)
+                    self.__tela_clube.mostra_mensagem(
+                        f"Campeonato com maior premiação: {campeonato.nome} - R$ {campeonato.premiacao:,.2f}")
+                else:
+                    self.__tela_clube.mostra_mensagem("O clube não está participando de nenhum campeonato!")
+            
+            elif opcao == "retornar":
+                st.session_state.sub_tela = 'clube_selecionado'
+                st.rerun()
 
     @property
     def controlador_sistema(self):
@@ -247,3 +293,14 @@ class ControladorClube:
     @clube_selecionado.setter
     def clube_selecionado(self, clube):
         self.__clube_selecionado = clube
+
+    def demitir_jogador(self, contrato_jogador):
+        if self.__clube_selecionado and contrato_jogador in self.__clube_selecionado.jogadores:
+            # Remove o jogador do clube
+            self.__clube_selecionado.remover_jogador(contrato_jogador)
+            # Atualiza o clube no DAO
+            self.__clube_dao.update(self.__clube_selecionado)
+            # Força atualização do estado da sessão
+            st.session_state.clube_selecionado = self.__clube_selecionado
+            return True
+        return False

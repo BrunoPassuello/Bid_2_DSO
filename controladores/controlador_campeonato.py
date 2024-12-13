@@ -29,6 +29,9 @@ class ControladorCampeonato:
                     self.__campeonatos[novo_campeonato.nome] = novo_campeonato
                     self.__campeonato_dao.add(novo_campeonato)
                     self.__tela_campeonato.mostra_mensagem("Campeonato cadastrado com sucesso!")
+                    # Limpar sub_tela após cadastro
+                    st.session_state.sub_tela = None
+                    st.rerun()
 
         elif st.session_state.sub_tela == 'alterar':
             nome = self.__tela_campeonato.seleciona_campeonato()
@@ -44,6 +47,11 @@ class ControladorCampeonato:
                     }
                     dados_campeonato = self.__tela_campeonato.tela_cadastro_campeonato(dados_iniciais)
                     if dados_campeonato is not None:
+                        # Remover campeonato antigo se o nome foi alterado
+                        if nome != dados_campeonato["nome"]:
+                            self.__campeonato_dao.remove(nome)
+                            del self.__campeonatos[nome]
+                        
                         # Atualizar os valores do campeonato
                         campeonato.nome = dados_campeonato["nome"]
                         campeonato.premiacao = dados_campeonato["premiacao"]
@@ -56,6 +64,11 @@ class ControladorCampeonato:
                         self.__campeonato_dao.update(campeonato)
                         
                         self.__tela_campeonato.mostra_mensagem("Campeonato alterado com sucesso!")
+                        # Limpar estados após alteração
+                        if 'campeonato_selecionado' in st.session_state:
+                            del st.session_state.campeonato_selecionado
+                        st.session_state.sub_tela = None
+                        st.rerun()
                 else:
                     self.__tela_campeonato.mostra_mensagem("Campeonato não encontrado!")
 

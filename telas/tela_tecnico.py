@@ -22,7 +22,6 @@ class TelaTecnico:
             
             menu_items = {
                 "Cadastrar Técnico": "cadastrar",
-                "Alterar Técnico": "alterar",
                 "Listar Técnicos": "listar",
                 "Excluir Técnico": "excluir",
                 "Retornar": "retornar"
@@ -78,7 +77,7 @@ class TelaTecnico:
         return None
 
     def seleciona_tecnico(self):
-        if st.session_state.sub_tela not in ['alterar', 'excluir']:
+        if st.session_state.sub_tela != 'excluir':
             return None
             
         st.subheader("Selecionar Técnico")
@@ -114,42 +113,6 @@ class TelaTecnico:
                     st.write("**País:**", tecnico.pais)
                     st.write("**Licença:**", tecnico.licenca.tipo)
                 st.divider()
-
-    def pega_dados_atualizacao(self, tecnico):
-        if st.session_state.sub_tela != 'alterar':
-            return None
-            
-        st.header("Atualizar Dados do Técnico")
-        
-        with st.form(key="atualiza_tecnico"):
-            st.write("**CPF atual:**", tecnico.cpf)
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                nome = st.text_input("Nome", value=tecnico.nome, key="tec_update_nome")
-                idade = st.number_input("Idade", value=tecnico.idade, min_value=25, max_value=80, step=1, key="tec_update_idade")
-            with col2:
-                pais = st.text_input("País", value=tecnico.pais, key="tec_update_pais")
-                licenca = st.selectbox("Licença", 
-                                     ["Licença A", "Licença B", "Licença C", "Licença PRO"],
-                                     index=["Licença A", "Licença B", "Licença C", "Licença PRO"].index(tecnico.licenca.tipo),
-                                     key="tec_update_licenca")
-            
-            submitted = st.form_submit_button("Confirmar Alterações", use_container_width=True)
-            
-            if submitted:
-                if not all([nome, pais, licenca]):
-                    st.error("Todos os campos são obrigatórios!")
-                    return None
-
-                return {
-                    "nome": nome,
-                    "cpf": tecnico.cpf,  # mantém o CPF original
-                    "idade": idade,
-                    "pais": pais,
-                    "licenca": licenca
-                }
-        return None
 
     def confirma_exclusao(self, tecnico):
         if st.session_state.sub_tela != 'excluir':

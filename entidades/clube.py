@@ -2,29 +2,32 @@ from entidades.jogador import Jogador
 from entidades.pais import Pais
 from entidades.tecnico import Tecnico
 from entidades.campeonato import Campeonato
+
+
 class Clube:
     contador_id = 1  # Atributo de classe para gerar IDs únicos
+
     def __init__(self, nome: str, pais):
         self.id = Clube.contador_id
         Clube.contador_id += 1
         self.__nome = nome
         self.__pais = pais
-        self.__jogadores = []          
-        self.__contrato_tecnico = None  
-        self.__campeonatos = [] 
-        
+        self.__jogadores = []
+        self.__contrato_tecnico = None
+        self.__campeonatos = []
+
     @property
     def nome(self):
         return self.__nome
-    
+
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
-    
+
     @property
     def pais(self):
         return self.__pais
-    
+
     @pais.setter
     def pais(self, pais):
         self.__pais = pais
@@ -32,11 +35,11 @@ class Clube:
     @property
     def jogadores(self):
         return self.__jogadores
-    
+
     @property
     def contrato_tecnico(self):
         return self.__contrato_tecnico
-    
+
     @contrato_tecnico.setter
     def contrato_tecnico(self, contrato_tecnico):
         self.__contrato_tecnico = contrato_tecnico
@@ -48,3 +51,12 @@ class Clube:
     def adicionar_jogador(self, contrato_jogador):
         if contrato_jogador not in self.__jogadores:
             self.__jogadores.append(contrato_jogador)
+
+    def remover_jogador(self, contrato_jogador):
+        if contrato_jogador in self.__jogadores:
+            # Remove o contrato do jogador
+            contrato_jogador.jogador.contrato = None
+            # Remove o jogador da lista do clube
+            self.__jogadores.remove(contrato_jogador)
+            return True
+        return False

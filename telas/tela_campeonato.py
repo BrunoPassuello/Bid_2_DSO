@@ -77,6 +77,9 @@ class TelaCampeonato:
             return None
 
         st.subheader("Selecionar Campeonato")
+        
+        if 'campeonato_selecionado' in st.session_state:
+            return st.session_state.campeonato_selecionado
 
         with st.form(key="seleciona_campeonato"):
             nome = st.text_input("Nome do Campeonato:", key="camp_select_nome")
@@ -87,6 +90,7 @@ class TelaCampeonato:
                 if not nome:
                     st.error("Nome do campeonato é obrigatório!")
                     return None
+                st.session_state.campeonato_selecionado = nome
                 return nome
         return None
 
@@ -113,7 +117,11 @@ class TelaCampeonato:
                              campeonato.regra.numero_estrangeiros)
                     st.write("**Jogadores por Time:**",
                              campeonato.regra.numero_jogadores)
-                st.divider()
+                
+                if st.button("Alterar", key=f"btn_alterar_{campeonato.nome}"):
+                    st.session_state.sub_tela = 'alterar'
+                    st.session_state.campeonato_selecionado = campeonato.nome
+                    st.rerun()
 
     def mostra_mensagem(self, mensagem):
         st.warning(mensagem)

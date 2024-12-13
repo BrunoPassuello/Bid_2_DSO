@@ -47,27 +47,70 @@ class ControladorContratoJogador:
                         multa_rescisoria=dados_contrato["multa_rescisoria"],
                         contrato_produtividade=dados_contrato["contrato_produtividade"]
                     )
-                    
+
                     # Add contract to club's list
-                    st.session_state.clube_selecionado.jogadores.append(novo_contrato)
-                    
+                    st.session_state.clube_selecionado.jogadores.append(
+                        novo_contrato)
+
                     # Update club in DAO
-                    self.__controlador_clube._ControladorClube__clube_dao.update(st.session_state.clube_selecionado)
-                    
-                    self.__tela_contrato.mostra_mensagem("Contrato criado com sucesso!")
+                    self.__controlador_clube._ControladorClube__clube_dao.update(
+                        st.session_state.clube_selecionado)
+
+                    self.__tela_contrato.mostra_mensagem(
+                        "Contrato criado com sucesso!")
                     st.session_state.sub_tela = None
                     st.rerun()
-                    
+
                 except Exception as e:
                     self.__tela_contrato.mostra_mensagem(str(e))
                     return
-        
+
         elif st.session_state.sub_tela == 'listar':
             if st.session_state.clube_selecionado.jogadores:
                 for contrato in st.session_state.clube_selecionado.jogadores:
                     self.__tela_contrato.mostra_contrato(contrato)
             else:
-                self.__tela_contrato.mostra_mensagem("Não há jogadores contratados!")
+                self.__tela_contrato.mostra_mensagem(
+                    "Não há jogadores contratados!")
+
+        elif st.session_state.sub_tela == 'demitir':
+            cpf = self.__tela_contrato.seleciona_contrato()
+            if cpf is not None:
+                contrato = None
+                for contrato_jogador in st.session_state.clube_selecionado.jogadores:
+                    if contrato_jogador.jogador.cpf == int(cpf):
+                        contrato = contrato_jogador
+                        break
+
+                if contrato:
+                    confirmacao = self.__tela_contrato.confirma_demissao(contrato)
+                    if confirmacao is True:
+                        try:
+                            # 1. Pega referências necessárias
+                            jogador = contrato.jogador
+                            clube = st.session_state.clube_selecionado
+                            
+                            # 2. Remove jogador do clube
+                            if clube.remover_jogador(contrato):
+                                # 3. Atualiza o jogador no DAO
+                                self.__controlador_clube.controlador_sistema.controlador_jogador.jogador_dao.update(jogador)
+                                
+                                # 4. Atualiza o clube no DAO
+                                self.__controlador_clube._ControladorClube__clube_dao.update(clube)
+                                
+                                # 5. Atualiza a sessão
+                                st.session_state.clube_selecionado = clube
+                                
+                                # 6. Mostra mensagem de sucesso e retorna
+                                self.__tela_contrato.mostra_mensagem("Jogador demitido com sucesso!")
+                                st.session_state.sub_tela = None
+                                st.rerun()
+                            else:
+                                self.__tela_contrato.mostra_mensagem("Erro ao remover jogador do clube!")
+                        except Exception as e:
+                            self.__tela_contrato.mostra_mensagem(f"Erro ao demitir jogador: {str(e)}")
+                else:
+                    self.__tela_contrato.mostra_mensagem("Jogador não encontrado no clube!")
 
     def pega_contrato_por_jogador(self, jogador: Jogador):
         for contrato in self.__contratos:
