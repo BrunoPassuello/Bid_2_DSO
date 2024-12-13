@@ -42,32 +42,31 @@ class TelaClube:
         if st.session_state.sub_tela != 'clube_selecionado':
             return None
 
-        # Título centralizado
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.title("Operações do Clube")
+        # Limpa a tela principal
+        st.empty()
 
         # Menu lateral
         with st.sidebar:
+            # Título do menu
             st.title("Menu")
             st.divider()
 
+            # Menu de operações
             menu_items = {
-                "Jogadores": "jogadores",
-                "Técnico": "tecnico",
-                "Campeonatos": "campeonatos",
-                "Informações": "informacoes",
-                "Retornar": "retornar"
+                "Jogadores": 1,
+                "Técnico": 2,
+                "Campeonatos": 3,
+                "Informações": 4,
+                "Menu Principal": 0
             }
 
             for label, value in menu_items.items():
                 if st.button(label, key=f"clube_sel_btn_{value}", use_container_width=True):
-                    if value == "retornar":
+                    if value == 0:
                         st.session_state.sub_tela = None
+                        st.session_state.tela_atual = 'sistema'
                         st.rerun()
-                        return 0
-                    st.session_state.sub_tela = value
-                    return menu_items[label]
+                    return value
         return None
 
     def tela_cadastra_clube(self):
@@ -184,3 +183,42 @@ class TelaClube:
 
     def mostra_mensagem(self, mensagem):
         st.warning(mensagem)
+
+    def tela_clube_informacoes(self):
+        if st.session_state.sub_tela != 'informacoes':
+            return None
+
+        clube = st.session_state.clube_selecionado
+        
+        st.title("Informações do Clube")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("**Nome:**", clube.nome)
+            st.write("**País:**", clube.pais)
+        
+        with col2:
+            if clube.contrato_tecnico:
+                st.write("**Técnico:**", clube.contrato_tecnico.tecnico.nome)
+            else:
+                st.write("**Técnico:** Não contratado")
+        
+        # Mostrar jogadores do clube
+        st.subheader("Jogadores")
+        if clube.jogadores:
+            for jogador in clube.jogadores:
+                st.write(f"- {jogador.jogador.nome}")
+        else:
+            st.write("Nenhum jogador contratado")
+        
+        # Mostrar campeonatos do clube
+        st.subheader("Campeonatos")
+        if clube.campeonatos:
+            for campeonato in clube.campeonatos:
+                st.write(f"- {campeonato.nome}")
+        else:
+            st.write("Não participa de nenhum campeonato")
+
+        if st.button("Retornar", use_container_width=True):
+            st.session_state.sub_tela = 'clube_selecionado'
+            st.rerun()

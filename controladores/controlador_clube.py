@@ -14,7 +14,6 @@ class ControladorClube:
         self.__controlador_sistema = controlador_sistema
         self.__tela_clube = TelaClube()
         self.__clube_dao = ClubeDAO()
-        self.__clube_selecionado = None
         self.__controlador_contrato_jogador = None
         self.__controlador_contrato_tecnico = None
 
@@ -39,17 +38,31 @@ class ControladorClube:
                     from controladores.controlador_contrato_jogador import ControladorContratoJogador
                     self.__controlador_contrato_jogador = ControladorContratoJogador(self)
                 st.session_state.tela_atual = 'contrato_jogador'
+                st.session_state.sub_tela = None
                 st.rerun()
+                return
             elif opcao == 2:  # Técnico
                 if self.__controlador_contrato_tecnico is None:
                     from controladores.controlador_contrato_tecnico import ControladorContratoTecnico
                     self.__controlador_contrato_tecnico = ControladorContratoTecnico(self)
                 st.session_state.tela_atual = 'contrato_tecnico'
+                st.session_state.sub_tela = None
                 st.rerun()
+                return
             elif opcao == 3:  # Campeonatos
-                self.gerenciar_campeonatos()
+                st.session_state.tela_atual = 'campeonato'
+                st.session_state.sub_tela = None
+                st.rerun()
+                return
             elif opcao == 4:  # Informações
-                self.mostrar_informacoes_clube()
+                st.session_state.sub_tela = 'informacoes'
+                st.rerun()
+                return
+            elif opcao == 0:  # Retornar
+                st.session_state.sub_tela = None
+                if hasattr(st.session_state, 'clube_selecionado'):
+                    del st.session_state.clube_selecionado
+                st.rerun()
 
         elif st.session_state.sub_tela == 'cadastrar':
             dados_clube = self.__tela_clube.tela_cadastra_clube()
@@ -76,29 +89,19 @@ class ControladorClube:
                 else:
                     self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
+    @property
+    def controlador_sistema(self):
+        return self.__controlador_sistema
+
     def pega_clube_por_nome(self, nome: str):
-        for clube in self.__clube_dao.get_all():
-            if clube.nome == nome:
+        clubes = self.__clube_dao.get_all()
+        for clube in clubes:
+            if clube.nome.lower() == nome.lower():
                 return clube
         return None
 
     def mostrar_informacoes_clube(self):
-        opcoes = {
-            1: self.relatorio_clube,
-            2: self.jogador_maior_salario,
-            3: self.jogador_menor_salario,
-            4: self.jogador_maior_multa,
-            5: self.jogador_menor_multa,
-            0: self.retornar_menu_clube_selecionado
-        }
-
-        while True:
-            opcao = self.__tela_clube.tela_clube_informacoes()
-            acao = opcoes.get(opcao)
-            if acao:
-                acao()
-            else:
-                self.__tela_clube.mostra_mensagem("Opção inválida.")
+        self.__tela_clube.tela_clube_informacoes()
 
     def relatorio_clube(self):
         self.__tela_clube.relatorio_clube(

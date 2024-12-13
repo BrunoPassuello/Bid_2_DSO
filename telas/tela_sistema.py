@@ -6,16 +6,11 @@ class TelaSistema:
         if st.session_state.tela_atual != 'sistema':
             return None
 
-        # Limpa a tela principal
-        st.empty()
+        st.title("Sistema de Gerenciamento - BID_2")
 
-        # Título centralizado
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.title("Sistema de Gerenciamento - BID_2")
-
-        # Menu lateral mais organizado
         with st.sidebar:
+            st.empty()
+            
             st.title("Menu Principal")
             st.divider()
 
@@ -24,15 +19,16 @@ class TelaSistema:
                 "Jogador": "jogador",
                 "Técnico": "tecnico",
                 "Campeonato": "campeonato",
-                "Finalizar Sistema": None
+                "Finalizar Sistema": "finalizar"
             }
 
             for label, value in menu_items.items():
-                if st.button(label, key=f"sistema_btn_{value if value else 'finalizar'}", use_container_width=True):
-                    if value is None:
-                        st.session_state.tela_atual = None
-                        return 0
+                if st.button(label, key=f"sistema_btn_{value}", use_container_width=True):
+                    if value == "finalizar":
+                        st.stop()
                     st.session_state.tela_atual = value
+                    if hasattr(st.session_state, 'sub_tela'):
+                        del st.session_state.sub_tela
                     st.rerun()
         return None
 

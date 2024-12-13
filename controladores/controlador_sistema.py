@@ -12,6 +12,8 @@ class ControladorSistema:
         self.__controlador_jogador = ControladorJogador(self)
         self.__controlador_tecnico = ControladorTecnico(self)
         self.__controlador_campeonato = ControladorCampeonato(self)
+        self.__controlador_contrato_jogador = None
+        self.__controlador_contrato_tecnico = None
 
     def inicializa_sistema(self):
         if 'tela_atual' not in st.session_state:
@@ -31,6 +33,18 @@ class ControladorSistema:
                 self.__controlador_clube = ControladorClube(self)
             self.__controlador_clube.abre_tela()
 
+        elif st.session_state.tela_atual == 'contrato_jogador':
+            if self.__controlador_contrato_jogador is None:
+                from controladores.controlador_contrato_jogador import ControladorContratoJogador
+                self.__controlador_contrato_jogador = ControladorContratoJogador(self.__controlador_clube)
+            self.__controlador_contrato_jogador.abre_tela()
+
+        elif st.session_state.tela_atual == 'contrato_tecnico':
+            if self.__controlador_contrato_tecnico is None:
+                from controladores.controlador_contrato_tecnico import ControladorContratoTecnico
+                self.__controlador_contrato_tecnico = ControladorContratoTecnico(self.__controlador_clube)
+            self.__controlador_contrato_tecnico.abre_tela()
+
         elif st.session_state.tela_atual == 'jogador':
             self.__controlador_jogador.abre_tela()
 
@@ -39,6 +53,22 @@ class ControladorSistema:
 
         elif st.session_state.tela_atual == 'campeonato':
             self.__controlador_campeonato.abre_tela()
+
+    @property
+    def controlador_clube(self):
+        return self.__controlador_clube
+
+    @property
+    def controlador_jogador(self):
+        return self.__controlador_jogador
+
+    @property
+    def controlador_tecnico(self):
+        return self.__controlador_tecnico
+
+    @property
+    def controlador_campeonato(self):
+        return self.__controlador_campeonato
 
     def encerra_sistema(self):
         exit(0)
