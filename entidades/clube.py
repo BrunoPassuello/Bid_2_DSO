@@ -44,3 +44,7 @@ class Clube:
     @property
     def campeonatos(self):
         return self.__campeonatos
+
+    def adicionar_jogador(self, contrato_jogador):
+        if contrato_jogador not in self.__jogadores:
+            self.__jogadores.append(contrato_jogador)

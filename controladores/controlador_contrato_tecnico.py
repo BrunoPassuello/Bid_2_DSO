@@ -16,12 +16,10 @@ class ControladorContratoTecnico:
     def __init__(self, controlador_clube):
         self.__controlador_clube = controlador_clube
         self.__tela_contrato = TelaContratoTecnico()
-        self.__contratos = []
 
     def abre_tela(self):
         if not st.session_state.clube_selecionado:
-            self.__tela_contrato.mostra_mensagem(
-                "Selecione um clube primeiro!")
+            self.__tela_contrato.mostra_mensagem("Selecione um clube primeiro!")
             st.session_state.tela_atual = 'clube'
             st.rerun()
             return
@@ -31,83 +29,56 @@ class ControladorContratoTecnico:
         if st.session_state.sub_tela == 'contratar':
             dados_contrato = self.__tela_contrato.pega_dados_contrato()
             if dados_contrato is not None:
-                if not hasattr(self.__controlador_clube.controlador_sistema, 'controlador_tecnico'):
-                    from controladores.controlador_tecnico import ControladorTecnico
-                    self.__controlador_clube.controlador_sistema.controlador_tecnico = ControladorTecnico(self.__controlador_clube.controlador_sistema)
                 tecnico = self.__controlador_clube.controlador_sistema.controlador_tecnico.pega_tecnico_por_cpf(
                     dados_contrato["cpf"])
                 if not tecnico:
-                    self.__tela_contrato.mostra_mensagem(
-                        "Técnico não encontrado!")
+                    self.__tela_contrato.mostra_mensagem("Técnico não encontrado!")
                     return
 
-                if self.pega_contrato_por_tecnico(tecnico):
-                    self.__tela_contrato.mostra_mensagem(
-                        "Técnico já possui contrato!")
+                if st.session_state.clube_selecionado.contrato_tecnico:
+                    self.__tela_contrato.mostra_mensagem("Clube já possui técnico!")
                     return
 
-                novo_contrato = ContratoTecnico(
-                    st.session_state.clube_selecionado,
-                    tecnico,
-                    dados_contrato["salario"],
-                    dados_contrato["multa_rescisoria"]
-                )
-                self.__contratos.append(novo_contrato)
-                st.session_state.clube_selecionado.contrato_tecnico = novo_contrato
-                self.__tela_contrato.mostra_mensagem(
-                    "Contrato realizado com sucesso!")
-
-        elif st.session_state.sub_tela == 'alterar':
-            cpf = self.__tela_contrato.seleciona_contrato()
-            if cpf is not None:
-                tecnico = self.__controlador_clube.controlador_sistema.controlador_tecnico.pega_tecnico_por_cpf(
-                    cpf)
-                if tecnico:
-                    contrato = self.pega_contrato_por_tecnico(tecnico)
-                    if contrato:
-                        # Implementar lógica de alteração
-                        pass
-                    else:
-                        self.__tela_contrato.mostra_mensagem(
-                            "Contrato não encontrado!")
-                else:
-                    self.__tela_contrato.mostra_mensagem(
-                        "Técnico não encontrado!")
-
-        elif st.session_state.sub_tela == 'listar':
-            contratos_clube = [
-                c for c in self.__contratos if c.clube == st.session_state.clube_selecionado]
-            self.__tela_contrato.mostra_contrato(contratos_clube)
+                try:
+                    # Create new contract
+                    novo_contrato = ContratoTecnico(
+                        clube=st.session_state.clube_selecionado,
+                        tecnico=tecnico,
+                        salario=dados_contrato["salario"],
+                        multa_rescisoria=dados_contrato["multa_rescisoria"]
+                    )
+                    
+                    # Set contract to club
+                    st.session_state.clube_selecionado.contrato_tecnico = novo_contrato
+                    
+                    # Update club in DAO
+                    self.__controlador_clube._ControladorClube__clube_dao.update(st.session_state.clube_selecionado)
+                    
+                    self.__tela_contrato.mostra_mensagem("Técnico contratado com sucesso!")
+                    st.session_state.sub_tela = None
+                    st.rerun()
+                    
+                except Exception as e:
+                    self.__tela_contrato.mostra_mensagem(str(e))
+                    return
 
         elif st.session_state.sub_tela == 'demitir':
-            cpf = self.__tela_contrato.seleciona_contrato()
-            if cpf is not None:
-                tecnico = self.__controlador_clube.controlador_sistema.controlador_tecnico.pega_tecnico_por_cpf(
-                    cpf)
-                if tecnico:
-                    contrato = self.pega_contrato_por_tecnico(tecnico)
-                    if contrato:
-                        if self.__tela_contrato.confirma_demissao(contrato):
-                            self.__contratos.remove(contrato)
-                            st.session_state.clube_selecionado.contrato_tecnico = None
-                            self.__tela_contrato.mostra_mensagem(
-                                "Técnico demitido com sucesso!")
-                    else:
-                        self.__tela_contrato.mostra_mensagem(
-                            "Contrato não encontrado!")
-                else:
-                    self.__tela_contrato.mostra_mensagem(
-                        "Técnico não encontrado!")
+            if not st.session_state.clube_selecionado.contrato_tecnico:
+                self.__tela_contrato.mostra_mensagem("Clube não possui técnico!")
+                return
+            
+            if self.__tela_contrato.confirma_demissao():
+                st.session_state.clube_selecionado.contrato_tecnico = None
+                self.__controlador_clube._ControladorClube__clube_dao.update(st.session_state.clube_selecionado)
+                self.__tela_contrato.mostra_mensagem("Técnico demitido com sucesso!")
+                st.session_state.sub_tela = None
+                st.rerun()
 
-    def pega_contrato_por_tecnico(self, tecnico: Tecnico):
-        for contrato in self.__contratos:
-            if contrato.tecnico == tecnico:
-                return contrato
-        return None
-
-    @property
-    def contratos(self):
-        return self.__contratos
+        elif st.session_state.sub_tela == 'informacoes':
+            if st.session_state.clube_selecionado.contrato_tecnico:
+                self.__tela_contrato.mostra_contrato(st.session_state.clube_selecionado.contrato_tecnico)
+            else:
+                self.__tela_contrato.mostra_mensagem("Clube não possui técnico!")
 
 
 class ControladorSistema:

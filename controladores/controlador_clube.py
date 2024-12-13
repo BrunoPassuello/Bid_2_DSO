@@ -16,6 +16,7 @@ class ControladorClube:
         self.__clube_dao = ClubeDAO()
         self.__controlador_contrato_jogador = None
         self.__controlador_contrato_tecnico = None
+        self.__clube_selecionado = None
 
     def abre_tela(self):
         opcao = self.__tela_clube.tela_inicial_clube()
@@ -25,6 +26,7 @@ class ControladorClube:
             if nome is not None:
                 clube = self.pega_clube_por_nome(nome)
                 if clube:
+                    self.__clube_selecionado = clube
                     st.session_state.clube_selecionado = clube
                     st.session_state.sub_tela = 'clube_selecionado'
                     st.rerun()
@@ -89,6 +91,20 @@ class ControladorClube:
                 else:
                     self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
+        elif st.session_state.sub_tela == 'informacoes':
+            self.mostrar_informacoes_clube()
+            if hasattr(st.session_state, 'relatorio_tipo'):
+                if st.session_state.relatorio_tipo == "maior_salario":
+                    self.jogador_maior_salario()
+                elif st.session_state.relatorio_tipo == "menor_salario":
+                    self.jogador_menor_salario()
+                elif st.session_state.relatorio_tipo == "maior_multa":
+                    self.jogador_maior_multa()
+                elif st.session_state.relatorio_tipo == "menor_multa":
+                    self.jogador_menor_multa()
+                # Clear the report type after showing the result
+                del st.session_state.relatorio_tipo
+
     @property
     def controlador_sistema(self):
         return self.__controlador_sistema
@@ -111,20 +127,60 @@ class ControladorClube:
         )
 
     def jogador_maior_salario(self):
-        jogador = max(self.__clube_selecionado.jogadores, key=lambda j: j.salario)
-        self.__tela_clube.mostra_mensagem(f"Jogador com maior salário: {jogador.nome} - R${jogador.salario}")
+        if not self.__clube_selecionado:
+            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
+            return
+        if not self.__clube_selecionado.jogadores:
+            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
+            return
+        try:
+            jogador = max(self.__clube_selecionado.jogadores, key=lambda j: j.salario)
+            self.__tela_clube.mostra_mensagem(
+                f"Jogador com maior salário: {jogador.jogador.nome} - R${jogador.salario:,.2f}")
+        except Exception as e:
+            self.__tela_clube.mostra_mensagem(f"Erro ao buscar jogador: {str(e)}")
 
     def jogador_menor_salario(self):
-        jogador = min(self.__clube_selecionado.jogadores, key=lambda j: j.salario)
-        self.__tela_clube.mostra_mensagem(f"Jogador com menor salário: {jogador.nome} - R${jogador.salario}")
+        if not self.__clube_selecionado:
+            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
+            return
+        if not self.__clube_selecionado.jogadores:
+            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
+            return
+        try:
+            jogador = min(self.__clube_selecionado.jogadores, key=lambda j: j.salario)
+            self.__tela_clube.mostra_mensagem(
+                f"Jogador com menor salário: {jogador.jogador.nome} - R${jogador.salario:,.2f}")
+        except Exception as e:
+            self.__tela_clube.mostra_mensagem(f"Erro ao buscar jogador: {str(e)}")
 
     def jogador_maior_multa(self):
-        jogador = max(self.__clube_selecionado.jogadores, key=lambda j: j.multa_rescisoria)
-        self.__tela_clube.mostra_mensagem(f"Jogador com maior multa rescisória: {jogador.nome} - R${jogador.multa_rescisoria}")
+        if not self.__clube_selecionado:
+            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
+            return
+        if not self.__clube_selecionado.jogadores:
+            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
+            return
+        try:
+            jogador = max(self.__clube_selecionado.jogadores, key=lambda j: j.multa_rescisoria)
+            self.__tela_clube.mostra_mensagem(
+                f"Jogador com maior multa rescisória: {jogador.jogador.nome} - R${jogador.multa_rescisoria:,.2f}")
+        except Exception as e:
+            self.__tela_clube.mostra_mensagem(f"Erro ao buscar jogador: {str(e)}")
 
     def jogador_menor_multa(self):
-        jogador = min(self.__clube_selecionado.jogadores, key=lambda j: j.multa_rescisoria)
-        self.__tela_clube.mostra_mensagem(f"Jogador com menor multa rescisória: {jogador.nome} - R${jogador.multa_rescisoria}")
+        if not self.__clube_selecionado:
+            self.__tela_clube.mostra_mensagem("Nenhum clube selecionado!")
+            return
+        if not self.__clube_selecionado.jogadores:
+            self.__tela_clube.mostra_mensagem("O clube não possui jogadores!")
+            return
+        try:
+            jogador = min(self.__clube_selecionado.jogadores, key=lambda j: j.multa_rescisoria)
+            self.__tela_clube.mostra_mensagem(
+                f"Jogador com menor multa rescisória: {jogador.jogador.nome} - R${jogador.multa_rescisoria:,.2f}")
+        except Exception as e:
+            self.__tela_clube.mostra_mensagem(f"Erro ao buscar jogador: {str(e)}")
 
     def gerenciar_campeonatos(self):
         opcoes = {

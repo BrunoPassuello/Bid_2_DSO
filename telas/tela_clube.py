@@ -203,6 +203,36 @@ class TelaClube:
             else:
                 st.write("**Técnico:** Não contratado")
         
+        # Relatórios section
+        st.subheader("Relatórios de Salários e Multas")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Jogador com Maior Salário", key="btn_maior_salario", use_container_width=True):
+                st.session_state.relatorio_tipo = "maior_salario"
+                st.rerun()
+                
+            if st.button("Jogador com Maior Multa", key="btn_maior_multa", use_container_width=True):
+                st.session_state.relatorio_tipo = "maior_multa"
+                st.rerun()
+                
+        with col2:
+            if st.button("Jogador com Menor Salário", key="btn_menor_salario", use_container_width=True):
+                st.session_state.relatorio_tipo = "menor_salario"
+                st.rerun()
+                
+            if st.button("Jogador com Menor Multa", key="btn_menor_multa", use_container_width=True):
+                st.session_state.relatorio_tipo = "menor_multa"
+                st.rerun()
+        
+        # Display report result if any
+        if hasattr(st.session_state, 'relatorio_tipo'):
+            st.divider()
+            st.subheader("Resultado do Relatório")
+            # The actual result will be shown by the controller
+        
+        st.divider()
+        
         # Mostrar jogadores do clube
         st.subheader("Jogadores")
         if clube.jogadores:
@@ -219,6 +249,8 @@ class TelaClube:
         else:
             st.write("Não participa de nenhum campeonato")
 
-        if st.button("Retornar", use_container_width=True):
+        if st.button("Retornar", key="btn_retornar_info", use_container_width=True):
             st.session_state.sub_tela = 'clube_selecionado'
+            if hasattr(st.session_state, 'relatorio_tipo'):
+                del st.session_state.relatorio_tipo
             st.rerun()

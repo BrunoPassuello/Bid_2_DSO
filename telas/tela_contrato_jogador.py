@@ -95,11 +95,13 @@ class TelaContratoJogador:
             with col1:
                 st.write("**CPF:**", contrato.jogador.cpf)
                 st.write("**Salário:** R$", f"{contrato.salario:,.2f}")
+                st.write("**País:**", contrato.jogador.pais)
             with col2:
                 st.write("**Multa Rescisória:** R$",
                          f"{contrato.multa_rescisoria:,.2f}")
                 st.write("**Contrato com Produtividade:**",
                          'Sim' if contrato.contrato_produtividade else 'Não')
+                st.write("**Posição:**", str(contrato.jogador.posicao.nome))
             st.divider()
 
     def seleciona_contrato(self):
