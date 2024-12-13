@@ -6,15 +6,13 @@ class TelaClube:
         if st.session_state.tela_atual != 'clube':
             return None
 
-        # Limpa a tela principal
         st.empty()
 
-        # Título centralizado
+
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.title("Gerenciamento de Clubes")
 
-        # Menu lateral organizado
         with st.sidebar:
             st.title("Menu")
             st.divider()
@@ -155,7 +153,7 @@ class TelaClube:
             if clube.contrato_tecnico:
                 st.write("**Nome:**", clube.contrato_tecnico.tecnico.nome)
                 st.write("**Licença:**",
-                         clube.contrato_tecnico.tecnico.licenca.tipo)
+                        clube.contrato_tecnico.tecnico.licenca.tipo)
             else:
                 st.warning("O clube não possui técnico!")
 

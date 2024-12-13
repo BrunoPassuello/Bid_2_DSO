@@ -28,7 +28,7 @@ class ControladorJogador:
 
         if st.session_state.sub_tela == 'cadastrar':
             self.incluir_jogador()
-        elif st.session_state.sub_tela == 'listar':
+        elif st.session_state.sub_tela == 'l0istar':
             self.listar_jogador()
         elif st.session_state.sub_tela == 'excluir':
             self.excluir_jogador()
