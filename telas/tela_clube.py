@@ -10,7 +10,7 @@ class TelaClube:
         st.empty()
 
         # Título centralizado
-        col1, col2, col3 = st.columns([1,2,1])
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.title("Gerenciamento de Clubes")
 
@@ -22,7 +22,6 @@ class TelaClube:
             menu_items = {
                 "Selecionar Clube": "selecionar",
                 "Cadastrar Clube": "cadastrar",
-                "Alterar Clube": "alterar",
                 "Listar Clubes": "listar",
                 "Excluir Clube": "excluir",
                 "Retornar": "retornar"
@@ -44,7 +43,7 @@ class TelaClube:
             return None
 
         # Título centralizado
-        col1, col2, col3 = st.columns([1,2,1])
+        col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.title("Operações do Clube")
 
@@ -84,7 +83,8 @@ class TelaClube:
             with col2:
                 pais = st.text_input("País", key="clube_pais")
 
-            submitted = st.form_submit_button("Cadastrar Clube", use_container_width=True)
+            submitted = st.form_submit_button(
+                "Cadastrar Clube", use_container_width=True)
 
             if submitted:
                 if not nome or not pais:
@@ -101,7 +101,8 @@ class TelaClube:
 
         with st.form(key="seleciona_clube"):
             nome = st.text_input("Nome do Clube:", key="clube_select_nome")
-            submitted = st.form_submit_button("Buscar", use_container_width=True)
+            submitted = st.form_submit_button(
+                "Buscar", use_container_width=True)
 
             if submitted:
                 if not nome:
@@ -110,27 +111,34 @@ class TelaClube:
                 return nome
         return None
 
-    def mostra_clube(self, lista_clubes):
-        if st.session_state.sub_tela != 'listar':
-            return None
-
-        st.header("Clubes Cadastrados")
-
-        if not lista_clubes:
-            st.warning("Não há clubes cadastrados.")
-            return
-
-        for clube in lista_clubes:
-            with st.expander(f"Clube: {clube.nome}", expanded=True):
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.write("**País:**", clube.pais)
-                with col2:
-                    if clube.contrato_tecnico:
-                        st.write("**Técnico:**", clube.contrato_tecnico.tecnico.nome)
-                    else:
-                        st.write("**Técnico:** Não contratado")
-                st.divider()
+    def mostra_clube(self, clube):
+        with st.expander(f"Clube: {clube.nome}", expanded=True):
+            col1, col2 = st.columns(2)
+            with col1:
+                st.write("**País:**", clube.pais)
+            with col2:
+                if clube.contrato_tecnico:
+                    st.write("**Técnico:**", clube.contrato_tecnico.tecnico.nome)
+                else:
+                    st.write("**Técnico:** Não contratado")
+            
+            # Mostrar jogadores do clube
+            if clube.jogadores:
+                st.write("**Jogadores:**")
+                for jogador in clube.jogadores:
+                    st.write(f"- {jogador.jogador.nome}")
+            else:
+                st.write("**Jogadores:** Nenhum jogador contratado")
+            
+            # Mostrar campeonatos do clube
+            if clube.campeonatos:
+                st.write("**Campeonatos:**")
+                for campeonato in clube.campeonatos:
+                    st.write(f"- {campeonato.nome}")
+            else:
+                st.write("**Campeonatos:** Não participa de nenhum campeonato")
+            
+            st.divider()
 
     def relatorio_clube(self, clube, lista_contrato_jogadores, lista_campeonatos):
         st.header(f"Relatório do Clube {clube.nome}")
@@ -147,7 +155,8 @@ class TelaClube:
         with st.expander("Técnico", expanded=True):
             if clube.contrato_tecnico:
                 st.write("**Nome:**", clube.contrato_tecnico.tecnico.nome)
-                st.write("**Licença:**", clube.contrato_tecnico.tecnico.licenca.tipo)
+                st.write("**Licença:**",
+                         clube.contrato_tecnico.tecnico.licenca.tipo)
             else:
                 st.warning("O clube não possui técnico!")
 
@@ -170,7 +179,8 @@ class TelaClube:
                     st.write(f"- Premiação: R$ {campeonato.premiacao:,.2f}")
                     st.divider()
             else:
-                st.warning("O clube não está participando de nenhum campeonato!")
+                st.warning(
+                    "O clube não está participando de nenhum campeonato!")
 
     def mostra_mensagem(self, mensagem):
         st.warning(mensagem)

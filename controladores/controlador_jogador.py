@@ -17,10 +17,8 @@ class ControladorJogador:
         if opcao == 1:
             st.session_state.sub_tela = 'cadastrar'
         elif opcao == 2:
-            st.session_state.sub_tela = 'alterar'
-        elif opcao == 3:
             st.session_state.sub_tela = 'listar'
-        elif opcao == 4:
+        elif opcao == 3:
             st.session_state.sub_tela = 'excluir'
         elif opcao == 0:
             st.session_state.tela_atual = 'sistema'
@@ -30,8 +28,6 @@ class ControladorJogador:
 
         if st.session_state.sub_tela == 'cadastrar':
             self.incluir_jogador()
-        elif st.session_state.sub_tela == 'alterar':
-            self.alterar_jogador()
         elif st.session_state.sub_tela == 'listar':
             self.listar_jogador()
         elif st.session_state.sub_tela == 'excluir':
@@ -62,25 +58,6 @@ class ControladorJogador:
                 )
                 self.__jogador_DAO.add(novo_jogador)
                 self.__tela_jogador.mostra_mensagem("Jogador cadastrado com sucesso!")
-
-    def alterar_jogador(self):
-        cpf = self.__tela_jogador.seleciona_jogador()
-        if cpf is not None:
-            jogador = self.pega_jogador_por_cpf(cpf)
-            if jogador:
-                dados_atualizados = self.__tela_jogador.tela_cadastro_jogador()
-                if dados_atualizados is not None:
-                    jogador.nome = dados_atualizados["nome"]
-                    jogador.idade = dados_atualizados["idade"]
-                    jogador.pais = dados_atualizados["pais"]
-                    jogador.posicao = Posicao(dados_atualizados["posicao"])
-                    jogador.peso = dados_atualizados["peso"]
-                    jogador.altura = dados_atualizados["altura"]
-                    jogador.estrangeiro = dados_atualizados["estrangeiro"] == "S"
-                    self.__jogador_DAO.update(jogador)
-                    self.__tela_jogador.mostra_mensagem("Jogador alterado com sucesso!")
-            else:
-                self.__tela_jogador.mostra_mensagem("Jogador não encontrado!")
 
     def excluir_jogador(self):
         cpf = self.__tela_jogador.seleciona_jogador()

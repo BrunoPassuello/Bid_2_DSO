@@ -14,7 +14,6 @@ class ControladorClube:
         self.__controlador_sistema = controlador_sistema
         self.__tela_clube = TelaClube()
         self.__clube_dao = ClubeDAO()
-        self.__clubes = {clube.id: clube for clube in self.__clube_dao.get_all()}
         self.__clube_selecionado = None
         self.__controlador_contrato_jogador = None
         self.__controlador_contrato_tecnico = None
@@ -59,40 +58,26 @@ class ControladorClube:
                     self.__tela_clube.mostra_mensagem("Clube já cadastrado!")
                 else:
                     novo_clube = Clube(dados_clube["nome"], dados_clube["pais"])
-                    self.__clubes[novo_clube.id] = novo_clube
                     self.__clube_dao.add(novo_clube)
                     self.__tela_clube.mostra_mensagem("Clube cadastrado com sucesso!")
 
-        elif st.session_state.sub_tela == 'alterar':
-            nome = self.__tela_clube.seleciona_clube()
-            if nome is not None:
-                clube = self.pega_clube_por_nome(nome)
-                if clube:
-                    dados_clube = self.__tela_clube.tela_cadastra_clube()
-                    if dados_clube is not None:
-                        clube.nome = dados_clube["nome"]
-                        clube.pais = dados_clube["pais"]
-                        self.__clube_dao.update(clube)
-                        self.__tela_clube.mostra_mensagem("Clube alterado com sucesso!")
-                else:
-                    self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
-
         elif st.session_state.sub_tela == 'listar':
-            self.__tela_clube.mostra_clube(list(self.__clubes.values()))
+            self.__tela_clube.mostra_mensagem("Clubes Cadastrados:")
+            for clube in self.__clube_dao.get_all():
+                self.__tela_clube.mostra_clube(clube)
 
         elif st.session_state.sub_tela == 'excluir':
             nome = self.__tela_clube.seleciona_clube()
             if nome is not None:
                 clube = self.pega_clube_por_nome(nome)
                 if clube:
-                    del self.__clubes[clube.id]
                     self.__clube_dao.remove(clube.id)
                     self.__tela_clube.mostra_mensagem("Clube excluído com sucesso!")
                 else:
                     self.__tela_clube.mostra_mensagem("Clube não cadastrado!")
 
     def pega_clube_por_nome(self, nome: str):
-        for clube in self.__clubes.values():
+        for clube in self.__clube_dao.get_all():
             if clube.nome == nome:
                 return clube
         return None
@@ -203,7 +188,3 @@ class ControladorClube:
     @clube_selecionado.setter
     def clube_selecionado(self, clube):
         self.__clube_selecionado = clube
-
-    @property
-    def clubes(self):
-        return self.__clubes

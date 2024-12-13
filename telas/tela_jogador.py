@@ -8,12 +8,10 @@ class TelaJogador:
             st.title("Menu")
             if st.button("Cadastrar Jogador", key="jog_btn_cadastrar"):
                 return 1
-            if st.button("Alterar Jogador", key="jog_btn_alterar"):
-                return 2
             if st.button("Listar Jogadores", key="jog_btn_listar"):
-                return 3
+                return 2
             if st.button("Excluir Jogador", key="jog_btn_excluir"):
-                return 4
+                return 3
             if st.button("Retornar", key="jog_btn_retornar"):
                 return 0
         return None

@@ -45,25 +45,6 @@ class ControladorTecnico:
                     except (CpfInvalidoError, SalarioInvalidoError, MultaRescisoriaInvalidaError) as e:
                         self.__tela_tecnico.mostra_mensagem(str(e))
 
-        elif st.session_state.sub_tela == 'alterar':
-            cpf = self.__tela_tecnico.seleciona_tecnico()
-            if cpf is not None:
-                tecnico = self.pega_tecnico_por_cpf(int(cpf))
-                if tecnico:
-                    dados_atualizados = self.__tela_tecnico.pega_dados_atualizacao(
-                        tecnico)
-                    if dados_atualizados is not None:
-                        tecnico.nome = dados_atualizados["nome"]
-                        tecnico.idade = dados_atualizados["idade"]
-                        tecnico.pais = dados_atualizados["pais"]
-                        tecnico.licenca = Licenca(dados_atualizados["licenca"])
-                        self.__tecnico_DAO.update(tecnico)
-                        self.__tela_tecnico.mostra_mensagem(
-                            "Técnico alterado com sucesso!")
-                else:
-                    self.__tela_tecnico.mostra_mensagem(
-                        "Técnico não encontrado!")
-
         elif st.session_state.sub_tela == 'listar':
             tecnicos = self.__tecnico_DAO.get_all()
             self.__tela_tecnico.mostra_tecnicos(tecnicos)

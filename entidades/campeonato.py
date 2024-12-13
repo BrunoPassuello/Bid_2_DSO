@@ -41,7 +41,6 @@ class Campeonato:
     
     def listar_clubes(self):
         if len(self.__clubes) > 0:
-            clubes_ordenados = sorted(self.__clubes, key = lambda clube: clube.nome)
-            for clube in clubes_ordenados:
-                print(clube.nome)
+            return sorted(self.__clubes, key=lambda clube: clube.nome)
+        return []
     
