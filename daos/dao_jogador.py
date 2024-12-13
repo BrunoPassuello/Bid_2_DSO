@@ -1,7 +1,7 @@
 from daos.dao import DAO
 from entidades.jogador import Jogador
 
-#cada entidade terá uma classe dessa, implementação bem simples.
+
 class JogadorDAO(DAO):
     def __init__(self):
         super().__init__('jogadores.pkl')
